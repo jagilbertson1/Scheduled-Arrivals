@@ -1,0 +1,13 @@
+# Latex Files
+*.aux
+*.fdb_latexmk
+*.log
+*.pdf
+*.synctex.gz
+*.toc
+
+# Latex Bibliography Files
+*.bbl
+*.blg
+*.run.xml
+*blx.bib
