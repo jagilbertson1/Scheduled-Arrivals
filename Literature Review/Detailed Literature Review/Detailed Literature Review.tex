@@ -1,0 +1,488 @@
+\documentclass{article}
+		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[margin=1 in]{geometry}
+\usepackage{tabto}
+\setlength{\parindent}{0pt}
+\everymath{\displaystyle}
+\usepackage{bbm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Detailed Literature Review}
+
+\title{Detailed Literature Review}
+\author{}
+\date{September 8, 2015}
+
+\begin{document}
+
+\maketitle
+
+\textbf{A Study of Queues and Appointment Systems in Hospital Out-Patient Departments, with Special Reference to Waiting-Times}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Norman T. J. Bailey \\
+    \textbf{Published:} & January 1952 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Investigation of patients' waiting time and time consultant waste waiting for next patient
+    \item Recommend giving patients appointments at regular intervals equal to the average consultation time
+    \item Keeping patients waiting longer is undesirable on humanitarian grounds
+    \item Congestion in waiting room wastes hospital accommodation that is in short supply
+    \item Suggests that consultant's waiting time is 10, 37.5 or 100 times more valuable than the patient's waiting time
+    \item Consider the size of queue that may build up and the consequences of having longer or shorter clinics
+    \item Consultation time vary considerably from patient to patient
+    \item Generally assume patients arrive punctually for their appointment
+    \item Serve patients one at a time
+    \item Assume consultation times are independent although that might not hold in practice
+    \item Fitted the frequency distribution of consultation time to a Gamma distribution
+    \item Used random numbers to randomly generate consultation times (chose a rather simplistic method)
+    \item Assumed average consultation time was 5 minutes (could be changed by multiplying all times by a constant factor)
+    \item Only consider systems where the appointment intervals are all the same
+    \item Two main ways of controlling the progress of a clinic:
+    \begin{itemize}
+        \item Using shorter / longer appointment intervals
+        \item Varying the number of patients already present when the consultant arrives
+    \end{itemize}
+    \item Patients' and consultant's waiting times are inversely related
+    \item Consultant's wasted time will likely be less due to patients arriving early
+    \item Is it beneficial to have patients arrive before consultants? (should arrival times be negative for first few patients?)
+    \item Optimum results when consultant arrives at the same time as the second patient
+    \item As the appointment interval increase, the consultant's wasted time increases rapidly in comparison to the decrease in patient's waiting time
+    \item Considered the distributions of waiting times
+    \item The distribution of patients' waiting times is skew with a long tail
+    \item Didn't consider situations with more than 25 patients
+    \item Consultant's idle period does not change much for less than 25 patients if the total time remains the same
+    \item Patients with late appointments will wait longer than those with early appointments
+    \item Possibility of making average waiting time more uniform (i.e., minimise variance of average waiting time)
+    \item The waiting times of the 25 patients in one clinic are fairly correlated
+    \item A great deal of time wasted by patients could be reduced without a significant increase in consultant idle time
+    \item Optimum when patients are giving appointments at regular intervals
+    \item Waiting times are sensitive to small changes in appointment interval (i.e., the average consultation time)
+    \item If patients arrive early, there will be more congestion in waiting rooms
+    \item Greater / fewer number of patients doesn't change general conclusions
+    \item Only consider clinics with one server
+\end{itemize}
+
+\textbf{A Survey of Queuing Theory Applications in Healthcare}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Samuel F. Fomundam, Jeffrey W. Herrmann \\
+    \textbf{Published:} & 2007 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Patients arrive, wait for service, obtain service, and then depart
+    \item Queuing theory can be useful in real-world healthcare situations
+    \item Preater (2002) provide a brief history, extensive bibliography (without descriptions), and discussion of the relationship between delays, utilisation, and the number of servers
+    \item Systems at different scales: individual departments, healthcare facilities, and regional health systems
+    \item Does not review simulation studies
+    \item Queuing models are simpler, require less data, and provide more generic results than simulation (Green 2006a)
+    \item Tucker (1999), and Kao and Tung (1981) use simulation to compliment the results obtained from queuing theory
+    \item Resources necessary to attain the goals described by healthcare providers
+    \item Appointment systesm look to reduce patient waiting without greatly increasing server idleness
+    \item Minimising customer waiting times and maximisising server utilisation are conflicating goals
+    \item Reneging: a patient forgoes a service because he doesn't want to wait any longer
+    \item Probability that a patient reneges increases with queue length and with the patient's estimate of their future waiting time
+    \item Broyles and Cochran (2007) look at the percentage of patients that renege in an emergency department
+    \item Many healthcare systems have a variable arrival rate due to time of day, day of week, or season of year
+    \item Arrival rates can depend on system state
+    \item A system with congestion discourages arrivals
+    \item Worthington (1991) models a system with arrival rates that discrease linearly with queue length and expected waiting time
+    \item McQuarrie (1983) discuss minimising waiting times by giving priority to clients who require shorter service times
+    \item Similar to shortest processing time rule (although this is perceived as unfair in practice)
+    \item Priority discipline reduces the average wait time for all patients, but lower priority patients endure a longer average waiting time
+    \item Probability that a patient would have to wait more than a certain amoutn of time
+    \item Fiems et al. (2007) investigate the effect of emergency request on the waiting times of scheduled patients with deterministic processing times and discrete time - emergency patients interrupt the scheduled patients
+    \item Blocking occurs when a queuing system places a limit on queue length and turns away walk in patients when its waiting room is full (e.g., limited number of beds)
+    \item Limited waiting times is an important objective in a healthcare systems
+    \item Bailey (1954) establishes threshold capacity where service sypply equals demand
+    \item Agnihothri and Taylor (1991) seek optimal staffing at a hospital scheduling department
+    \item Green (2006b) adjusts staffing to reduce the percentage of patients that renege
+    \item Bruin et al. (2005) determine the number of beds required to achieve a turn away rate of 5\%
+    \item Bruin et al. (2007) suggest too few beds downstream is the primary cause of reduced admissions upstream
+    \item Assign costs to patient waiting time and to each server
+    \item Find the resource allocation that costs the least
+    \item Gupta et al. (1971) discuss a system where non-routine requests are superimposed on top of routine, scheduled requests
+    \item Rosenquist (1987) suggests scheduling patients when possible and segregating patients based on expected examination duration would reduce variability and decrease expected waiting times
+    \item Systems with appointments reduce the arrival variability and waiting times at the facility
+    \item Systems with appointments require patients to wait outside the facility (lower cost to the patient and facility)
+    \item Bailey (1952, 1954) proposes appointment interval and consultant arrival time as being the two key variables that determine the efficacy of an appointment system
+    \item Relative values of patient time and consultant time
+    \item Appointment times at intervals equal to the average patient processing time
+    \item Consultant should arrive at the same time as the second patient
+    \item Brahimi and Worthington (1991) design an appointment system to reduce the number of patients in the queue at any time, and reduce patient waiting time without significantly increasing doctor idle time
+    \item Also explore the effect of patients who do not show up and if there is a maximum number of patients allowed at any time
+    \item Vasanawala and Desser (2005) describe a system where emergency request may require rescheduling of scheduled requests
+    \item DeLaurentis et al. (2006) point out that patient no shows could lead to waste of resources
+    \item Bottlenecks lead to high utilization and increase patient waiting times even though other nodes might have low utilitization
+    \item Distinguish between three different scales of healthcare organisations
+    \item Larger organisations with more patients are able to attain the same quality of service at higher utilizations than smaller organisations
+    \item The ways in which distinct queuing systems within an organisation interact - links between subsystems
+\end{itemize}
+
+\textbf{Appointment Policies in Service Operations: A Critical Analysis of the Economic Framework}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Susana V. Mondschein, Gabriel Y. Weintraub \\
+    \textbf{Published:} & May 2002 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Literature assumes that demand is exogenous and independent of customers' waiting times
+    \item Objective functions used in literature are appropriate only in the case of a central planner with demand unresponsive to waiting time
+    \item Long waiting times cause customers to become dissatisfied with the service received
+    \item Two important characteristics are customer's perception of waiting time and actual waiting time
+    \item Can reduce perception of waiting time through more comfortable environment and a socially fair (first-in-first-output) policy
+    \item If the time between appointments is short, then customer's waiting times will be long and expected server idle time will be short
+    \item Study appointment policies under different scenarios through simulation
+    \item Central planner maximises social welfare including the utility of the server and the customers
+    \item Common to find institutions with poor services from customer's point of view
+    \item Chilean IRS has reduced customers' waiting time significantly
+    \item Question the assumption that demand is exogenous
+    \item In practice, it is common to find services that never reach steady state so can't use results from queuing theory
+    \item Some papers explore scheduling $N$ people in $K$ predetermined instances of time
+    \item Other papers look at optimal vector $X = (x_{1}, \ldots, x_{N})$, which explores all possible alternatives
+    \item No universal appointment rule
+    \item Appointment policies for customers with different service time distributions
+    \item Best policy is increasing order of service time variance
+    \item Punctuality and variance of service time are key variables
+    \item Obtive function is linear combination of expected total customer waiting time and server completion time
+    \item Assume $N$ is fixed and independent of waiting times
+    \item Can include other ideas in objective function
+    \item Optimal policy depends on $\frac{\beta}{\alpha}$ (ratio of relative costs), but these are difficult to estimate
+    \item Crucial to know if central planner or private server
+    \item Customers are risk averse in regards to waiting times (need to minimise variance)
+    \item Appointment policy that leads to long waiting times results in a reduction in quantity demanded
+    \item Overbooking can be implemented when absenteeism is high
+    \item Demand being independent of waiting times is a good assumption when the service custome sells a `prime necessity' service (e.g., public hospital) as customers place a high value on the service
+    \item Attempt to include an objective function that does not have to schedule all $N$ available slots (maybe it can be run for a range of $N$ values and choose the best)
+    \item If $\frac{\beta}{\alpha}$ is correctly estimated, then the objective function should be reasonable
+    \item Numerically determine the impact of an appointment policy
+    \item Ho and Lau (1992) study the performance of eight different appointment rules under different scenarios
+    \item Customer's behaviour is not considered in the models
+    \item $\alpha$ and $\beta$ are functions of several fundamental parameters (e.g., customers' willingness to pay for the service, customers' value of waiting time and the server's value of his/her time)
+    \item Percentage of absenteeism can be estimated using historical data
+    \item Yang, Lau and Quek (1998) construct a general appointment rule, but this could be extended to include a larger number of servers or walk-ins
+    \item Demand must depend on waiting time
+    \item Vast majority of servers are now private (including medical services), so face competitive environments
+    \item More realistic models are more difficult to solve than those traditionally used in the literature
+\end{itemize}
+
+\textbf{Optimal Outpatient Appointment Scheduling}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Guido C. Kaandorp, Ger Koole \\
+    \textbf{Published:} & 23 May 2007 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Local search procedure to find optimal schedule
+    \item Weighted average of expected waiting times, idle tile of doctor and tardiness as objective
+    \item Trade off the interest of physicians and patients
+    \item Bailey and Welch introduced first advanced scheduling rule
+    \item Cayirli and Veral give a good overview
+    \item Service time durations are exponentially distributed with rate $\mu$
+    \item Patients arrive on time
+    \item No shows are allowed
+    \item Setting is discrete time
+    \item Tries to find neighbouring appointment schedules that are better
+    \item As proved multimodularity, locally optimal schedule is globally optimal
+    \item Tardiness is the probability that the session exceeds the planned finishing time multiplied by the average excess
+    \item For many intervals, the computation times can be quite long
+    \item Some papers evaluate schedules (often using simulation) and other design algorithms to find good schedules
+    \item Can also consider patients not arriving on time and non-exponential service times
+    \item Other papers focus on continuous time, which deal with finding the optimal interarrival intervals
+    \item Pegden and Rosenshine find the optimal arrival moments assuming convexity of the objective in the interarrival times
+    \item Lau and Lau give a procedure for finding optimal arrival instants assuming convexity
+    \item Hassin and Mendel extend the model to no shows
+    \item Branch and bound only works for small instances (for discrete time)
+    \item Inclusion of different types of patients is relatively straightforward
+    \item $N$ patients to be scheduled
+    \item Assume service time of patients are independent and exponentially distributed
+    \item Assume patients always come on time
+    \item Due to exponential service times, the potential number of departures in an interval has a Poisson distribution
+    \item No shows occur frequently in practice
+    \item Assume that all patients have the same no show probability and no shows are independent
+    \item Need a search algorithm to reduce computation time by starting with a feasible solution and trying iteratively to find a better solution in the neighbourhood of that solution
+    \item For a well chosen neighbourhood, it is possible to show that the algorithm finds a global minimum
+    \item Neighbourhood can be interpreted as moving patients from time slot $t$ to slot $t - 1$ (online for computational reasons only moves one patient)
+    \item Take $\frac{1}{\mu} = 20$ min and the probability of no-shows as 10\%
+    \item If the waiting time has a big weight then the patients are more spread out
+    \item The times between consecutive arrivals first increases and then decreases again (dome shaped form commonly discussed in the literature)
+    \item Individual block schedule: same number of intervals as patients and one patient in each interval
+    \item Bailey-Welch rule: same but last patient is moved to beginning of day
+    \item Optimal schedule is always better
+    \item Bailey-Welch rule is indeed optimal for certain parameter values
+    \item If the probability of no-shows increases, then the waiting time, idle time and tardiness becomes larger
+    \item Changing the number of intervals would lead to more simultaneous arrivals
+\end{itemize}
+
+\textbf{Outpatient Scheduling in Health Care: A Review of Literature}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Tugba Cayirli, Emre Veral \\
+    \textbf{Published:} & January 2009 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Comprehensive survey of research on appointment scheduling
+    \item Resources are better utilized and patient waiting times are minimized
+    \item Health care providers are under a great deal of pressure to reduce costs and improve quality of service provided (Goldsmith 1989)
+    \item Excessive waiting time is often the major reason for patients' dissatisfaction in outpatient services
+    \item Focus on outpatient scheduling
+    \item Find an appointment system for which a particular measure of performance is optimized
+    \item In the static case, all decisions must be made prior to the beginning of a clinic session (most common appointment system in health care)
+    \item Presence of unpunctual patients, no-shows, walk-ins and/or emergencies may upset the schedule
+    \item Doctors may be late to star a clinic session
+    \item Almost all student model a single-stage system where patients queue for a single service
+    \item Doctors usually have thir own list of patients (desirable)
+    \item Positive relationship between waiting times and the number of appointments in a session
+    \item Unpunctuality is defined as difference between a patient's appointment time and actual arrival time truncated at zero
+    \item Empirical studies suggest patients arrive early more often than late
+    \item Patient earliness can be undesirable as it creates congestion
+    \item Patient unpunctuality is assumed to be independent of scheduled appointment time
+    \item The larger the no-show probability, the greater risk that the doctor will stay idle and decrease the waiting time of patients
+    \item No-show probability is a major factor that affects performance of an appointment system
+    \item Presence of walk-ins (regular and emergency) is neglected in most studies
+    \item Few (if any) model the reneging behaviour of walk-ins
+    \item Even less focus on emergencies who might preempt the current consultation
+    \item Companions can increase congestion even though they aren't served
+    \item Consultation time is the all the time that the patient is claiming the doctor's attention
+    \item Majority of studies assume patients are homogeneous
+    \item General assumption that service times and waiting times may be questionable (doctors speed up service when busy)
+    \item Service times are observed to be unimodal and right skewed
+    \item Most studies use exponential distributions to make model tractable
+    \item Coefficient of variation: $CV = \frac{\sigma}{\mu}$ is a common measure for variability of service times (range from 0.35 to 0.85)
+    \item Most studies show the relative performance of an appointment system is not affected by skewness, but only by mean and variance
+    \item High variability of service times deteriorates both the patients' waiting times and doctor's idle time
+    \item Larger the $CV$, the smaller the optimal appointment interval
+    \item Performance of the system is very sensitive to small changes in the appointment intervals (Bailey 1952)
+    \item Doctor's unpunctuality is lateness to first appointment, which has a big effect on patient waiting times as delay factor builds up
+    \item When clinics are run under more credible appointment systems, patients and doctors become more punctual
+    \item In almost all studies, patients are served on first come first served basis, which may destroy the whole purpose of the appointment system
+    \item First priority is given to emergencies, then to scheduled patients and finally walk-ins
+    \item Objective is minimising the expected total cost of the system
+    \item Assumes a linear relationship between waiting cost and waiting time, which is not true in practice
+    \item Modelling unpunctual patients and walks-in means the assumption of homogeneous waiting times might need to be relaxed
+    \item Might be a threshold over which patients' tolerance declines steeply
+    \item Cost of doctor's idle time is annual doctor's salary divided by hours worked (need to also include idle facility)
+    \item Cost of patient's idle time is minimum wage (might be better to use median wage)
+    \item True patient waiting time is difference between consultation start time and max of appointment time and arrival time (truncated to zero)
+    \item Overtime is positive difference between expected and actual completion time of doctor
+    \item Congestion leads to longer waiting times and (possibly) reduced service times
+    \item Some studies include `fairness' (i.e., uniformity of perfomance of an appointment system
+    \item 7 major appointment rules (of varying sophistication) have been explored in the literature
+    \item Dome shape: optimal appointment intervals exhibit a common pattern where they initially increase towards the middle of a session and then decrease
+    \item As scheduling requests are handled dynamically, the use of patient classification is somewhat limited
+    \item For surgical scheduling, the scheduler has a complete list of all requests for the day and patient availability is guaranteed
+    \item Having predefined slots of patient classes leads to an inflexible appointment system
+    \item Not entirely possible to eliminate no shows (Barron 1980)
+    \item Add extra patients to make up for anticipated no shows
+    \item Walk-ins and no shows won't necessarily cancel each other out
+    \item Hospitals are rarely able to reschedule patients in case of an emergency
+    \item Earlier queuing models assume steady state behaviour, which is never reached in a real clinic environment
+    \item Optimal order of two procedures is increasing variance when service times are uniform or exponential
+    \item Simulation modelling can model more complex patient flows
+    \item Bailey's rule: an initial block of two patients and fixed intervals
+    \item Ho and Lau (1992, 1999) and Ho, Lau and Li (1995) evaluate 50 appointment rules under various operating environments
+    \item No rule will perform well under all circumstances
+    \item Rohleder and Klassen (2000) consider the possibility that the scheduler can make an error when classifying patients
+    \item Possibily could look at accidentally double booking two patients
+    \item More fair if explictly try to increase appointment intervals towards the end of the day (Yang et al. 1998)
+    \item Simulation research fails to report statistical significance of results
+    \item Case studies have major drawback of lack of generalisation
+    \item Rockart and Hofmann (1969) show individual block systems lead to more punctual doctors and patients and less no-shows
+    \item The more time patients have to wait for an appointment, the greater the percentage of no-shows
+    \item Simple grouping of inpatients and outpatients results in a substantial improvement of doctor's idle time (Walter 1973)
+    \item O'Keefe (1985) had their proposed appointment system of classifying return and new patients rejected by staff who prefer a more simple and uniform appointment system
+    \item The appointment scheduling problem is to a large extent a `political' one as doctors are often unwilling to change their old habits
+    \item Babes and Sarma (1991) initially tried to apply steady-state queuing theory, but found their results tended to be very different than those observed in real operation
+    \item Huarng and Lee (1996) cdoul not implement an individual based appointment system because of staff resistance
+    \item Bennett and Worthington (1998) found their recommendations weren't implemented successfully due to lack of control of doctor's behaviour
+    \item It is often not practical to come up with estimates of individual consultation times
+    \item Despite much published work, the impact on outpatient clinics has been limited
+    \item Future research should attempt to close the gap between theory and practice
+    \item Need to develop easy-to-use heuristics to choose the best system for individual clinics
+    \item Empirical evidence can show exponential service distribution assumption is too restrictive
+    \item Model walk-in seasonality
+    \item Important to try to include a `fairness' measure
+    \item Lack of emphasis on real life performance of an appointment system (e..g, ease of use, physician's behaviour)
+    \item Arguable today if doctor's time is more valuable than patients
+\end{itemize}
+
+\textbf{Scheduling Arrivals to Queues: A Model with No-Shows}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Sharon Mendel \\
+    \textbf{Published:} & July 2006 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Interested in finding the optimal schedule in an appointment system
+    \item $n$ arrivals of indpendent customers to a single server system with exponential service times
+    \item Include probability of customer not showing up
+    \item Minimise the sum of expected customers' and server's costs
+    \item Reduce the waiting time for patients and increase service utilisation
+    \item Control customers' waiting times and server's idle time
+    \item Include tardiness in schedule in objective function
+    \item Base point is analytical model presented by Pegden and Rosenshine (1990)
+    \item Customer can be scheduled to arrive at same time as preceeding customer
+    \item As showing up probability decreases, the optimal appointment intervals decreases and expected customer's waiting times decreases
+    \item Based on Pegden and Rosenshine (1990) and Stein and Cote
+    \item Server provides a Markovian service
+    \item Determine $t_{1}$ (time of first arrival) and vector $x^{*} = (x_{1}, \ldots, x_{n - 1})$ of intervals between scheduled arrivals
+    \item $w_{i}$ is expected waiting time of $i$-th customer in queue
+    \item Minimise $\Phi (x^{*}) = c_{w} \sum_{i = 1}^{n} w_{i} + c_{s} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]$
+    \item Obvious that $t_{1} = 0$ (thus $w_{1} = 0$) in optimal solution so can simply write $\phi (x^{*}) = c_{w} \sum_{i = 2}^{n - 1} w_{i} + c_{s} \sum_{i = 1}^{n - 1} x_{i} + (c_{s} + c_{w}) w_{n}$
+    \item Pedgen and Roshenine develop a recursive algorithm to solve it (need to assume convexity to get global optimal)
+    \item Stein and Cote use a D/M/1 queue model (assuming steady state)
+    \item S(n,p)/M/1 is a system with $n$ independent customers who each have probability $p$ of showing up, and are serviced by a single Markovian server
+    \item Can write the expected waiting time of the $i$-th customer (if they show up) as a function of $x^{*}$
+    \item The probability of $k$ departures from the queue in any interval is poisson
+    \item For zero no shows, get same solution as Pegden and Roshenshine
+    \item Need to constrain solution by $x_{i} \geq 0$
+    \item Can normalise (without loss of generality) to $\mu = 1$ (assuming homogeneous)
+    \item No closed form solution, so need to solve numerically using Newton-Raphson (by sequential quadratic programming using Matlab optimisation toolbox)
+    \item Pegden and Roshenshine state the objective function is believe to be convex despite the presense of non-convex terms
+    \item Interval increases for first few customers, then stays almost constant before decreasing (dome shape)
+    \item As the probability of no shows increases, first few customers arrive together and last few customers arrive together
+    \item Bailey recommended the first few customers arriving together
+    \item No-shows lead to lower expected waiting time for customers who do show up
+    \item Maximum expected waiting time of customer who shows up is up to twice the average expected waiting time and more than five times the average service time
+    \item Cost of no-shows is relative cost of system where all customers show up to one with no-shows but the same expected number of customers who show up
+    \item As the probability of no-shows increases the cost of no-shows increases
+    \item Equally spaced model is a realistic restriction as more easily implementable
+    \item Equations still do not have a closed form solution so use Newton-Rhapson approximation in Matlab
+    \item Forcing equally spaced intervals does not materially change the value of the objective function
+    \item Possibly should also look at fixed intervals but a variable number ($\geq 0$) scheduled to arrive at the start of each interval
+    \item Theorem 1.1 of Hajek: average customer waiting time is at a minimum for constant inter-arrival times (if one exponential server)
+    \item Does not always hold in a system with no-shows due to other factors in objective function
+\end{itemize}
+
+\textbf{Scheduling Arrivals to Queues}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & Claude Dennis Pegden, Matthew Rosenshine \\
+    \textbf{Published:} & 1990 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Arrival process consists of $n$ arrivals whose arrivals times may be scheduled
+    \item Algorithm is developed to determine the schedule for $n$ arrivals
+    \item Objective function is convex for $n \leq 4$ and conjectured to be convex for $n \geq 5$
+    \item Appointment system in which an arrival cannot be refused an appointment
+    \item If customers are scheduled to arrive early, then the total time the server must be available is reduced, but long waiting times for customers
+    \item If arrivals are spread out, customer waiting time is reduced at the expense of a large required server availability time
+    \item How to incorporate a `last' possible scheduled time? (truncate the times?)
+    \item Minimise the total system cost
+    \item Kendall's notation with $n$ scheduled customers: $S (n) / M / 1$ implies a Markovian service with one server
+    \item $N (t_{i})$ is the number of customers in the system just prior to the time of $i$-th arrival
+    \item $x_{i}$ is the time interval between the scheduled arrival times of the $i$-th and the $(i + 1)$-th arrival
+    \item Objective is to determine $t_{1}$ and $\overline{x} = (x_{1}, \ldots, x_{n})$
+    \item Optimisation problem is $\min_{t_{1}, \overline{x}} z = c_{w} \sum_{i = 1}^{n} w_{i} + c_{s} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]$
+    \item Take $t_{1} = 0$ and ignore constants to get simpler expression
+    \item If service time is deterministic, then finding the optimal solution with zero waiting time and idle time is trivial
+    \item Can find closed form solution for $n = 2$
+    \item Due to memoryless property of exponential distribution, the expected waiting time of the second customer is $w_{2} = \frac{\mathbb{P} (N (t_{2}) = 1)}{\mu} = \frac{\exp (- \mu x_{1})}{\mu}$
+    \item Then solve $\frac{d z}{d x_{1}} = 0$ to get $x_{1} = \frac{-1}{\mu} \ln \left( \frac{c_{s}}{c_{s} + c_{w}} \right)$
+    \item As $\frac{d^{2} z}{d x^{2}} > 0$, $z$ is convex and have global minimum
+    \item For $n = 3$, can find closed form for $x_{2}$ but not $x_{1}$
+    \item For $n \geq 3$, can't find closed form for $\overline{x}$
+    \item Can set $\mu = 1$ such that solutions found for $x_{i}$ are actually solutions for $\mu x_{i}$
+    \item In general, expected waiting time is $w_{i} = \sum_{j = 1}^{i - 1} \left( \frac{j}{\mu} \right) \mathbb{P} ( N (t_{i}) = j )$
+    \item In general, for $j > 0$, $\mathbb{P} ( N (t_{i}) = j ) = \sum_{k = 0}^{i - j - 1} \mathbb{P} ( N (t_{i - 1}) = j + k - 1)$ \newline $\times \mathbb{P} (k \text{ departures between the } (i - 1) \text{-th arrival and the } i\text{-th arrival})$
+    \item Probability of $k$ departures is $\frac{(\mu x_{i - 1})^{k}}{k!} \exp (- \mu x_{i - 1})$ as a Poisson process
+    \item Gives an algorithm for computing the value of the objective function
+    \item If the objective function is convex, algorithm will find a global minimum
+    \item Extensions to include batch arrivals, nonexponential services and balking
+\end{itemize}
+
+\textbf{Scheduling Arrivals to Queues}
+
+\ \newline
+
+\begin{tabular}{l l}
+    \textbf{Author:} & William E. Stein, Murray J. C\^{o}te \\
+    \textbf{Published:} & 1994 \\
+\end{tabular}
+
+\begin{itemize}
+	\item Two competing interests must be considered
+    \item Determine the optimal solution for equally spaced arrivals
+    \item Large $n$ approximation using steady-state
+    \item Extend Pegden and Rosenshine by obtaining numerical results for situations with more than three customers
+    \item Optimal time between successive customers becomes nearly constant as $n$ grows
+    \item $c_{w}$ is the cost of waiting time and $c_{s}$ is the cost of server time
+    \item Mean cost of waiting is $c_{w} \sum_{i = 1}^{n} w_{i} = c_{w} \sum_{i = 2}^{n} w_{n}$ as $w_{1} = 0$
+    \item Mean cost of server is $c_{s} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]$
+    \item Mean cost of idle only differs by a constant: $c_{s} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} - \frac{n - 1}{\mu} \right]$
+    \item $\gamma = \frac{c_{s}}{c_{s} + c_{w}}$ is the relative importance of the two costs
+    \item Formulas for expected waiting times can be stated more succintly using transition matrices
+    \item Use a reduced-gradient algorithm to solve numerically
+    \item Set $\mu = 1$ without loss of generality
+    \item Optimal interval width does not increase as $i$ increases
+    \item Last few customers are scheduled to arrive sooner to avoid keeping the server idle
+    \item A simplification of the model can be made by requiring equally spaced intervals: $x_{1} = \ldots = x_{n - 1} = x$
+    \item Realistic restriction to scheduling problem
+    \item Theorem 1.1 of Hajek: average waiting time of a customer will be at a minimum for constant interarrival times (doesn't hold here due to cost of server, but will hold with $\gamma = 0$)
+    \item Constant interarrival times leads to a deterministic D/M/1 arrival queue with an initial size of 0
+    \item Optimal interval is almost an average of the unequally spaced widths
+    \item Assume queue can be described by its steady state distribution (doesn't hold in reality)
+    \item Can solve numerically to find global minimum (e.g., Newton's method)
+    \item Similar results between non-steady and steady state when $\gamma < 0.4$
+    \item $x$ converges as $n$ increases
+    \item Have an upper bound for the value of $x$, which provides a good estimate when $\gamma \geq 0.3$
+    \item Steady state provides good approximation to $x$ for large $n$
+    \item Equally spaced intervals reduce the computational effort
+    \item Steady state solution is independent of $n$
+\end{itemize}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
