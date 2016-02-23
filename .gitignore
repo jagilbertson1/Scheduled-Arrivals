@@ -5,6 +5,7 @@
 *.pdf
 *.synctex.gz
 *.toc
+*.fls
 
 # Latex Bibliography Files
 *.bbl
