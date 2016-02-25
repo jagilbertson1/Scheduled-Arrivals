@@ -42,28 +42,29 @@ Immediately after a patient arrives and begins waiting for service, want to deci
 \section{Parameters}
 
 \begin{tabularx}{\textwidth}{c c X}
-	$N$ & : & number of patients remaining to be scheduled \\
+	$\mu$ & : & mean service time of each patient \\
+	$c_{W}$ & : & cost of patient's waiting time (per unit time) \\
+	$c_{I}$ & : & cost of doctor's idle time (per unit time) \\
+	$n$ & : & number of patients remaining to be scheduled \\
 	$k$ & : & current number of patients in queue (i.e., the current state) \\
 	$j$ & : & number of patients in queue immediately after the next patient arrives (i.e., the next state) \\
 	$a$ & : & time next patient is scheduled to arrive (relative to current time) \\
-	$C_{N} (k)$ & : & expected cost of being in state $k$ with $N$ patients still to be scheduled \\
-	$p_{a} (k, j)$ & : & probability of transitioning from state $k$ to state $j$ over the time interval $a$ \\
-	$R_{a} (k, j)$ & : & expected cost of transitioning from state $k$ to state $j$ over the time interval $a$ \\
+	$C_{n} (k)$ & : & expected cost of being in state $k$ with $n$ patients still to be scheduled \\
+	$p_{a} (k, j; \mu)$ & : & probability of transitioning from state $k$ to state $j$ over the time interval $a$ \\
+	$R_{a} (k, j; \mu, c_{W}, c_{I})$ & : & expected cost of transitioning from state $k$ to state $j$ over the time interval $a$ \\
 \end{tabularx}
 
 \section{Optimal Policy}
 
-The optimal policy is the $a^{*}$ given by the following equation (for $N \geq 1$):
+The optimal policy is the $a^{*}$ given by the following form of Belmann's equation (for $n \geq 1$):
 
 \begin{equation}
-	C_{N} (k) = \min_{a \geq 0} \left[ \sum_{j = 1}^{k + 1} p_{a} (k, j) \Big( R_{a} (k, j) + C_{N - 1} (j) \Big) \right]
+	C_{n} (k) = \min_{a \geq 0} \left[ \sum_{j = 1}^{k + 1} p_{a} (k, j; \mu) \Big( R_{a} (k, j; \mu, c_{W}, c_{I}) + C_{n - 1} (j) \Big) \right]
 \end{equation}
 
-\section{Calculations}
+\section{None Remaining to be Scheduled}
 
-\subsection{None Remaining to be Scheduled}
-
-\subsubsection{Expected Waiting Time}
+\subsection{Expected Waiting Time}
 
 Let $w_{i}$ be the expected waiting time of the patient that is currently in position $i$ in the queue
 
@@ -71,9 +72,9 @@ Let $w_{i}$ be the expected waiting time of the patient that is currently in pos
 	w_{i} = \mu i
 \end{equation*}
 
-\subsubsection{Expected Waiting Cost}
+\newpage
 
-Let $c_{W}$ be the waiting cost of each patient
+\subsection{Expected Waiting Cost}
 
 \begin{align*}
 	C_{0} (k) & = c_{W} \sum_{i = 1}^{k} w_{i} \\
@@ -81,7 +82,7 @@ Let $c_{W}$ be the waiting cost of each patient
 	C_{0} (k) & = \frac{c_{W} \mu k (k + 1)}{2} \\
 \end{align*}
 
-\subsection{Erlang Distribution}
+\section{Erlang Distribution}
 
 \begin{itemize}
 	\item Let $S_{i}$ be the service time of the patient that is currently in position $i$ in the queue
@@ -93,7 +94,7 @@ Let $c_{W}$ be the waiting cost of each patient
 		\end{equation*}
 \end{itemize}
 
-\subsubsection{Cumulative Distribution Function}
+\subsection{Cumulative Distribution Function}
 
 \begin{itemize}
 	\item The number of patients served by the health care system from time 0 to time $t$ is a poisson point process $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$
@@ -108,7 +109,7 @@ Let $c_{W}$ be the waiting cost of each patient
 	F (a; k, \mu) & = 1 - \sum_{n = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{n} \exp \left[ \frac{-a}{\mu} \right] \\
 \end{align*}
 
-\subsubsection{Conditional Expectation}
+\subsection{Conditional Expectation}
 
 \begin{align*}
 	G (a; k, \mu) & = \mathbb{E} [X | X \leq a] \\
@@ -121,31 +122,31 @@ Let $c_{W}$ be the waiting cost of each patient
 	G (a; k, \mu) & = \mu k \cdot \frac{F (a; k + 1, \mu)}{F (a; k, \mu)} \\
 \end{align*}
 
-\subsection{Probability of Transition}
+\section{Probability of Transition}
 
-\subsubsection{Case 1 $a = 0$}
-
-\begin{equation*}
-	p_{a} (k, j) = \mathbbm{1} (j = k + 1) \\
-\end{equation*}
-
-\subsubsection{Case 2 $a > 0, k = 0$}
+\subsection{Case 1 $a = 0$}
 
 \begin{equation*}
-	p_{a} (k, j) = \mathbbm{1} (j = 1) \\
+	p_{a} (k, j; \mu) = \mathbbm{1} (j = k + 1) \\
 \end{equation*}
 
-\subsubsection{Case 3 $a > 0, k \geq 1, j = 1$}
+\subsection{Case 2 $a > 0, k = 0$}
+
+\begin{equation*}
+	p_{a} (k, j; \mu) = \mathbbm{1} (j = 1) \\
+\end{equation*}
+
+\subsection{Case 3 $a > 0, k \geq 1, j = 1$}
 
 \begin{align*}
-	p_{a} (k, j) & = \mathbb{P} \left( \sum_{i = 1}^{k} S_{i} \leq a \right) \\
-	p_{a} (k, j) & = F (a; k, \mu) \\
+	p_{a} (k, j; \mu) & = \mathbb{P} \left( \sum_{i = 1}^{k} S_{i} \leq a \right) \\
+	p_{a} (k, j; \mu) & = F (a; k, \mu) \\
 \end{align*}
 
-\subsubsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
+\subsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
 
 \begin{align*}
-	p_{a} (k, j) & = \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1) + 1} S_{i} > a \right) \\
+	p_{a} (k, j; \mu) & = \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1) + 1} S_{i} > a \right) \\
 	& = \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1)} S_{i} + S_{k - (j - 1) + 1} > a \right) \\
 	& = \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, S_{k - (j - 1) + 1} > a - \sum_{i = 1}^{k - (j - 1)} S_{i} \right) \\
 	& = \int \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, S_{k - (j - 1) + 1} > a - \sum_{i = 1}^{k - (j - 1)} S_{i} \ \vline \ \sum_{i = 1}^{k - (j - 1)} S_{i} = z \right) \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \in d z \right) \\
@@ -156,95 +157,88 @@ Let $c_{W}$ be the waiting cost of each patient
 	& = \int_{0}^{a} f (z; k - (j - 1), \mu) \Big( 1 - F (a - z; 1, \mu) \Big) d z \\
 	& = \int_{0}^{a} \frac{1}{\mu \cdot (k - (j - 1) - 1)!} \left( \frac{z}{\mu} \right)^{k - (j - 1) - 1} \exp \left[ \frac{-z}{\mu} \right] \exp \left[ \frac{- (a - z)}{\mu} \right] d z \\
 	& = \frac{1}{(k - (j - 1) - 1)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left[ \frac{-a}{\mu} \right] \int_{0}^{a} z^{k - (j - 1) - 1} d z \\
-	p_{a} (k, j) & = \frac{1}{(k - (j - 1) - 1)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left[ \frac{-a}{\mu} \right] \left[ \frac{z^{k - (j - 1)}}{k - (j - 1)} \right]_{z = 0}^{z = a} \\
-\end{align*}
-
-\begin{align*}
-	p_{a} (k, j) & = \frac{1}{(k - (j - 1))!} \left( \frac{a}{\mu} \right)^{k - (j - 1)} \exp \left[ \frac{-a}{\mu} \right] \\
+	& = \frac{1}{(k - (j - 1) - 1)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left[ \frac{-a}{\mu} \right] \left[ \frac{z^{k - (j - 1)}}{k - (j - 1)} \right]_{z = 0}^{z = a} \\
+	& = \frac{1}{(k - (j - 1))!} \left( \frac{a}{\mu} \right)^{k - (j - 1)} \exp \left[ \frac{-a}{\mu} \right] \\
 	& = \left[ 1 - \sum_{n = 0}^{k - (j - 1) - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{n} \exp \left[ \frac{-a}{\mu} \right] \right] - \left[ 1 - \sum_{n = 0}^{k - (j - 1)} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{n} \exp \left[ \frac{-a}{\mu} \right] \right] \\
-	p_{a} (k, j) & = F \Big( a; k - (j - 1) - 1, \mu \Big) - F \Big( a; k - (j - 1), \mu \Big) \\
+	p_{a} (k, j; \mu) & = F \Big( a; k - (j - 1), \mu \Big) - F \Big( a; k - (j - 1) + 1, \mu \Big) \\
 \end{align*}
 
-\subsubsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
+\subsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
 
 \begin{align*}
-	p_{a} (k, j) & = \mathbb{P} (S_{1} > a) \\
+	p_{a} (k, j; \mu) & = \mathbb{P} (S_{1} > a) \\
 	& = 1 - \mathbb{P} (S_{1} \leq a) \\
-	p_{a} (k, j) & = 1 - F (a; 1, \mu) \\
+	p_{a} (k, j; \mu) & = 1 - F (a; 1, \mu) \\
 \end{align*}
 
-\subsubsection{All Other Cases}
+\subsection{All Other Cases}
 
 \begin{equation*}
-	p_{a} (i, j) = 0 \\
+	p_{a} (k, j; \mu) = 0 \\
 \end{equation*}
 
-\subsubsection{Summary}
+\subsection{Summary}
 
 These results can be summarised as:
 
 \begin{equation}
-	p_{a} (k, j) = \begin{cases} \mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
+	p_{a} (k, j; \mu) = \begin{cases} \mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
 						\mathbbm{1} (j = 1) & \text{where $a > 0$, $k = 0$} \\
 						F (a; k, \mu) & \text{where $a > 0$, $k \geq 1$, $j = 1$} \\
-						F \big( a; k - (j - 1) - 1, \mu \big) - F \big( a; k - (j - 1), \mu \big) & \text{where $a > 0$, $k \geq 1$, $2 \leq j \leq k$} \\
+						F \big( a; k - (j - 1), \mu \big) - F \big( a; k - (j - 1) + 1, \mu \big) & \text{where $a > 0$, $k \geq 1$, $2 \leq j \leq k$} \\
 						1 - F (a; 1, \mu) & \text{where $a > 0$, $k \geq 1$, $j = (k + 1)$} \\
 						0 & \text{otherwise} \end{cases}
 \end{equation}
 
-\subsection{Expected Cost of Transition}
+\section{Expected Cost of Transition}
 
-\subsubsection{Case 1 $a = 0$}
-
-\begin{equation*}
-	R_{a} (k, j) = 0 \\
-\end{equation*}
-
-\subsubsection{Case 2 $a > 0, k = 0$}
-
-Let $c_{I}$ be the cost of the doctor's idle time
+\subsection{Case 1 $a = 0$}
 
 \begin{equation*}
-	R_{a} (k, j) = c_{I} a \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) = 0 \\
 \end{equation*}
 
-\subsubsection{Case 3 $a > 0, k \geq 1, j = 1$}
+\subsection{Case 2 $a > 0, k = 0$}
+
+\begin{equation*}
+	R_{a} (k, j; \mu, c_{W}, c_{I}) = c_{I} a \\
+\end{equation*}
+
+\subsection{Case 3 $a > 0, k \geq 1, j = 1$}
 
 \begin{align*}
-	R_{a} (k, j) & = \sum_{i = 1}^{k} c_{W} \mathbb{E} \left[ \sum_{l = 1}^{i} S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{I} \mathbb{E} \left[ a - \sum_{n = 1}^{k} S_{n} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) & = \sum_{i = 1}^{k} c_{W} \mathbb{E} \left[ \sum_{l = 1}^{i} S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{I} \mathbb{E} \left[ a - \sum_{n = 1}^{k} S_{n} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] \\
 	& = c_{W} \sum_{i = 1}^{k} \sum_{l = 1}^{i} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{I} a - c_{I} \mathbb{E} \left[ \sum_{n = 1}^{k} S_{n} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] \\
 	& = c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] \sum_{i = 1}^{k} i + c_{I} a - c_{I} G (a; k, \mu) \\
 	& = \frac{c_{W} k (k + 1)}{2} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{I} a - c_{I} G (a; k, \mu) \\
 	& = \frac{c_{W} (k + 1)}{2} \mathbb{E} \left[ \sum_{n = 1}^{k} S_{n} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{I} a - c_{I} G (a; k, \mu) \\
 	& = c_{I} a + \frac{c_{W} G (a; k, \mu) (k + 1)}{2} - c_{I} G (a; k, \mu) \\
-	R_{a} (k, j) & = c_{I} a + \frac{G (a; k, \mu) \Big( c_{W} (k + 1) - 2 c_{I} \Big)}{2} \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) & = c_{I} a + \frac{G (a; k, \mu) \Big( c_{W} (k + 1) - 2 c_{I} \Big)}{2} \\
 \end{align*}
 
-\subsubsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
+\subsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
 
 \begin{align*}
-	R_{a} (k, j) & = c_{W} a (j - 1) + \sum_{i = 1}^{k - (j - 1)} c_{W} \mathbb{E} \left[ \sum_{l = 1}^{i} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) & = c_{W} a (j - 1) + \sum_{i = 1}^{k - (j - 1)} c_{W} \mathbb{E} \left[ \sum_{l = 1}^{i} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \\
 	& = c_{W} a (j - 1) + c_{W} \sum_{i = 1}^{k - (j - 1)} \sum_{l = 1}^{i} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \\
 	& = c_{W} a (j - 1) + c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \sum_{i = 1}^{k - (j - 1)} i \\
 	& = c_{W} a (j - 1) + \frac{c_{W} \Big( k - (j - 1) \Big) \Big( k - (j - 1) + 1 \Big)}{2} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \\
 	& = c_{W} a (j - 1) + \frac{c_{W} \Big( k - (j - 1) + 1 \Big)}{2} \mathbb{E} \left[ \sum_{n = 1}^{k - (j - 1)} S_{n} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \\
-	R_{a} (k, j) & = c_{W} a (j - 1) + \frac{c_{W} G \Big( a; k - (j - 1), \mu \Big) \Big( k - (j - 1) + 1 \Big)}{2} \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) & = c_{W} a (j - 1) + \frac{c_{W} G \Big( a; k - (j - 1), \mu \Big) \Big( k - (j - 1) + 1 \Big)}{2} \\
 \end{align*}
 
-\subsubsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
+\subsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
 
 \begin{equation*}
-	R_{a} (k, j) = c_{W} a k \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) = c_{W} a k \\
 \end{equation*}
 
-\newpage
-
-\subsubsection{Summary}
+\subsection{Summary}
 
 These results can be summarised as:
 
 \begin{equation}
-	R_{a} (k, j) = \begin{cases} 0 & \text{where $a = 0$} \\
+	R_{a} (k, j; \mu, c_{W}, c_{I}) = \begin{cases} 0 & \text{where $a = 0$} \\
 						c_{I} a + \frac{G (a; k, \mu) \big( c_{w} (k + 1) - 2 c_{I} \big)}{2} & \text{where $a > 0$, $k \geq 0$, $j = 1$} \\
 						c_{W} a (j - 1) + \frac{c_{W} G \big( a; k - (j - 1), \mu \big) \big( k - (j - 1) + 1 \big)}{2} & \text{where $a > 0$, $k \geq 1$, $2 \leq j \leq (k + 1)$} \end{cases}
 \end{equation}
