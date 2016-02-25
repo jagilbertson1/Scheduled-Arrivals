@@ -12,3 +12,6 @@
 *.blg
 *.run.xml
 *blx.bib
+
+#Python Files
+*.pyc
