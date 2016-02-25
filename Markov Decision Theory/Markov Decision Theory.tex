@@ -89,29 +89,43 @@ Let $w_{i}$ be the expected waiting time of the patient that is currently in pos
 	\item $S_{1}, \ldots, S_{k}$ are iid Exp$(\mu)$
 	\item $X = \sum_{i = 1}^{k} S_{i}$ is the total service time of the $k$ patients
 	\item $X \sim \text{Erlang} (k, \mu)$ such that for $x > 0$:
-		\begin{equation*}
-			f (x; k, \mu) = \frac{1}{\mu \cdot (k - 1)!} \left( \frac{x}{\mu} \right)^{k - 1} \exp \left[ \frac{-x}{\mu} \right]
-		\end{equation*}
 \end{itemize}
+
+\begin{equation*}
+	f (x; k, \mu) = \frac{1}{\mu \cdot (k - 1)!} \left( \frac{x}{\mu} \right)^{k - 1} \exp \left[ \frac{-x}{\mu} \right]
+\end{equation*}
 
 \subsection{Cumulative Distribution Function}
 
 \begin{itemize}
-	\item The number of patients served by the health care system from time 0 to time $t$ is a poisson point process $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$
+	\item The number of patients served by the health care system from time 0 to time $t$ is a poisson point process $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$ for $t > 0$
 	\item $\{ X > a \}$ and $\{ W_{a} < k \}$ are both the events that not all of the $k$ patients are served from time 0 to time $a$ such that $\mathbb{P} (X > a) = \mathbb{P} (W_{a} < k)$
 \end{itemize}
 
 \begin{align*}
+	\intertext{Where $a > 0$:}
 	F (a; k, \mu) & = \mathbb{P} (X \leq a) \\
 	& = 1 - \mathbb{P} (X > a) \\
 	& = 1 - \mathbb{P} (W_{a} < k) \\
 	& = 1 - \sum_{n = 0}^{k - 1} \mathbb{P} (W_{a} = n) \\
 	F (a; k, \mu) & = 1 - \sum_{n = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{n} \exp \left[ \frac{-a}{\mu} \right] \\
+	\intertext{Where $a = 0$:}
+	F (0; k, \mu) & = \mathbb{P} (X \leq 0) \\
+	F (0; k, \mu) & = 0 \\
 \end{align*}
+
+In summary:
+
+\begin{equation}
+	F (a; k, \mu) = \begin{cases} 1 - \sum_{n = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{n} \exp \left[ 
+						\frac{-a}{\mu} \right] & \text{where $a > 0$} \\
+						0 & \text{where $a = 0$} \end{cases}
+\end{equation}
 
 \subsection{Conditional Expectation}
 
 \begin{align*}
+	\intertext{Where $a > 0$:}
 	G (a; k, \mu) & = \mathbb{E} [X | X \leq a] \\
 	& = \int x \cdot \mathbb{P} (X \in dx | X \leq a) \\
 	& = \int x \cdot \frac{\mathbb{P} (X \in dx, X \leq a)}{\mathbb{P} (X \leq a)} \\
@@ -120,7 +134,17 @@ Let $w_{i}$ be the expected waiting time of the patient that is currently in pos
 	& = \frac{\mu k}{F (a; k, \mu)} \int_{0}^{a} \frac{1}{\mu \cdot k!} \left( \frac{x}{\mu} \right)^{k} \exp \left[ \frac{-x}{\mu} \right] d x \\
 	& = \frac{\mu k}{F (a; k, \mu)} \int_{0}^{a} f (x; k + 1, \mu) d x \\
 	G (a; k, \mu) & = \mu k \cdot \frac{F (a; k + 1, \mu)}{F (a; k, \mu)} \\
+	\intertext{Where $a = 0$:}
+	G (0; k, \mu) & = \mathbb{E} [X | X \leq 0] \\
+	G (0; k, \mu) & = 0 \\
 \end{align*}
+
+In summary:
+
+\begin{equation}
+	G (a; k, \mu) = \begin{cases} \mu k \cdot \frac{F (a; k + 1, \mu)}{F (a; k, \mu)} & \text{where $a > 0$} \\
+							0 & \text{where $a = 0$} \end{cases}
+\end{equation}
 
 \section{Probability of Transition}
 
@@ -232,6 +256,8 @@ These results can be summarised as:
 \begin{equation*}
 	R_{a} (k, j; \mu, c_{W}, c_{I}) = c_{W} a k \\
 \end{equation*}
+
+\newpage
 
 \subsection{Summary}
 
