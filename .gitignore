@@ -2,7 +2,7 @@
 *.aux
 *.fdb_latexmk
 *.log
-*.pdf
+# *.pdf
 *.synctex.gz
 *.toc
 *.fls
@@ -13,5 +13,5 @@
 *.run.xml
 *blx.bib
 
-#Python Files
+# Python Files
 *.pyc
