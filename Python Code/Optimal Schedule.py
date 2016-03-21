@@ -63,7 +63,7 @@ def cost_total(a, k, mu, cost_wait, cost_idle, next_cost):
     
     return(cost)
 
-N = 8
+N = 10
 mu = 1
 cost_wait = 1
 cost_idle = 1
