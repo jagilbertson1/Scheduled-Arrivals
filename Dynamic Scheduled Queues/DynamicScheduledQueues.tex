@@ -14,6 +14,9 @@
 \fancyfoot[RO,LE]{\thepage}
 \fancyfoot[LO,RE]{John Gilbertson}
 
+\usepackage[backend = bibtex, style = authoryear, sorting = ynt, natbib]{biblatex}
+\addbibresource{bibliography.bib}
+
 \usepackage{amssymb}
 \usepackage{amsmath}
 
@@ -43,6 +46,8 @@
 \appendix
 
 \input{Chapters/OptimalCostDerivation}
+
+\printbibliography
 
 \end{document}
 
