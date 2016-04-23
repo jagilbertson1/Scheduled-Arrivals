@@ -1,10 +1,12 @@
 \documentclass[12pt, twoside]{report}
 
+% a4 paper (margins of 300mm don't make sense)
 \usepackage[a4paper, width = 150mm, top = 25mm, bottom = 25mm, bindingoffset = 6mm]{geometry}
 
-\usepackage{setspace}
-\onehalfspacing
+% set 1.5 line spacing
+\usepackage[onehalfspacing]{setspace}
 
+% create header
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
@@ -14,12 +16,16 @@
 \fancyfoot[RO,LE]{\thepage}
 \fancyfoot[LO,RE]{John Gilbertson}
 
+% get warning to change head height for header
+\setlength{\headheight}{14.5pt} 
+
+% add bibliography
 \usepackage[backend = bibtex, style = authoryear, sorting = ynt, natbib]{biblatex}
 \addbibresource{bibliography.bib}
 
+% import packages
 \usepackage{amssymb}
 \usepackage{amsmath}
-
 \usepackage{tabularx}
 \usepackage{bbm}
 
@@ -28,8 +34,6 @@
 \input{Chapters/Title}
 
 \input{Chapters/Declaration}
-
-\newpage
 
 \input{Chapters/Abstract}
 
