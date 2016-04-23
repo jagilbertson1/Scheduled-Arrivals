@@ -1,3 +1,126 @@
 \chapter{Dynamic Schedule}
 
 \section{List of Variables}
+
+\section{Objective Function}
+
+The state $(k, n)$ refers to $k$ customers in the queue waiting for service and $n$ customers remaining to be scheduled. The time the next customer is scheduled to arrive is $a$, and the number of customers waiting for service immediately after that customer's arrival is $j$. The expected cost at the current state is a function of the cost involved in transitioning to the next state, the cost at the next state and the probability of transitioning to the next state over all possible next states. 
+
+The expected cost of the state $(k, n)$ where $n \geq 1$ is given by the following form of Bellman's equation:
+
+\begin{equation} \label{Bellman}
+	C_{n}^{*} (k) = \min_{a \geq 0} C_{n} (a, k) = \min_{a \geq 0} \left[ \sum_{j = 1}^{k + 1} p_{a} (k, j) \Big( R_{a} (k, j) + C_{n - 1}^{*} (j) \Big) \right]
+\end{equation}
+
+Equation \ref{Bellman} is a recursive equation involving $C^{*}$. The optimal solution is found by solving for each customer's arrival time $a$ iteratively. The optimal policy $a^{*}$ is the customer's arrival time that attains the minimum cost whereby
+
+\begin{equation} \label{Left-Closed}
+	C_{n}^{*} (k) = C_{n} (a^{*}, k) = \min_{a \geq 0} C_{n} (a, k)
+\end{equation}
+
+It is reasonably intuitive that the minimum cost cannot occur at $a = \infty$. As $a \to \infty$, the probability that the server becomes idle converges to $1$. In addition, the expected idle time of the server converges to $\infty$. As the cost of the server's idle time $c_{I}$ is strictly positive, the overall expected cost must also converge to $\infty$ as $a \to \infty$. Thus, $\displaystyle \lim_{a \to \infty} C_{n} (a, k) = \infty$.
+
+Consider the set of possible policies $\mathcal{A}$ given by
+
+\begin{equation}
+	\mathcal{A} = \{ 0 \} \bigcup \left\{ a > 0 : \frac{\partial}{\partial a} C_{n} (a, k) = 0 \right\}
+\end{equation}
+
+Solving Equation \ref{Left-Closed} involves solving a nonlinear optimisation problem over a left-closed interval. This solution is equivalent to the solution found by checking the left end point (where $a = 0$) and all points where $\frac{\partial}{\partial a} C_{n} (a, k) = 0$. Thus, the the optimal policy can be found by solving
+
+\begin{equation}
+	C_{n}^{*} (k) = \min_{a \in \mathcal{A}} C_{n} (a, k)
+\end{equation}
+
+As will be explained later, it is not possible to find a `nice' closed form for $\frac{\partial}{\partial a} C_{n} (a, k)$ for general $n$ and $k$. However, for given values of $n$ and $k$, it is reasonably efficient to solve $\frac{\partial}{\partial a} C_{n} (a, k) = 0$. Thus, the expected cost can be found by computing $\frac{\partial}{\partial a} C_{n} (a, k)$ for each state $(k, n)$. Of course, this method becomes more computationally inefficient, the larger the number of states.
+
+\subsection{Base Case}
+
+Finding the solution iteratively requires a solution for the base case where $n = 0$. If $n = 0$, there are no customers remaining to be scheduled, which implies the server will not be idle for the remaining of service. The cost of state $(k, 0)$ (i.e., the base case) is thus the summation of the waiting cost of the $k$ customers in the queue.
+
+Let $w_{i}$ be the expected waiting time of the customer that is currently in position $i$ in the queue, then the cost of the base case is given by
+
+\begin{equation}
+ 	C_{0} (k) = \sum_{i = 1}^{k} c_{W} w_{i} = c_{W} \sum_{i = 1}^{k} \mu i = \frac{c_{W} \mu k (k + 1)}{2}
+\end{equation}
+
+\section{Transition Probability}
+
+Let $S_{i}$ be the service time of the customer that is currently in position $i$ in the queue. Assume that the current state is $(k, n)$, then the service times $S_{1}, \ldots, S_{k}$ are iid (independent and identically distributed) random variables from an exponential distribution with mean $\mu$.
+
+The waiting time of the customer in the last position in the queue is
+
+\begin{equation}
+	X = \sum_{i = 1}^{k} S_{i} \sim \text{Erlang}(k, \mu)
+\end{equation}
+
+which has the following pdf:
+
+\begin{equation}
+	f (x; k) = \frac{1}{\mu \Gamma (k)} \left( \frac{x}{\mu} \right)^{k - 1} \mathrm{e}^{\frac{-x}{\mu}}
+\end{equation}
+
+Let $W_{t}$ be a Poisson Point Process such that $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$. Assume that the current state is $(k, n)$ and there are no new arrivals to the queue. The number of customers served over the next $t$ time units is given by $Y_{t} = \max (W_{t}, k)$. The probability that last customer in the queue waits longer than $a$ time units is equal to the probability that $Y_{a}$ is smaller than $k$, such that $\mathbb{P} (X > a) = \mathbb{P} (Y_{a} < k)$.
+
+Computing the transition probability of the system requires the cdf of the Erlang distribution, which is calculated (for $a > 0$) as follows:
+
+\begin{align*}
+	F (a; k) & = \mathbb{P} (X \leq a) \\
+	& = 1 - \mathbf{P} (X > a) \\
+	& = 1 - \mathbb{P} (Y_{a} < k) \\
+	& = 1 - \mathbb{P} (W_{a} < k) \\
+	& = 1 - \sum_{i = 0}^{k - 1} \mathbb{P} (W_{a} = i) \\
+	& = 1 - \sum_{i = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{i} \mathrm{e}^{\frac{-a}{\mu}}
+\end{align*}
+
+Moreover, $F (0; k) = \mathbb{P} (X = 0) = 0$ by definition. Therefore, the cdf of the Erlang distribution is defined as
+
+\begin{equation}
+	F (a; k) = \begin{cases} 1 - \sum_{i = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{i} \mathrm{e}^{\frac{-a}{\mu}} & \text{where $a > 0$} \\ 0 & \text{where $a = 0$} \end{cases}
+\end{equation}
+
+Can now compute the probability of a transition from state $(n, k)$ to state $(n - 1, j)$, if the next customer is scheduled to arrive in $a$ time units on a case by case basis. The full derivation is included in the appendix and only the resulting equation is presented here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
