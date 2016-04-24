@@ -1,10 +1,41 @@
 \chapter{Dynamic Schedule}
 
+\section{Aim}
+
+The objective is to choose a schedule of customer arrivals times that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. Instead of choosing a fixed schedule at the start of service as is common in literature, the schedule will be chosen dynamically. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer.
+
+\section{Assumptions}
+
+To simplify this problem, need to make several assumptions:
+
+\begin{itemize}
+	\item Customer service times are independent and identically distributed (iid)
+	\item Each customer service time has an exponential distribution with mean service time $\mu$
+	\item There is a single server
+	\item The queue operates on a first in, first out (FIFO) basis
+	\item Customers can be scheduled to arrive at any future (or present) time
+	\item Customers are punctual and arrive at their scheduled time
+\end{itemize}
+
 \section{List of Variables}
+
+\begin{tabularx}{\textwidth}{c c X}
+	$\mu$ & : & mean service time of each customer \\
+	$c_{W}$ & : & cost of customer's waiting time per unit time \\
+	$c_{I}$ & : & cost of server's idle time per unit time \\
+	$k$ & : & current number of customers waiting \\
+	$j$ & : & number of customers waiting immediately after the next customer's arrival \\
+	$n$ & : & number of customers remaining to be scheduled \\
+	$a$ & : & time next customer is scheduled to arrive (relative to current time) \\
+	$C_{n}^{*} (k)$ & : & the expected cost of having $k$ customers waiting and $n$ customers remaining to be scheduled \\
+	$C_{n} (a, k)$ & : & the expected cost of having $k$ customers waiting, $n$ customers remaining to be scheduled and the next customer scheduled to arrive after $a$ time units \\
+	$p_{a} (k, j)$ & : & the probability of transitioning from $k$ customers waiting to $j$ customers waiting after $a$ time units if the next customer is scheduled to arrive after $a$ time units \\
+	$R_{a} (k, j)$ & : & the expected cost of transitioning from $k$ customers waiting to $j$ customers waiting after $a$ time units if the next customer is scheduled to arrive after $a$ time units
+\end{tabularx}
 
 \section{Objective Function}
 
-The state $(k, n)$ refers to $k$ customers in the queue waiting for service and $n$ customers remaining to be scheduled. The time the next customer is scheduled to arrive is $a$, and the number of customers waiting for service immediately after that customer's arrival is $j$. The expected cost at the current state is a function of the cost involved in transitioning to the next state, the cost at the next state and the probability of transitioning to the next state over all possible next states. 
+The state $(k, n)$ refers to $k$ customers in the queue waiting for service and $n$ customers remaining to be scheduled. The time the next customer is scheduled to arrive is $a$, and the number of customers waiting for service immediately after that customer's arrival is $j$. The expected cost at the current state is a function of the expected cost involved in transitioning to the next state, the expected cost at the next state and the probability of transitioning to the next state over all possible next states. 
 
 The expected cost of the state $(k, n)$ where $n \geq 1$ is given by the following form of Bellman's equation:
 
@@ -38,7 +69,7 @@ As will be explained later, it is not possible to find a `nice' closed form for 
 
 Finding the solution iteratively requires a solution for the base case where $n = 0$. If $n = 0$, there are no customers remaining to be scheduled, which implies the server will not be idle for the remaining of service. The cost of state $(k, 0)$ (i.e., the base case) is thus the summation of the waiting cost of the $k$ customers in the queue.
 
-Let $w_{i}$ be the expected waiting time of the customer that is currently in position $i$ in the queue, then the cost of the base case is given by
+Let $w_{i}$ be the expected waiting time of the customer that is currently in position $i$ in the queue, and $c_{W}$ be the cost of the customers' waiting time per unit time. The cost of the base case is thus given by
 
 \begin{equation}
  	C_{0} (k) = \sum_{i = 1}^{k} c_{W} w_{i} = c_{W} \sum_{i = 1}^{k} \mu i = \frac{c_{W} \mu k (k + 1)}{2}
@@ -60,9 +91,13 @@ which has the following pdf:
 	f (x; k) = \frac{1}{\mu \Gamma (k)} \left( \frac{x}{\mu} \right)^{k - 1} \mathrm{e}^{\frac{-x}{\mu}}
 \end{equation}
 
-Let $W_{t}$ be a Poisson Point Process such that $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$. Assume that the current state is $(k, n)$ and there are no new arrivals to the queue. The number of customers served over the next $t$ time units is given by $Y_{t} = \max (W_{t}, k)$. The probability that last customer in the queue waits longer than $a$ time units is equal to the probability that $Y_{a}$ is smaller than $k$, such that $\mathbb{P} (X > a) = \mathbb{P} (Y_{a} < k)$.
+Let $W_{t}$ be a Poisson Point Process such that $W_{t} \sim \text{Poisson} \left( \frac{t}{\mu} \right)$. Assume that the current state is $(k, n)$ and there are no new arrivals to the queue. The number of customers served over the next $t$ time units is given by $Y_{t} = \max (W_{t}, k)$. The probability that last customer in the queue waits longer than $a$ time units is equal to the probability that $Y_{a}$ is smaller than $k$, such that
 
-Computing the transition probability of the system requires the cdf of the Erlang distribution, which is calculated (for $a > 0$) as follows:
+\begin{equation}
+	\mathbb{P} (X > a) = \mathbb{P} (Y_{a} < k)
+\end{equation}
+
+The transition probability $p_{a} (k, j)$ is the probability that the queue length changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the queue over a time interval of length $a$. Computing this probability requires the cdf of the Erlang distribution, which is calculated (for $a > 0$) as follows:
 
 \begin{align*}
 	F (a; k) & = \mathbb{P} (X \leq a) \\
@@ -79,15 +114,45 @@ Moreover, $F (0; k) = \mathbb{P} (X = 0) = 0$ by definition. Therefore, the cdf 
 	F (a; k) = \begin{cases} 1 - \sum_{i = 0}^{k - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{i} \mathrm{e}^{\frac{-a}{\mu}} & \text{where $a > 0$} \\ 0 & \text{where $a = 0$} \end{cases}
 \end{equation}
 
-Can now compute the probability of a transition from state $(n, k)$ to state $(n - 1, j)$, if the next customer is scheduled to arrive in $a$ time units on a case by case basis. The full derivation is included in the appendix and only the resulting equation is presented here.
+Can now compute the transition probability on a case by case basis. The full derivation is included in the appendix and only the final equation is presented here.
 
+\begin{equation}
+	p_{a} (k, j) = \begin{cases} \mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\ \mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\ F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\ F(a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\ 1 - F(a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\ 0 & \text{otherwise} \end{cases}
+\end{equation}
 
+\section{Expected Transition Cost}
 
+The cost involved in transitioning from state $(n, k)$ to state $(n - 1, j)$ in $a$ time units is a linear combination of the expected waiting time of all customers during the transition and the expected idle time of the server during the transition. Both the expected waiting and idle times depend on the conditional expectation of the Erlang distribution, which is derived here (for $a > 0$).
 
+\begin{align*}
+	G (a; k) & = \mathbb{E} [X | X \leq a] \\
+	& = \int x \cdot \mathbb{P} (X \in dx | X \leq a) \\
+	& = \int x \cdot \frac{\mathbb{P} (X \in dx, X \leq a)}{\mathbb{P} (X \leq a)} \\
+	& = \frac{1}{F (a; k)} \int_{0}^{a} x \cdot f(x; k) dx \\
+	& = \frac{1}{F (a; k)} \int_{0}^{a} x \cdot \frac{1}{\mu \Gamma (k)} \left( \frac{x}{\mu} \right)^{k - 1} \mathrm{e}^{\frac{-x}{\mu}} \\
+	& = \frac{\mu k}{F (a; k)} \int_{0}^{a} \frac{1}{\mu \Gamma (k + 1)} \left( \frac{x}{\mu} \right)^{k} \mathrm{e}^{\frac{-x}{\mu}} \\
+	& = \mu k \cdot \frac{F (a; k + 1)}{F (a; k)}
+\end{align*}
 
+In addition, $G (0; k) = \mathbb{E} [X | X \leq 0] = 0$ by definition. Therefore, the conditional expectation of the Erlang distribution is defined as
 
+\begin{equation}
+	G (a; k) = \begin{cases} \mu k \cdot \frac{F (a; k + 1)}{F (a; k)} & \text{where $a > 0$} \\ 0 & \text{where $a = 0$} \end{cases}
+\end{equation}
 
+This expression for the conditional expectation makes intutive sense. The mean of the Erlang distribution is $\mathbb{E} [X] = \mu k$. In addition, for all $a$, $\frac{F (a; k + 1)}{F (a; k)} < 1$. Thus, for all $a > 0$, $\mathbb{E} [X | X \leq a] < \mathbb{E} [X]$ as expected. Moreover, 
 
+\begin{equation}
+	\lim_{a \to \infty} \frac{F (a; k + 1)}{F (a; k)} = \frac{\displaystyle \lim_{a \to \infty} F (a; k + 1)}{\displaystyle \lim_{a \to \infty} F (a; k)} = \frac{1}{1} = 1
+\end{equation}
+
+Thus, $\displaystyle \lim_{a \to \infty} \mathbb{E} [X | X \leq a] = \mathbb{E} [X]$ again as expected.
+
+In a similar way to the transition probability, the expected transition cost is derived on a case by case basis. The per unit time cost of the customers' waiting time and the server's idle time are $c_{W}$ and $c_{I}$ respectively. The full derivation is included in the appendix and the final equation is presented here.
+
+\begin{equation}
+	R_{a} (k, j) = \begin{cases} 0 & \text{where $a = 0$} \\ c_{I} a + \frac{G (a; k) \big( c_{W} (k + 1) - 2 c_{I} \big)}{2} & \text{where $a > 0, k \geq 0, j = 1$} \\ c_{W} a (j - 1) + \frac{c_{W} G (a; k - j + 1) (k - j + 2)}{2} & \text{where $a > 0, k \geq 1, 2 \leq j \leq (k + 1)$} \end{cases}
+\end{equation}
 
 
 
