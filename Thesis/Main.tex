@@ -6,15 +6,42 @@
 % set 1.5 line spacing
 \usepackage[onehalfspacing]{setspace}
 
-% create header
+% create header and footer
 \usepackage{fancyhdr}
+
+% main page style
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[RO,LE]{Queues with an alterable schedule}
-\fancyhead[LO,RE]{\nouppercase{\leftmark}}
+\fancyhead[LE,RO]{Queues with an alterable schedule}
+\fancyhead[RE,LO]{\nouppercase{\leftmark}}
 \fancyfoot{}
-\fancyfoot[RO,LE]{\thepage}
-\fancyfoot[LO,RE]{John Gilbertson}
+\fancyfoot[RE,LO]{\thepage}
+\fancyfoot[LE,RO]{John Gilbertson}
+
+% chapter page style
+\fancypagestyle{chapter} {
+	\fancyhead{}
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyfoot{}
+	\fancyfoot[RE,LO]{\thepage}
+	\fancyfoot[LE,RO]{John Gilbertson}
+}
+
+% redefine chapter command
+\makeatletter
+    \let\stdchapter\chapter
+    \renewcommand*\chapter{%
+    \@ifstar{\starchapter}{\@dblarg\nostarchapter}}
+    \newcommand*\starchapter[1]{%
+        \stdchapter*{#1}
+        \thispagestyle{chapter}
+        \markboth{\MakeUppercase{#1}}{}
+    }
+    \def\nostarchapter[#1]#2{%
+        \stdchapter[{#1}]{#2}
+        \thispagestyle{chapter}
+    }
+\makeatother
 
 % get warning to change head height for header
 \setlength{\headheight}{14.5pt} 
@@ -26,6 +53,11 @@
 % add figures
 \usepackage{graphicx}
 \graphicspath{ {Figures/} }
+
+% import kbordermatrix and change bracket type
+\usepackage{kbordermatrix}
+\renewcommand{\kbldelim}{(}
+\renewcommand{\kbrdelim}{)}
 
 % import packages
 \usepackage{amssymb}
