@@ -23,6 +23,10 @@
 \usepackage[backend = bibtex, style = authoryear, sorting = ynt, natbib]{biblatex}
 \addbibresource{bibliography.bib}
 
+% add figures
+\usepackage{graphicx}
+\graphicspath{ {Figures/} }
+
 % import packages
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -43,9 +47,13 @@
 
 \input{Chapters/LiteratureReview}
 
+\input{Chapters/FixedSchedule}
+
 \input{Chapters/AlterableSchedule}
 
 \input{Chapters/NumericalResults}
+
+\input{Chapters/ValueAlterableSchedule}
 
 \input{Chapters/Conclusion}
 
