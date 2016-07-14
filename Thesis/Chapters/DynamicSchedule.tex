@@ -2,15 +2,15 @@
 
 \section{Aim}
 
-The objective is to choose a schedule of customer arrivals times that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. Instead of choosing a fixed schedule at the start of service as is common in literature, the schedule will be chosen progressively. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer.
+The aim is to choose a schedule of customer arrivals times that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. Instead of choosing a fixed schedule at the start of service as is common in literature, the schedule will be chosen progressively. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer.
 
 \section{Assumptions}
 
 To simplify this problem, need to make several assumptions:
 
 \begin{itemize}
-	\item Customer service times are independent and identically distributed (iid)
-	\item Each customer service time has an exponential distribution with mean service time $\mu$
+	\item Service times are independent and identically distributed (iid)
+	\item Each service time has an exponential distribution with mean service time $\mu$
 	\item There is a single server
 	\item The queue operates on a first in, first out (FIFO) basis
 	\item Customers can be scheduled to arrive at any future (or present) time
