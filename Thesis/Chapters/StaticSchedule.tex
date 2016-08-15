@@ -1,3 +1,123 @@
 \chapter{Static Schedule}
 
-Static schedule goes here.
+\section{Aim}
+
+The aim is to choose a schedule that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. The schedule is fixed and chosen at the start of service.
+
+\section{Assumptions}
+
+To simplify this problem, need to make several assumptions:
+
+\begin{itemize}[nosep]
+	\item Service times are independent and identically distributed (iid)
+	\item Each service time has an exponential distribution with mean service time $\mu$
+	\item There is a single server
+	\item The queue operates on a first in, first out (FIFO) basis
+	\item Customers are punctual and arrive at their scheduled time
+\end{itemize}
+
+\section{List of Variables}
+
+List of variables goes here
+
+\section{Objective Function}
+
+The objective function is a linear combination of the total customers' waiting time and the server's idle time. $t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu}$ is the expected time till server completion.
+
+\begin{equation}
+	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]
+\end{equation}
+
+The first patient should obviously be scheduled for the start of service, so $t_{1} = 0$, which implies the objective function is:
+
+\begin{equation}
+	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]
+\end{equation}
+
+Scale $\phi (\mathbf{x})$ by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$. In addition, drop the constant term $\gamma \mu$.
+
+\begin{equation}
+	\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \sum_{i = 1}^{n - 1} x_{i} + \gamma w_{n}
+\end{equation}
+
+\section{Customer Waiting Time}
+
+\begin{equation}
+	w_{i} = \sum_{j = 1}^{i - 1} \left( \frac{j}{\mu} \right) \mathbb{P} \Big( N (t_{i}) = j \Big)
+\end{equation}
+
+Base case for $i \geq 2$:
+\begin{align*}
+	\mathbb{P} \Big( N (t_{i}) = 0 \Big) & = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
+	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
+	& \ \cdot \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
+	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{(\mu x_{i - 1})^{l}}{l!} \exp \Big( - \mu x_{i - 1} \Big) \right] \\
+	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{(\mu x_{i - 1})^{l}}{l!} \exp \Big( - \mu x_{i - 1} \Big) \right]
+\end{align*}
+
+For $i \geq 2$, $j \geq 1$:
+\begin{align*}
+	\mathbb{P} \Big( N (t_{i}) = j \Big) & = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
+	& = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
+	& \ \cdot \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
+	& = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{(\mu x_{i - 1})^{k}}{k!} \exp \Big[ - \mu x_{i - 1} \Big]
+\end{align*}
+
+\begin{algorithm}[htb]
+\caption{Return $\phi (\mathbf{x})$ for a given $\gamma$ and vector $\mathbf{x}$}
+\begin{algorithmic}
+\Function{Objective}{$\gamma$,$\mathbf{x}$}
+    \State set $\mathbb{P} \left( N (t_{1}) = 0 \right) = 1$
+    \State set $w_{1} = 0$
+    \For {$i = 2, \ldots, n$}
+    	\State compute $\mathbb{P} \left( N (t_{i}) = 0 \right)$ from equation ?
+    	\For {$j = 1, \ldots, (i - 1)$}
+    		\State compute $\mathbb{P} \left( N (t_{i}) = j \right)$ from equation ?
+    	\EndFor
+    \EndFor
+    \For {$i = 2, \ldots, n$}
+    	\State compute $w_{i} = \sum_{j = 1}^{i - 1} \left( \frac{j}{\mu} \right) \mathbb{P} \left( N (t_{i}) = j \right)$
+    \EndFor
+    \Return $\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \sum_{i = 1}^{n - 1} x_{i} + \gamma w_{n}$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
