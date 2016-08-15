@@ -46,6 +46,12 @@
 % get warning to change head height for header
 \setlength{\headheight}{14.5pt} 
 
+% limit table of contents to chapters and sections
+\setcounter{tocdepth}{1}
+
+% can use [nosep] or [noitemsep] in itemize and enumerate to reduce line spacing between items
+\usepackage[shortlabels]{enumitem}
+
 % add bibliography
 \usepackage[backend = bibtex, style = authoryear, sorting = ynt, natbib]{biblatex}
 \addbibresource{bibliography.bib}
