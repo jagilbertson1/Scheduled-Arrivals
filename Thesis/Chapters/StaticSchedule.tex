@@ -20,68 +20,180 @@ To simplify this problem, need to make several assumptions:
 
 List of variables goes here
 
+Let $w_{i}$ denote the expected waiting time of the $i$-th customer.
+
+Let $t_{1}$ denote the scheduled arrival time of the first customer.
+
+Let $x_{i}$ denote the time interval between the scheduled arrival of the $i$-th and the $(i + 1)$-th customer.
+
+Let $\mu$ denote the mean service time of each customer. 
+
 \section{Objective Function}
 
-The objective function is a linear combination of the total customers' waiting time and the server's idle time. $t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu}$ is the expected time till server completion.
-
+The expected total customers' waiting time is the sum of the individual customer's expected waiting times:
 \begin{equation}
-	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]
+	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
 \end{equation}
 
-The first patient should obviously be scheduled for the start of service, so $t_{1} = 0$, which implies the objective function is:
-
+The expected total server availability time is the sum of the $n$-th customer's scheduled arrival time, the expected waiting time of the $n$-th customer, and the expected service time of the $n$-th customer:
 \begin{equation}
-	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \frac{1}{\mu} \right]
+	\mathbb{E} \Big[\text{total server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
+\end{equation}
+
+The objective function is a linear combination of the expected total customers' waiting time and the expected total server availability time:
+\begin{equation}
+	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+\end{equation}
+
+The first customer should obviously be scheduled for the start of service, so $t_{1} = 0$, which implies the objective function is:
+\begin{equation}
+	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 \end{equation}
 
 Scale $\phi (\mathbf{x})$ by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$. In addition, drop the constant term $\gamma \mu$.
-
 \begin{equation}
 	\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \sum_{i = 1}^{n - 1} x_{i} + \gamma w_{n}
+	\label{eqn:StaticObjective}
 \end{equation}
 
-\section{Customer Waiting Time}
+\subsection{Expected Customer Waiting Times}
 
+Want to express the expected waiting time of customer $i$ as a function of the scheduled arrival time intervals $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. Just prior to the arrival of customer $i$, the number of customers in the system must be $\in \{ 0, 1, \ldots, i - 1 \}$. Thus, the expected waiting time of customer $i$ is:
 \begin{equation}
-	w_{i} = \sum_{j = 1}^{i - 1} \left( \frac{j}{\mu} \right) \mathbb{P} \Big( N (t_{i}) = j \Big)
+	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \cdot \mathbb{P} \Big( N (t_{i}) = j \Big) = \begin{cases} 0 & \text{where $i = 1$} \\ \sum_{j = 1}^{i - 1} (j \mu) \cdot \mathbb{P} \Big( N (t_{i}) = j \Big) & \text{where $i \geq 2$} \end{cases}
+	\label{eqn:StaticWaiting}
 \end{equation}
 
-Base case for $i \geq 2$:
+As there are no customers in the system before the start of service:
+\begin{equation}
+	\mathbb{P} \Big( N (t_{1}) = 0 \Big) = 1
+\end{equation}
+
+For $i \geq 2$, can express the probability of a given number of customers in the system recursively. First, consider the base case of no customers in the system just prior to the arrival of customer $i$.
 \begin{align*}
-	\mathbb{P} \Big( N (t_{i}) = 0 \Big) & = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
-	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
-	& \ \cdot \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
-	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{(\mu x_{i - 1})^{l}}{l!} \exp \Big( - \mu x_{i - 1} \Big) \right] \\
-	& = \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{(\mu x_{i - 1})^{l}}{l!} \exp \Big( - \mu x_{i - 1} \Big) \right]
+	& \mathbb{P} \Big( N (t_{i}) = 0 \Big) \\
+	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
+	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
+	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
+	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
+	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
 \end{align*}
 
-For $i \geq 2$, $j \geq 1$:
+Next, calculate the probability for $j \geq 1$:
 \begin{align*}
-	\mathbb{P} \Big( N (t_{i}) = j \Big) & = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
-	& = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
-	& \ \cdot \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
-	& = \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{(\mu x_{i - 1})^{k}}{k!} \exp \Big[ - \mu x_{i - 1} \Big]
+	& \mathbb{P} \Big( N (t_{i}) = j \Big) \\
+	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
+	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
+	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
+	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
 \end{align*}
 
+Therefore, the full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is given by:
+\begin{multline}
+	\mathbb{P} \Big( N (t_{i}) = j \Big) \\
+	= \begin{cases} 1 & \text{where $i = 1$, $j = 0$} \\ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] & \text{where $i \geq 2$, $j = 0$} \\ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) & \text{where $i \geq 2$, $j \geq 1$} \end{cases}
+	\label{eqn:StaticProbSystem}
+\end{multline}
+
+\subsection{Computing the Objective Function}
+
+\citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}$ and parameters $\gamma$ and $\mu$:
 \begin{algorithm}[htb]
-\caption{Return $\phi (\mathbf{x})$ for a given $\gamma$ and vector $\mathbf{x}$}
+\caption{Return $\phi (\mathbf{x})$ for a given vector $\mathbf{x}$, $\gamma$ and $\mu$}
 \begin{algorithmic}
-\Function{Objective}{$\gamma$,$\mathbf{x}$}
-    \State set $\mathbb{P} \left( N (t_{1}) = 0 \right) = 1$
-    \State set $w_{1} = 0$
-    \For {$i = 2, \ldots, n$}
-    	\State compute $\mathbb{P} \left( N (t_{i}) = 0 \right)$ from equation ?
-    	\For {$j = 1, \ldots, (i - 1)$}
-    		\State compute $\mathbb{P} \left( N (t_{i}) = j \right)$ from equation ?
+\Function{ObjectiveFunction}{$\mathbf{x}$,$\gamma$,$\mu$}
+    \For {$i = 1, 2, \ldots, n$}
+    	\For {$j = 0, 1, \ldots, (i - 1)$}
+    		\State compute $\mathbb{P} \left( N (t_{i}) = j \right)$ by Equation~\ref{eqn:StaticProbSystem}
     	\EndFor
     \EndFor
-    \For {$i = 2, \ldots, n$}
-    	\State compute $w_{i} = \sum_{j = 1}^{i - 1} \left( \frac{j}{\mu} \right) \mathbb{P} \left( N (t_{i}) = j \right)$
+    \For {$i = 1, 2, \ldots, n$}
+    	\State compute $w_{i}$ by Equation~\ref{eqn:StaticWaiting}
     \EndFor
-    \Return $\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \sum_{i = 1}^{n - 1} x_{i} + \gamma w_{n}$
+    \State \Return $\phi (\mathbf{x})$ computed by Equation~\ref{eqn:StaticObjective}
 \EndFunction
 \end{algorithmic}
+\label{alg:StaticObjective}
 \end{algorithm}
+
+\section{Example Models}
+\subsection{Model for Two Customers}
+\label{sec:StaticTwoCust}
+
+We consider the simplest case of this model where there are two customers to be scheduled (i.e., $n = 2$). As the first customer is scheduled to arrive at the start of service, the only unknown variable is the time interval between the first and second customers' arrivals (i.e., $x_{1}$).
+
+By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are:
+\begin{align}
+	w_{1} & = 0 \\
+	w_{2} & = \mu \exp \left( \frac{- x_{1}}{\mu} \right)
+\end{align}
+
+By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is:
+\begin{equation}
+	\phi (x_{1}) = \mu \exp \left( \frac{- x_{1}}{\mu} \right) + \gamma x_{1}
+\end{equation}
+
+This objective function is convex as:
+\begin{equation}
+	\forall x_{1} \ \ \phi'' (x_{1}) = \frac{1}{\mu} \exp \left( \frac{- x_{1}}{\mu} \right) \geq 0
+\end{equation}
+
+Due to the convexity of the objective function, the optimal policy that minmises $\phi (x_{1})$ can be found by solving:
+\begin{equation}
+	\phi' (x_{1}) = 0 \implies - \exp \left( \frac{- x_{1}}{\mu} \right) + \gamma = 0
+\end{equation}
+
+Thus, the optimal policy is:
+\begin{equation}
+	x_{1}^{*} = \argmin_{x_{1}} \phi (x_{1}) = - \mu \ln \gamma
+\end{equation}
+
+Therefore, the optimal arrival times of the two customers are:
+\begin{equation}
+	\mathbf{t}^{*} = \left( t_{1}^{*}, t_{2}^{*} \right) = \Big( 0, - \mu \ln \gamma \Big)
+\end{equation}
+
+As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $t_{2}^{*}$ decreases).
+
+\subsection{Model for Three Customers}
+
+The next simplest case is where there are three customers to be scheduled (i.e., $n = 3$). In this case, there are two unknown variables $x_{1}$ and $x_{2}$. Without loss of generalisation, can let $\mu = 1$.
+
+By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the three customers are:
+\begin{align}
+	w_{1} & = 0 \\
+	w_{2} & = \exp (- x_{1}) \\
+	w_{3} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big[ 1 + x_{2} + \exp (x_{1}) \Big]
+\end{align}
+
+By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is:
+\begin{multline}
+	\phi (x_{1}, x_{2}) = \exp \Big( - (x_{1} + x_{2}) \Big) \Bigg[ 1 + x_{2} + \exp (x_{1}) \\
+	+ \exp (x_{2}) \Big( 1 - \gamma + \gamma (x_{1} + x_{2}) \exp (x_{1}) \Big) \Bigg]
+\end{multline}
+
+This objective function is convex for $x_{1}, x_{2} \geq 0$ and $0 \leq \gamma \leq 1$ as:
+\begin{align}
+	\frac{\partial^{2} \phi}{\partial x_{1}^{2}} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big( 1 + x_{2} + \exp (x_{2}) (1 - \gamma) \Big) > 0 \\
+	\frac{\partial^{2} \phi}{\partial x_{2}^{2}} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big( x_{2} + \big[ \exp (x_{1}) - 1 \big] \Big) \geq 0 \\
+	\frac{\partial^{2} \phi}{\partial x_{1} \partial x_{2}} & = x_{2} \exp \Big( - (x_{1} + x_{2}) \Big) \geq 0
+\end{align}
+
+In a similar way to Section~\ref{sec:StaticTwoCust}, due to the convexity of the objective function, the optimal policy that minimises $\phi (x_{1}, x_{2})$ can be found by jointly solving:
+\begin{align}
+	\frac{\partial \phi}{\partial x_{1}} & = 0 \implies \exp (x_{2}) \Big( \gamma - 1 + \gamma \exp (x_{2}) \Big) = x_{2} + 1 \\
+	\frac{\partial \phi}{\partial x_{2}} & = 0 \implies \exp (x_{1}) \Big( \gamma \exp (x_{2}) - 1 \Big) = x_{2}
+\end{align}
+
+Unfortunately, as \citet{Pegden} found, no algebraic solution for $(x_{1}, x_{2})$ exists to these equations, so they need to be solved numerically.
+
+
+
+
+
+
+
+
 
 
 

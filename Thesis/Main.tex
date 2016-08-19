@@ -1,12 +1,13 @@
 \documentclass[12pt, twoside]{report}
 
 % a4 paper (margins of 300mm don't make sense)
-\usepackage[a4paper, width = 150mm, top = 25mm, bottom = 25mm, bindingoffset = 6mm]{geometry}
+%\usepackage[a4paper, width = 150mm, top = 25mm, bottom = 25mm, bindingoffset = 6mm]{geometry}
+\usepackage[a4paper, bindingoffset = 2mm]{geometry}
 
 % set 1.5 line spacing
 \usepackage[onehalfspacing]{setspace}
 
-% create header and footer
+% create heasmalbder and footer
 \usepackage{fancyhdr}
 
 % main page style
@@ -16,7 +17,6 @@
 \fancyhead[RE,LO]{\nouppercase{\leftmark}}
 \fancyfoot{}
 \fancyfoot[RE,LO]{\thepage}
-\fancyfoot[LE,RO]{John Gilbertson}
 
 % chapter page style
 \fancypagestyle{chapter} {
@@ -24,7 +24,6 @@
 	\renewcommand{\headrulewidth}{0pt}
 	\fancyfoot{}
 	\fancyfoot[RE,LO]{\thepage}
-	\fancyfoot[LE,RO]{John Gilbertson}
 }
 
 % redefine chapter command
@@ -70,6 +69,10 @@
 \usepackage{tabularx}
 \usepackage{bbm}
 \usepackage{multirow}
+
+% define argmin and argmax
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 \begin{document}
 
