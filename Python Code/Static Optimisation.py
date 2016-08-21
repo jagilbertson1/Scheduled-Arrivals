@@ -47,7 +47,7 @@ def phi(x, gamma, mu):
     for i in range(1, n):
         value += gamma * x[i-1]
     
-    value += gamma * waitTime(n, x, mu)
+    value += gamma * waitTime(n, x, mu) + gamma * mu
     
     return (value)
 
