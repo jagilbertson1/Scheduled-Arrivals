@@ -114,7 +114,7 @@ Can now compute the transition probability on a case by case basis. The full der
 		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
 		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
 		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
-		F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
+		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
 		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
 		0 & \text{otherwise}
 	\end{cases}

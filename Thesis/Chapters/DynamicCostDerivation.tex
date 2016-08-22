@@ -32,7 +32,8 @@
 	= & \ \frac{1}{\big( k - (j - 1) - 1 \big)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left( \frac{- a}{\mu} \right) \cdot \frac{a^{k - (j - 1)}}{k - (j - 1)} \\
 	= & \ \frac{1}{\big( k - (j - 1) \big)!} \left( \frac{a}{\mu} \right)^{k - (j - 1)} \exp \left( \frac{- a}{\mu} \right) \\
 	= & \ \left[ 1 - \sum_{i = 0}^{k - (j - 1) - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{- a}{\mu} \right) \right] - \left[ 1 - \sum_{i = 0}^{k - (j - 1)} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{- a}{\mu} \right) \right] \\
-	= & \ F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big)
+	= & \ F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big) \\
+	= & \ F (a; k - j + 1) - F (a; k - j + 2)
 \end{align*}
 
 \subsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
@@ -53,7 +54,7 @@ These results can be summarised as:
 		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
 		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
 		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
-		F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
+		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
 		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
 		0 & \text{otherwise}
 	\end{cases}
