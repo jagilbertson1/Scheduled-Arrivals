@@ -72,20 +72,20 @@ As there are no customers in the system before the start of service:
 For $i \geq 2$, can express the probability of a given number of customers in the system recursively. First, consider the base case of no customers in the system just prior to the arrival of customer $i$.
 \begin{align*}
 	& \mathbb{P} \Big( N (t_{i}) = 0 \Big) \\
-	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
-	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
 	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
-	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
-	= & \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
 \end{align*}
 
 Next, calculate the probability for $j \geq 1$:
 \begin{align*}
 	& \mathbb{P} \Big( N (t_{i}) = j \Big) \\
-	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
-	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
 	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
-	= & \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
 \end{align*}
 
 Therefore, the full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is given by:

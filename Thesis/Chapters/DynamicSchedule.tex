@@ -99,18 +99,26 @@ The transition probability $p_{a} (k, j)$ is the probability that the queue leng
 	& = 1 - \mathbb{P} (X > a) \\
 	& = 1 - \mathbb{P} (W_{a} < r) \\
 	& = 1 - \sum_{i = 0}^{r - 1} \mathbb{P} (W_{a} = i) \\
-	& = 1 - \sum_{i = 0}^{r - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{-a}{\mu} \right)
+	& = 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{-a}{\mu} \right)
 \end{align*}
 
 Moreover, $F (0; r) = \mathbb{P} (X = 0) = 0$ by definition. Therefore, the cdf of the Erlang distribution is defined as
 \begin{equation}
-	F (a; r) = \begin{cases} 1 - \sum_{i = 0}^{r - 1} \frac{1}{n!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{-a}{\mu} \right) & \text{where $a > 0$} \\ 0 & \text{where $a = 0$} \end{cases}
+	F (a; r) = \begin{cases} 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{-a}{\mu} \right) & \text{where $a > 0$} \\ 0 & \text{where $a = 0$} \end{cases}
 \end{equation}
 
 Can now compute the transition probability on a case by case basis. The full derivation is included in the appendix and only the final equation is presented here.
-\begin{equation}
-	p_{a} (k, j) = \begin{cases} \mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\ \mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\ F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\ F(a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\ 1 - F(a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\ 0 & \text{otherwise} \end{cases}
-\end{equation}
+\begin{multline}
+	p_{a} (k, j) \\
+	= \begin{cases}
+		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
+		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
+		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
+		F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
+		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
+		0 & \text{otherwise}
+	\end{cases}
+\end{multline}
 
 \section{Expected Transition Cost}
 
@@ -140,9 +148,16 @@ This expression for the conditional expectation makes intutive sense. The mean o
 Thus, $\displaystyle \lim_{a \to \infty} \mathbb{E} [X | X \leq a] = \mathbb{E} [X]$ as expected.
 
 In a similar way to the transition probability, the expected transition cost is derived on a case by case basis. The per unit time cost of the customers' waiting time and the server's idle time are $c_{W}$ and $c_{I}$ respectively. The full derivation is included in the appendix and the final equation is presented here.
-\begin{equation}
-	R_{a} (k, j) = \begin{cases} 0 & \text{where $a = 0$} \\ c_{I} a + \frac{G (a; k) \big( c_{W} (k + 1) - 2 c_{I} \big)}{2} & \text{where $a > 0, k \geq 0, j = 1$} \\ c_{W} a (j - 1) + \frac{c_{W} G (a; k - j + 1) (k - j + 2)}{2} & \text{where $a > 0, k \geq 1, 2 \leq j \leq (k + 1)$} \end{cases}
-\end{equation}
+\begin{multline}
+	R_{a} (k, j) \\
+	= \begin{cases}
+		0 & \text{where $a = 0$} \\
+		\gamma a & \text{where $a > 0, k \in \{ 0, 1 \}$} \\
+		(1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a & \text{where $a > 0, k \geq 2, j = 1$} \\
+		(1 - \gamma) \left[ a (j - 2) + \frac{G (a; k - (j - 1)) [k - (j - 2)]}{2} \right] + \gamma a & 	\text{where $a > 0, k \geq 2, 2 \leq j \leq k$} \\
+		(1 - \gamma) \cdot a (j - 2) + \gamma a & \text{where $a > 0, k \geq 2, j = (k + 1)$}
+	\end{cases}
+\end{multline}
 
 
 

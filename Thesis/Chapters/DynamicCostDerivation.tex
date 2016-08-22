@@ -1,20 +1,76 @@
 \chapter{Dynamic Cost Derivation}
 
+\section{Probability of Transition}
+\subsection{Case 1 $a = 0$}
+\begin{equation*}
+	p_{a} (k, j) = \mathbbm{1} (j = k + 1)
+\end{equation*}
+
+\subsection{Case 2 $a > 0, k = 0$}
+\begin{equation*}
+	p_{a} (k, j) = \mathbbm{1} (j = 1)
+\end{equation*}
+
+\subsection{Case 3 $a > 0, k \geq 1, j = 1$}
+\begin{equation*}
+	p_{a} (k, j) = \mathbb{P} \left( \sum_{i = 1}^{k} S_{i} \leq a \right) = F (a; k)
+\end{equation*}
+
+\subsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
+\begin{align*}
+	& p_{a} (k, j) \\
+	= & \ \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1) + 1} S_{i} > a \right) \\
+	= & \ \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1)} S_{i} + S_{k - (j - 1) + 1} > a \right) \\
+	= & \ \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, S_{k - (j - 1) + 1} > a - \sum_{i = 1}^{k - (j - 1)} S_{i} \right) \\
+	= & \ \int \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, S_{k - (j - 1) + 1} > a - \sum_{i = 1}^{k - (j -1)} S_{i} \ \vline \ \sum_{i = 1}^{k - (j - 1)} S_{i} = z \right) \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \in d z \right) \\
+	= & \ \int_{0}^{\infty} \mathbb{P} (z \leq a, S_{k - (j - 1) + 1} > a - z) f \big( z; k - (j - 1) \big) \ d z \\
+	= & \ \int_{0}^{a} \mathbb{P} (S_{k - (j - 1) + 1} > a - z) f \big( z; k - (j - 1) \big) \ d z \\
+	= & \ \int_{0}^{a} f \big( z; k - (j - 1) \big) \big( 1 - \mathbb{P} (S_{k - (j - 1) + 1} \leq a - z) \big) \ d z \\
+	= & \ \int_{0}^{a} f \big( z; k - (j - 1) \big) \big( 1 - F (a - z; 1) \big) \ d z \\
+	= & \ \int_{0}^{a} \frac{1}{\mu \cdot \big( k - (j - 1) - 1 \big)!} \left( \frac{z}{\mu} \right)^{k - (j - 1) - 1} \exp \left( \frac{-z}{\mu} \right) \cdot \exp \left( \frac{- (a - z)}{\mu} \right) \ d z \\
+	= & \ \frac{1}{\big( k - (j - 1) - 1 \big)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left( \frac{- a}{\mu} \right) \int_{0}^{a} z^{k - (j - 1) - 1} \ d z \\
+	= & \ \frac{1}{\big( k - (j - 1) - 1 \big)!} \left( \frac{1}{\mu} \right)^{k - (j - 1)} \exp \left( \frac{- a}{\mu} \right) \cdot \frac{a^{k - (j - 1)}}{k - (j - 1)} \\
+	= & \ \frac{1}{\big( k - (j - 1) \big)!} \left( \frac{a}{\mu} \right)^{k - (j - 1)} \exp \left( \frac{- a}{\mu} \right) \\
+	= & \ \left[ 1 - \sum_{i = 0}^{k - (j - 1) - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{- a}{\mu} \right) \right] - \left[ 1 - \sum_{i = 0}^{k - (j - 1)} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \exp \left( \frac{- a}{\mu} \right) \right] \\
+	= & \ F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big)
+\end{align*}
+
+\subsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
+\begin{equation*}
+	p_{a} (k, j) = \mathbb{P} (S_{1} > a) = 1 - \mathbb{P} (S_{1} \leq a) = 1 - F (a; 1)
+\end{equation*}
+
+\subsection{All Other Cases}
+\begin{equation*}
+	p_{a} (k, j) = 0
+\end{equation*}
+
+\subsection{Summary}
+These results can be summarised as:
+\begin{multline}
+	p_{a} (k, j) \\
+	= \begin{cases}
+		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
+		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
+		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
+		F \big( a; k - (j - 1) \big) - F \big( a; k - (j - 1) + 1 \big) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
+		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
+		0 & \text{otherwise}
+	\end{cases}
+\end{multline}
+
 \section{Expected Cost of Transition}
 \subsection{Case 1 $a = 0$}
-
 \begin{equation*}
 	R_{a} (k, j) = 0
 \end{equation*}
 
 \subsection{Case 2 $a > 0, k \in \{ 0, 1 \}$}
-
 \begin{equation*}
 	R_{a} (k, j) = c_{S} a = \gamma a
 \end{equation*}
 
 \subsection{Case 3 $a > 0, k \geq 2, j = 1$}
-
 \begin{align*}
 	R_{a} (k, j) & = c_{W} \sum_{i = 2}^{k} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{S} a \\
 	& = c_{W} \sum_{i = 2}^{k} \sum_{l = 1}^{i - 1} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{S} a \\
@@ -26,25 +82,23 @@
 \end{align*}
 
 \subsection{Case 4 $a > 0, k \geq 2, 2 \leq j \leq k$}
-
 \begin{align*}
-	R_{a} (k, j) & = c_{W} \sum_{i = 1}^{j - 2} a + c_{W} \sum_{i = 2}^{k - (j - 2)} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
-	& = c_{W} a (j - 2) + c_{W} \sum_{i = 2}^{k - (j - 2)} \sum_{l = 1}^{i - 1} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
-	& = c_{W} a (j - 2) + c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \sum_{i = 2}^{k - (j - 2)} (i - 1) + c_{S} a \\
-	& = c_{W} a (j - 2) + \frac{c_{W} \big[ k - (j - 1) \big] \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
-	& = c_{W} a (j - 2) + \frac{c_{W} \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ \sum_{n = 1}^{k - (j - 1)} S_{n} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
-	& = c_{W} \left[ a (j - 2) + \frac{G \big( a; k - (j - 1) \big) \big[ k - (j - 2) \big]}{2} \right] + c_{S} a \\
-	& = (1 - \gamma) \left[ a (j - 2) + \frac{G \big( a; k - (j - 1) \big) \big[ k - (j - 2) \big]}{2} \right] + \gamma a
+	& R_{a} (k, j) \\
+	= & \ c_{W} \sum_{i = 1}^{j - 2} a + c_{W} \sum_{i = 2}^{k - (j - 2)} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
+	= & \ c_{W} a (j - 2) + c_{W} \sum_{i = 2}^{k - (j - 2)} \sum_{l = 1}^{i - 1} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
+	= & \ c_{W} a (j - 2) + c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] \sum_{i = 2}^{k - (j - 2)} (i - 1) + c_{S} a \\
+	= & \ c_{W} a (j - 2) + \frac{c_{W} \big[ k - (j - 1) \big] \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
+	= & \ c_{W} a (j - 2) + \frac{c_{W} \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ \sum_{n = 1}^{k - (j - 1)} S_{n} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
+	= & \ c_{W} \left[ a (j - 2) + \frac{G \big( a; k - (j - 1) \big) \big[ k - (j - 2) \big]}{2} \right] + c_{S} a \\
+	= & \ (1 - \gamma) \left[ a (j - 2) + \frac{G \big( a; k - (j - 1) \big) \big[ k - (j - 2) \big]}{2} \right] + \gamma a
 \end{align*}
 
 \subsection{Case 5 $a > 0, k \geq 2, j = (k + 1)$}
-
 \begin{equation*}
 	R_{a} (k, j) = c_{W} \sum_{i = 1}^{j - 2} a + c_{S} a = c_{W} a (j - 2) + c_{S} a = (1 - \gamma) \cdot a (j - 2) + \gamma a
 \end{equation*}
 
 \subsection{Summary}
-
 These results can be summarised as:
 \begin{multline}
 	R_{a} (k, j) \\
