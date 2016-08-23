@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     30296,        845]
-NotebookOptionsPosition[     29064,        803]
-NotebookOutlinePosition[     29537,        821]
-CellTagsIndexPosition[     29494,        818]
+NotebookDataLength[     30552,        843]
+NotebookOptionsPosition[     29320,        801]
+NotebookOutlinePosition[     29790,        820]
+CellTagsIndexPosition[     29747,        817]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -514,7 +514,7 @@ Cell[BoxData[{
              FractionBox[
               RowBox[{"\[Mu]", "*", "k", "*", 
                RowBox[{"(", 
-                RowBox[{"k", "+", "1"}], ")"}]}], "2"]}], "+", 
+                RowBox[{"k", "-", "1"}], ")"}]}], "2"]}], "+", 
             RowBox[{"\[Gamma]", "*", "k", "*", "\[Mu]"}]}], 
            RowBox[{"n", "\[Equal]", "0"}]},
           {
@@ -562,16 +562,44 @@ Cell[BoxData[{
      Selectable->False]}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.6705434386894627`*^9, 3.670543493499186*^9}, 
    3.6705446077790327`*^9, {3.680854083760241*^9, 3.680854154267329*^9}, {
-   3.6808568365870733`*^9, 3.680856839921689*^9}}],
+   3.6808568365870733`*^9, 3.680856839921689*^9}, {3.6809047970011168`*^9, 
+   3.68090479727159*^9}}],
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"\[Mu]", "=", "2"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"\[Mu]", "=", "1"}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"\[Gamma]", "=", "0.5"}], ";"}]}], "Input",
  CellChangeTimes->{{3.6701388527887487`*^9, 3.670138855349852*^9}, {
   3.670141385030663*^9, 3.670141385207265*^9}, {3.680856850388595*^9, 
-  3.6808568544118834`*^9}, {3.680857519176804*^9, 3.680857519254901*^9}}],
+  3.6808568544118834`*^9}, {3.680857519176804*^9, 3.680857519254901*^9}, {
+  3.680904236111431*^9, 3.680904236212215*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"$Assumptions", "=", 
+  RowBox[{"{", 
+   RowBox[{"a", ">", "0"}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Cost", "[", 
+   RowBox[{"a", ",", "1", ",", "1", ",", "\[Gamma]", ",", "\[Mu]"}], "]"}], "//",
+   "FullSimplify"}]}], "Input",
+ CellChangeTimes->{{3.6809042413892736`*^9, 3.680904279234866*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"a", ">", "0"}], "}"}]], "Output",
+ CellChangeTimes->{3.680904875143713*^9}],
+
+Cell[BoxData[
+ RowBox[{"0.5`", "\[VeryThinSpace]", "+", 
+  RowBox[{"0.5`", " ", "a"}], "+", 
+  RowBox[{"1.`", " ", 
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", "a"}]]}]}]], "Output",
+ CellChangeTimes->{3.6809048752157993`*^9}]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -626,16 +654,15 @@ Cell[BoxData[{
 
 Cell[BoxData[
  RowBox[{"{", 
-  RowBox[{"0.`", ",", "2.`", ",", "4.098612288668109`"}], "}"}]], "Output",
- CellChangeTimes->{{3.680857452478115*^9, 3.680857474112812*^9}, 
-   3.680857525246476*^9}],
+  RowBox[{"0.`", ",", "0.5`", ",", "1.3465735902799727`"}], "}"}]], "Output",
+ CellChangeTimes->{3.680904889495212*^9}],
 
 Cell[BoxData[
  TagBox[
   RowBox[{"(", "\[NoBreak]", GridBox[{
-     {"0.`", "2.`", "5.`"},
-     {"2.`", "4.098612288668109`", "0"},
-     {"4.098612288668109`", "0", "0"}
+     {"0.`", "0.5`", "1.5`"},
+     {"0.5`", "1.3465735902799727`", "0"},
+     {"1.3465735902799727`", "0", "0"}
     },
     GridBoxAlignment->{
      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
@@ -649,13 +676,12 @@ Cell[BoxData[
         Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
   Function[BoxForm`e$, 
    MatrixForm[BoxForm`e$]]]], "Output",
- CellChangeTimes->{{3.680857452478115*^9, 3.680857474112812*^9}, 
-   3.680857525254891*^9}],
+ CellChangeTimes->{3.680904889540704*^9}],
 
 Cell[BoxData[
  TagBox[
   RowBox[{"(", "\[NoBreak]", GridBox[{
-     {"0", "2.1972245773362196`", "0"},
+     {"0", "0.6931471805599453`", "0"},
      {"0", "0", "0"}
     },
     GridBoxAlignment->{
@@ -670,8 +696,7 @@ Cell[BoxData[
         Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
   Function[BoxForm`e$, 
    MatrixForm[BoxForm`e$]]]], "Output",
- CellChangeTimes->{{3.680857452478115*^9, 3.680857474112812*^9}, 
-   3.680857525262704*^9}]
+ CellChangeTimes->{3.680904889543543*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -682,11 +707,9 @@ Cell[BoxData[
   RowBox[{"Log", "[", "\[Gamma]", "]"}]}]], "Input",
  CellChangeTimes->{{3.6808574988670073`*^9, 3.680857504845132*^9}}],
 
-Cell[BoxData["1.3862943611198906`"], "Output",
- CellChangeTimes->{{3.680857505460203*^9, 3.680857528989502*^9}}]
+Cell[BoxData["0.6931471805599453`"], "Output",
+ CellChangeTimes->{3.680904892226017*^9}]
 }, Open  ]],
-
-Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"TeXForm", "[", 
@@ -711,20 +734,6 @@ Cell[BoxData[
   3.670540104616185*^9, 3.670540105714847*^9}, {3.6808568812877083`*^9, 
   3.680856883770735*^9}}],
 
-Cell["\<\
-\\left(
-\\begin{array}{ccc}
- 0. & 1. & 2.5 \\\\
- 1. & 2.04931 & 0 \\\\
- 2.04931 & 0 & 0 \\\\
-\\end{array}
-\\right)\
-\>", "Output",
- CellChangeTimes->{3.68085748827426*^9}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
 Cell[BoxData[
  RowBox[{"TeXForm", "[", 
   RowBox[{"MatrixForm", "[", 
@@ -746,17 +755,6 @@ Cell[BoxData[
   "]"}]], "Input",
  CellChangeTimes->{
   3.670544618954814*^9, {3.6808568917144527`*^9, 3.680856903321348*^9}}],
-
-Cell["\<\
-\\left(
-\\begin{array}{ccc}
- 0 & 1.09861 & 0 \\\\
- 0 & 0 & 0 \\\\
-\\end{array}
-\\right)\
-\>", "Output",
- CellChangeTimes->{3.680857493217598*^9}]
-}, Open  ]],
 
 Cell[BoxData[
  RowBox[{"Plot", "[", 
@@ -801,13 +799,14 @@ Cell[BoxData[{
    3.670544639254498*^9, {3.670544746880262*^9, 3.6705447541010323`*^9}, {
    3.680856931014089*^9, 3.680856941997087*^9}}]
 },
-WindowSize->{1280, 774},
-WindowMargins->{{-1280, Automatic}, {-344, Automatic}},
-PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+WindowSize->{1918, 1035},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
 Magnification:>1.25 Inherited,
-FrontEndVersion->"10.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (December 10, \
-2015)",
-StyleDefinitions->"Default.nb"
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (October 5, \
+2011)",
+StyleDefinitions->"Default.nb",
+PrivateNotebookOptions -> {
+ "VersionedStylesheet" -> {"Default.nb"[8.] -> False}}
 ]
 (* End of Notebook Content *)
 
@@ -820,33 +819,32 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 13782, 363, 549, "Input"],
-Cell[14342, 385, 1776, 46, 204, "Input"],
-Cell[16121, 433, 2532, 61, 246, "Input"],
-Cell[18656, 496, 2729, 68, 94, "Input"],
-Cell[21388, 566, 364, 7, 57, "Input"],
+Cell[557, 20, 13782, 363, 500, "Input"],
+Cell[14342, 385, 1776, 46, 186, "Input"],
+Cell[16121, 433, 2532, 61, 224, "Input"],
+Cell[18656, 496, 2780, 69, 88, "Input"],
+Cell[21439, 567, 413, 8, 53, "Input"],
 Cell[CellGroupData[{
-Cell[21777, 577, 1690, 47, 99, "Input"],
-Cell[23470, 626, 196, 4, 35, "Output"],
-Cell[23669, 632, 751, 20, 94, "Output"],
-Cell[24423, 654, 705, 19, 72, "Output"]
+Cell[21877, 579, 338, 8, 53, "Input"],
+Cell[22218, 589, 115, 3, 33, "Output"],
+Cell[22336, 594, 237, 6, 36, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[25165, 678, 176, 4, 36, "Input"],
-Cell[25344, 684, 112, 1, 69, "Output"]
+Cell[22610, 605, 1690, 47, 91, "Input"],
+Cell[24303, 654, 148, 3, 33, "Output"],
+Cell[24454, 659, 706, 19, 85, "Output"],
+Cell[25163, 680, 655, 18, 67, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[25493, 690, 784, 21, 36, "Input"],
-Cell[26280, 713, 181, 9, 159, "Output"]
+Cell[25855, 703, 176, 4, 33, "Input"],
+Cell[26034, 709, 88, 1, 33, "Output"]
 }, Open  ]],
-Cell[CellGroupData[{
-Cell[26498, 727, 713, 20, 36, "Input"],
-Cell[27214, 749, 155, 8, 141, "Output"]
-}, Open  ]],
-Cell[27384, 760, 511, 11, 35, "Input"],
-Cell[27898, 773, 279, 6, 36, "Input"],
-Cell[28180, 781, 315, 7, 36, "Input"],
-Cell[28498, 790, 562, 11, 78, "Input"]
+Cell[26137, 713, 784, 21, 33, "Input"],
+Cell[26924, 736, 713, 20, 33, "Input"],
+Cell[27640, 758, 511, 11, 33, "Input"],
+Cell[28154, 771, 279, 6, 33, "Input"],
+Cell[28436, 779, 315, 7, 33, "Input"],
+Cell[28754, 788, 562, 11, 72, "Input"]
 }
 ]
 *)

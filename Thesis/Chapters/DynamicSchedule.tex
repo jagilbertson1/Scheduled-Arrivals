@@ -65,13 +65,15 @@ As will be explained later, it is not possible to find a `nice' closed form for 
 Finding the solution iteratively requires a solution for the base case where $n = 0$. If $n = 0$, there are no customers remaining to be scheduled, which implies the server will not be idle for the remaining of service. The cost of state $(0, k)$ (i.e., the base case) is thus the summation of the waiting cost of the $k$ customers in the queue.
 
 Let $w_{i}$ be the expected waiting time of the customer that is currently in position $i$ in the queue, and $c_{W}$ be the cost of the customers' waiting time per unit time. The cost of the base case is thus given by
-\begin{equation}
- 	C_{0} (k) = c_{W} \sum_{i = 1}^{k} w_{i} + c_{S} \sum_{i = 1}^{k} \mu = c_{W} \sum_{i = 1}^{k} \mu i + c_{S} k \mu = \frac{c_{W} \mu k (k + 1)}{2} + c_{S} k \mu
-\end{equation}
+\begin{align*}
+ 	C_{0}^{*} (k) & = c_{W} \sum_{i = 2}^{k} w_{i} + c_{S} \sum_{i = 1}^{k} \mu \\
+ 	& = c_{W} \sum_{i = 2}^{k} \mu (i - 1) + c_{S} k \mu \\
+ 	& = \frac{c_{W} \mu k (k - 1)}{2} + c_{S} k \mu
+\end{align*}
 
-Scale $C_{0} (k)$ by dividing by $(c_{S} + c_{W})$ and substituting $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$:
+Scale $C_{0}^{*} (k)$ by dividing by $(c_{S} + c_{W})$ and substituting $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$:
 \begin{equation}
-	C_{0} (k) = (1 - \gamma) \cdot \frac{\mu k (k + 1)}{2} + \gamma k \mu
+	C_{0}^{*} (k) = (1 - \gamma) \cdot \frac{\mu k (k - 1)}{2} + \gamma k \mu
 \end{equation}
 
 \section{Transition Probability}
