@@ -76,7 +76,7 @@ Scale $C_{0}^{*} (k)$ by dividing by $(c_{S} + c_{W})$ and substituting $\gamma 
 	C_{0}^{*} (k) = (1 - \gamma) \cdot \frac{\mu k (k - 1)}{2} + \gamma k \mu
 \end{equation}
 
-\section{Transition Probability}
+\subsection{Transition Probability}
 
 Let $S_{i}$ be the service time of the customer that is currently in position $i$ in the queue. The service times $S_{1}, \ldots, S_{n}$ are iid (independent and identically distributed) exponential random variables with mean $\mu$.
 
@@ -110,19 +110,17 @@ Moreover, $F (0; r) = \mathbb{P} (X = 0) = 0$ by definition. Therefore, the cdf 
 \end{equation}
 
 Can now compute the transition probability on a case by case basis. The full derivation is included in the appendix and only the final equation is presented here.
-\begin{multline}
-	p_{a} (k, j) \\
-	= \begin{cases}
-		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
-		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
-		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
-		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
-		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
+\begin{equation}
+	p_{a} (k, j) = \begin{cases}
+		\mathbbm{1} (j = 1) & \text{where $k = 0$} \\
+		F (a; k) & \text{where $k \geq 1, j = 1$} \\
+		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $k \geq 1, 2 \leq j \leq k$} \\
+		1 - F (a; 1) & \text{where $k \geq 1, j = (k + 1)$} \\
 		0 & \text{otherwise}
 	\end{cases}
-\end{multline}
+\end{equation}
 
-\section{Expected Transition Cost}
+\subsection{Expected Transition Cost}
 
 The cost involved in transitioning from state $(n, k)$ to state $(n - 1, j)$ in $a$ time units is a linear combination of the expected total waiting time of the customers during the transition and the expected total server availability time during the transition as in Chapter 3. During the transition, the server is available for the entire time interval, so the total server availability time during the transition is always $a$.
 
@@ -153,11 +151,10 @@ In a similar way to the transition probability, the expected transition cost is 
 \begin{multline}
 	R_{a} (k, j) \\
 	= \begin{cases}
-		0 & \text{where $a = 0$} \\
-		\gamma a & \text{where $a > 0, k \in \{ 0, 1 \}$} \\
-		(1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a & \text{where $a > 0, k \geq 2, j = 1$} \\
-		(1 - \gamma) \left[ a (j - 2) + \frac{G (a; k - (j - 1)) [k - (j - 2)]}{2} \right] + \gamma a & 	\text{where $a > 0, k \geq 2, 2 \leq j \leq k$} \\
-		(1 - \gamma) \cdot a (j - 2) + \gamma a & \text{where $a > 0, k \geq 2, j = (k + 1)$}
+		\gamma a & \text{where $k \in \{ 0, 1 \}$} \\
+		(1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a & \text{where $k \geq 2, j = 1$} \\
+		(1 - \gamma) \left[ a (j - 2) + \frac{G (a; k - (j - 1)) [k - (j - 2)]}{2} \right] + \gamma a & \text{where $k \geq 2, 2 \leq j \leq k$} \\
+		(1 - \gamma) \cdot a (j - 2) + \gamma a & \text{where $k \geq 2, j = (k + 1)$}
 	\end{cases}
 \end{multline}
 

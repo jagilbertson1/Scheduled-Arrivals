@@ -1,22 +1,17 @@
 \chapter{Dynamic Cost Derivation}
 
-\section{Probability of Transition}
-\subsection{Case 1 $a = 0$}
-\begin{equation*}
-	p_{a} (k, j) = \mathbbm{1} (j = k + 1)
-\end{equation*}
-
-\subsection{Case 2 $a > 0, k = 0$}
+\section{Transition Probability}
+\subsection{Case 1 $k = 0$}
 \begin{equation*}
 	p_{a} (k, j) = \mathbbm{1} (j = 1)
 \end{equation*}
 
-\subsection{Case 3 $a > 0, k \geq 1, j = 1$}
+\subsection{Case 2 $k \geq 1, j = 1$}
 \begin{equation*}
 	p_{a} (k, j) = \mathbb{P} \left( \sum_{i = 1}^{k} S_{i} \leq a \right) = F (a; k)
 \end{equation*}
 
-\subsection{Case 4 $a > 0, k \geq 1, 2 \leq j \leq k$}
+\subsection{Case 3 $k \geq 1, 2 \leq j \leq k$}
 \begin{align*}
 	& p_{a} (k, j) \\
 	= & \ \mathbb{P} \left( \sum_{i = 1}^{k - (j - 1)} S_{i} \leq a, \sum_{i = 1}^{k - (j - 1) + 1} S_{i} > a \right) \\
@@ -36,7 +31,7 @@
 	= & \ F (a; k - j + 1) - F (a; k - j + 2)
 \end{align*}
 
-\subsection{Case 5 $a > 0, k \geq 1, j = (k + 1)$}
+\subsection{Case 4 $k \geq 1, j = (k + 1)$}
 \begin{equation*}
 	p_{a} (k, j) = \mathbb{P} (S_{1} > a) = 1 - \mathbb{P} (S_{1} \leq a) = 1 - F (a; 1)
 \end{equation*}
@@ -48,30 +43,23 @@
 
 \subsection{Summary}
 These results can be summarised as:
-\begin{multline}
-	p_{a} (k, j) \\
-	= \begin{cases}
-		\mathbbm{1} (j = k + 1) & \text{where $a = 0$} \\
-		\mathbbm{1} (j = 1) & \text{where $a > 0, k = 0$} \\
-		F (a; k) & \text{where $a > 0, k \geq 1, j = 1$} \\
-		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $a > 0, k \geq 1, 2 \leq j \leq k$} \\
-		1 - F (a; 1) & \text{where $a > 0, k \geq 1, j = (k + 1)$} \\
+\begin{equation}
+	p_{a} (k, j) = \begin{cases}
+		\mathbbm{1} (j = 1) & \text{where $k = 0$} \\
+		F (a; k) & \text{where $k \geq 1, j = 1$} \\
+		F (a; k - j + 1) - F (a; k - j + 2) & \text{where $k \geq 1, 2 \leq j \leq k$} \\
+		1 - F (a; 1) & \text{where $k \geq 1, j = (k + 1)$} \\
 		0 & \text{otherwise}
 	\end{cases}
-\end{multline}
+\end{equation}
 
-\section{Expected Cost of Transition}
-\subsection{Case 1 $a = 0$}
-\begin{equation*}
-	R_{a} (k, j) = 0
-\end{equation*}
-
-\subsection{Case 2 $a > 0, k \in \{ 0, 1 \}$}
+\section{Expected Transition Cost}
+\subsection{Case 1 $k \in \{ 0, 1 \}$}
 \begin{equation*}
 	R_{a} (k, j) = c_{S} a = \gamma a
 \end{equation*}
 
-\subsection{Case 3 $a > 0, k \geq 2, j = 1$}
+\subsection{Case 2 $k \geq 2, j = 1$}
 \begin{align*}
 	R_{a} (k, j) & = c_{W} \sum_{i = 2}^{k} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{S} a \\
 	& = c_{W} \sum_{i = 2}^{k} \sum_{l = 1}^{i - 1} \mathbb{E} \left[ S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{S} a \\
@@ -82,7 +70,7 @@ These results can be summarised as:
 	& = (1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a
 \end{align*}
 
-\subsection{Case 4 $a > 0, k \geq 2, 2 \leq j \leq k$}
+\subsection{Case 3 $k \geq 2, 2 \leq j \leq k$}
 \begin{align*}
 	& R_{a} (k, j) \\
 	= & \ c_{W} \sum_{i = 1}^{j - 2} a + c_{W} \sum_{i = 2}^{k - (j - 2)} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a \right] + c_{S} a \\
@@ -94,7 +82,7 @@ These results can be summarised as:
 	= & \ (1 - \gamma) \left[ a (j - 2) + \frac{G \big( a; k - (j - 1) \big) \big[ k - (j - 2) \big]}{2} \right] + \gamma a
 \end{align*}
 
-\subsection{Case 5 $a > 0, k \geq 2, j = (k + 1)$}
+\subsection{Case 4 $k \geq 2, j = (k + 1)$}
 \begin{equation*}
 	R_{a} (k, j) = c_{W} \sum_{i = 1}^{j - 2} a + c_{S} a = c_{W} a (j - 2) + c_{S} a = (1 - \gamma) \cdot a (j - 2) + \gamma a
 \end{equation*}
@@ -104,11 +92,10 @@ These results can be summarised as:
 \begin{multline}
 	R_{a} (k, j) \\
 	= \begin{cases}
-		0 & \text{where $a = 0$} \\
-		\gamma a & \text{where $a > 0, k \in \{ 0, 1 \}$} \\
-		(1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a & \text{where $a > 0, k \geq 2, j = 1$} \\
-		(1 - \gamma) \left[ a (j - 2) + \frac{G (a; k - (j - 1)) [k - (j - 2)]}{2} \right] + \gamma a & 	\text{where $a > 0, k \geq 2, 2 \leq j \leq k$} \\
-		(1 - \gamma) \cdot a (j - 2) + \gamma a & \text{where $a > 0, k \geq 2, j = (k + 1)$}
+		\gamma a & \text{where $k \in \{ 0, 1 \}$} \\
+		(1 - \gamma) \cdot \frac{G (a; k) (k - 1)}{2} + \gamma a & \text{where $k \geq 2, j = 1$} \\
+		(1 - \gamma) \left[ a (j - 2) + \frac{G (a; k - (j - 1)) [k - (j - 2)]}{2} \right] + \gamma a & \text{where $k \geq 2, 2 \leq j \leq k$} \\
+		(1 - \gamma) \cdot a (j - 2) + \gamma a & \text{where $k \geq 2, j = (k + 1)$}
 	\end{cases}
 \end{multline}
 
