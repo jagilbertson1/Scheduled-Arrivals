@@ -12,8 +12,8 @@ NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
 NotebookDataLength[     44838,       1204]
 NotebookOptionsPosition[     42998,       1140]
-NotebookOutlinePosition[     43464,       1158]
-CellTagsIndexPosition[     43421,       1155]
+NotebookOutlinePosition[     43465,       1158]
+CellTagsIndexPosition[     43422,       1155]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1138,7 +1138,7 @@ Cell[BoxData["2.5822258896918453`"], "Output",
    3.680953389018724*^9}]
 }, Open  ]]
 },
-WindowSize->{1280, 774},
+WindowSize->{1920, 1054},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
 Magnification:>1.25 Inherited,
@@ -1173,16 +1173,16 @@ Cell[23931, 644, 73, 1, 35, "Output"]
 Cell[CellGroupData[{
 Cell[24041, 650, 1844, 49, 99, "Input"],
 Cell[25888, 701, 212, 5, 35, "Output"],
-Cell[26103, 708, 939, 23, 138, "Output"],
-Cell[27045, 733, 836, 21, 116, "Output"]
+Cell[26103, 708, 939, 23, 124, "Output"],
+Cell[27045, 733, 836, 21, 102, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[27918, 759, 784, 21, 36, "Input"],
-Cell[28705, 782, 302, 11, 195, "Output"]
+Cell[28705, 782, 302, 11, 181, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[29044, 798, 713, 20, 36, "Input"],
-Cell[29760, 820, 255, 10, 177, "Output"]
+Cell[29760, 820, 255, 10, 163, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[30052, 835, 589, 12, 35, "Input"],
@@ -1194,7 +1194,7 @@ Cell[37968, 990, 2367, 65, 72, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[40372, 1060, 315, 7, 36, "Input"],
-Cell[40690, 1069, 219, 7, 104, "Output"]
+Cell[40690, 1069, 219, 7, 90, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[40946, 1081, 562, 11, 78, "Input"],
@@ -1203,7 +1203,7 @@ Cell[41649, 1099, 88, 1, 35, "Output"],
 Cell[41740, 1102, 87, 1, 35, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[41864, 1108, 975, 25, 78, "Input"],
+Cell[41864, 1108, 975, 25, 36, "Input"],
 Cell[42842, 1135, 140, 2, 35, "Output"]
 }, Open  ]]
 }
