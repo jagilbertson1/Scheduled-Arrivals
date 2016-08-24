@@ -59,7 +59,7 @@ def solver(n, gamma, mu = 1):
     res = optimize.minimize(fun = phi, x0 = [0]*n, args = (gamma, mu), bounds = bnds)
     
     return(res)
-
+"""
 n = 2
 mu = 1
 gamma = 0.5
@@ -92,4 +92,3 @@ for gamma in gamVec:
 print(data)
 
 print(data.to_latex(index = False, escape = False, float_format = lambda x: '%.2f' % x))
-"""
