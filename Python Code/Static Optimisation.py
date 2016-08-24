@@ -62,6 +62,17 @@ def solver(n, gamma, mu = 1):
 
 n = 2
 mu = 1
+gamma = 0.5
+
+nVec = np.arange(1, 7)
+
+for n in nVec:
+    res = solver(n, gamma, mu)
+    print("For n = " + str(n) + " cost is " + str(round(res.fun,3)))
+
+"""
+n = 2
+mu = 1
 
 gamVec = np.arange(1, 0, -0.05)
 
@@ -81,3 +92,4 @@ for gamma in gamVec:
 print(data)
 
 print(data.to_latex(index = False, escape = False, float_format = lambda x: '%.2f' % x))
+"""
