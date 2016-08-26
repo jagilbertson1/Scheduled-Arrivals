@@ -52,23 +52,35 @@ def phi(x, gamma, mu):
     return (value)
 
 def solver(n, gamma, mu = 1):
-    bnds = ()
-    for i in range(n):
-        bnds += ((0, None),)
+    if (n == 1):
+        print("No unknown variables")
+        
+        cost = phi([], gamma, mu)
+
+        return (cost)
     
-    res = optimize.minimize(fun = phi, x0 = [0]*n, args = (gamma, mu), bounds = bnds)
+    else:
+        
+        bnds = ()
+        for i in range(n - 1):
+            bnds += ((0, None),)
     
-    return(res)
-"""
-n = 2
+        res = optimize.minimize(fun = phi, x0 = [0]*(n - 1), args = (gamma, mu), bounds = bnds)
+    
+        return (res)
+
+#"""
 mu = 1
-gamma = 0.5
+gamma = 0.2
 
-nVec = np.arange(1, 7)
+res = solver(1, gamma, mu)
+print("For n = 1, cost is " + str(round(res, 4)))
 
+nVec = np.arange(2, 10, 1)
 for n in nVec:
     res = solver(n, gamma, mu)
-    print("For n = " + str(n) + " cost is " + str(round(res.fun,3)))
+    print("For n = " + str(n) + ", cost is " + str(round(res.fun, 4)))
+#"""
 
 """
 n = 2
@@ -92,3 +104,4 @@ for gamma in gamVec:
 print(data)
 
 print(data.to_latex(index = False, escape = False, float_format = lambda x: '%.2f' % x))
+"""
