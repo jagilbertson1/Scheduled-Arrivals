@@ -53,14 +53,10 @@ def phi(x, gamma, mu):
 
 def solver(n, gamma, mu = 1):
     if (n == 1):
-        print("No unknown variables")
-        
         cost = phi([], gamma, mu)
-
         return (cost)
     
-    else:
-        
+    else:        
         bnds = ()
         for i in range(n - 1):
             bnds += ((0, None),)
@@ -71,15 +67,23 @@ def solver(n, gamma, mu = 1):
 
 #"""
 mu = 1
-gamma = 0.2
 
-res = solver(1, gamma, mu)
-print("For n = 1, cost is " + str(round(res, 4)))
+nVec = np.arange(2, 7, 1)
+gammaVec = np.arange(0.05, 1, 0.05)
 
-nVec = np.arange(2, 10, 1)
-for n in nVec:
-    res = solver(n, gamma, mu)
-    print("For n = " + str(n) + ", cost is " + str(round(res.fun, 4)))
+data = pd.DataFrame(np.append(1,nVec), columns = ["n"])
+
+for gamma in gammaVec:
+    data["gamma = " + str(gamma)] = pd.Series()
+    
+    res = solver(1, gamma, mu)
+    data.loc[0, "gamma = " + str(gamma)] = res
+    
+    for i, n in enumerate(nVec):
+        res = solver(n, gamma, mu)
+        data.loc[i + 1, "gamma = " + str(gamma)] = res.fun
+
+print(data)
 #"""
 
 """
