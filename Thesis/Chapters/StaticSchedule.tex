@@ -1,13 +1,9 @@
 \chapter{Static Schedule}
-
 \section{Aim}
-
 The aim is to choose a schedule that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. The schedule is fixed and chosen at the start of service.
 
 \section{Assumptions}
-
 To simplify this problem, need to make several assumptions:
-
 \begin{itemize}[nosep]
 	\item Service times are independent and identically distributed (iid)
 	\item Each service time has an exponential distribution with mean service time $\mu$
@@ -17,30 +13,33 @@ To simplify this problem, need to make several assumptions:
 \end{itemize}
 
 \section{List of Variables}
-
-List of variables goes here
-
-Let $w_{i}$ denote the expected waiting time of the $i$-th customer.
-
-Let $t_{1}$ denote the scheduled arrival time of the first customer.
-
-Let $x_{i}$ denote the time interval between the scheduled arrival of the $i$-th and the $(i + 1)$-th customer.
-
-Let $\mu$ denote the mean service time of each customer. 
+\begin{tabularx}{\textwidth}{c c X}
+	$\mu$ & : & mean service time of each customer \\
+	$c_{W}$ & : & cost of total customers' waiting time per unit time \\
+	$c_{S}$ & : & cost of total server's availability time per unit time \\
+	$n$ & : & total number of customers \\
+	$w_{i}$ & : & expected waiting time of customer $i$ \\
+	$t_{1}$ & : & scheduled arrival time of the first customer \\
+	$x_{i}$ & : & interarrival time between customer $i$ and $(i + 1)$ \\
+	$x_{i}^{*}$ & : & optimal interarrival time between customer $i$ and $(i + 1)$ \\
+	$N_{i}$ & : & number of customers in the system immediately prior to the arrival of customer $i$ \\
+	$\phi (\mathbf{x})$ & : & the expected cost of the policy given by $\mathbf{x} = (x_{1}, \ldots, x_{n - 1})$
+\end{tabularx}
 
 \section{Objective Function}
+These results largely follow the results presented by \citet{Pegden} with small notation changes so can be compared to the dynamic schedule presented later.
 
-The expected total customers' waiting time is the sum of the individual customer's expected waiting times:
+The expected total customers' waiting time is the sum of the individual customer's expected waiting times.
 \begin{equation}
 	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
 \end{equation}
 
-The expected total server availability time is the sum of the $n$-th customer's scheduled arrival time, the expected waiting time of the $n$-th customer, and the expected service time of the $n$-th customer:
+The expected total server availability time is the sum of customer $n$'s scheduled arrival time, the expected waiting time of customer $n$, and the expected service time of customer $n$.
 \begin{equation}
 	\mathbb{E} \Big[\text{total server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
 \end{equation}
 
-The objective function is a linear combination of the expected total customers' waiting time and the expected total server availability time:
+The objective function is a linear combination of the expected total customers' waiting time and the expected total server availability time.
 \begin{equation}
 	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 \end{equation}
@@ -57,46 +56,46 @@ Scale $\phi (\mathbf{x})$ by dividing by $(c_{W} + c_{S})$ and defining $\gamma 
 \end{equation}
 
 \subsection{Expected Customer Waiting Times}
+Want to express the expected waiting time of customer $i$ as a function of the scheduled arrival time intervals $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. Just prior to the arrival of customer $i$, the number of customers in the system must be $\in \{ 0, \ldots, i - 1 \}$.
 
-Want to express the expected waiting time of customer $i$ as a function of the scheduled arrival time intervals $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. Just prior to the arrival of customer $i$, the number of customers in the system must be $\in \{ 0, 1, \ldots, i - 1 \}$. Thus, the expected waiting time of customer $i$ is:
+Thus, the expected waiting time of customer $i$ is:
 \begin{equation}
-	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \cdot \mathbb{P} \Big( N (t_{i}) = j \Big) = \begin{cases} 0 & \text{where $i = 1$} \\ \sum_{j = 1}^{i - 1} (j \mu) \cdot \mathbb{P} \Big( N (t_{i}) = j \Big) & \text{where $i \geq 2$} \end{cases}
+	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \times \mathbb{P} (N_{i} = j) = \begin{cases} 0 & \text{where $i = 1$} \\ \sum_{j = 1}^{i - 1} (j \mu) \times \mathbb{P} (N_{i} = j) & \text{where $i \geq 2$} \end{cases}
 	\label{eqn:StaticWaiting}
 \end{equation}
 
 As there are no customers in the system before the start of service:
 \begin{equation}
-	\mathbb{P} \Big( N (t_{1}) = 0 \Big) = 1
+	\mathbb{P} (N_{1} = 0) = 1
 \end{equation}
 
 For $i \geq 2$, can express the probability of a given number of customers in the system recursively. First, consider the base case of no customers in the system just prior to the arrival of customer $i$.
 \begin{align*}
-	& \mathbb{P} \Big( N (t_{i}) = 0 \Big) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = 0 \ \Big| \ N (t_{i - 1}) = k - 1 \Big) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1})= k - 1 \Big) \\
-	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
+	& \mathbb{P} (N_{i} = 0) \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \mathbb{P} (N_{i} = 0 \ | \ N_{i - 1} = k - 1) \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \\
+	& \ \ \ \ \ \ \times \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
+	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
 \end{align*}
 
-Next, calculate the probability for $j \geq 1$:
+Next, calculate the probability for the other cases where $j \geq 1$.
 \begin{align*}
-	& \mathbb{P} \Big( N (t_{i}) = j \Big) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \mathbb{P} \Big( N (t_{i}) = j \ \Big| \ N (t_{i - 1}) = j + k - 1 \Big) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \\
-	& \ \ \ \ \ \ \cdot \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
+	& \mathbb{P} (N_{i} = j) \\
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \mathbb{P} (N_{i} = j \ | \ N_{i - 1} = j + k - 1) \\
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \\
+	& \ \ \ \ \ \ \times \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
+	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \frac{x_{i - 1}^{k}}{\mu^{k} \times k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
 \end{align*}
 
 Therefore, the full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is given by:
 \begin{multline}
-	\mathbb{P} \Big( N (t_{i}) = j \Big) \\
-	= \begin{cases} 1 & \text{where $i = 1$, $j = 0$} \\ \sum_{k = 1}^{i - 1} \mathbb{P} \Big( N (t_{i - 1}) = k - 1 \Big) \cdot \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \cdot l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] & \text{where $i \geq 2$, $j = 0$} \\ \sum_{k = 0}^{i - j - 1} \mathbb{P} \Big( N (t_{i - 1}) = j + k - 1 \Big) \cdot \frac{x_{i - 1}^{k}}{\mu^{k} \cdot k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) & \text{where $i \geq 2$, $j \geq 1$} \end{cases}
+	\mathbb{P} (N_{i} = j) \\
+	= \begin{cases} 1 & \text{where $i = 1$, $j = 0$} \\ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] & \text{where $i \geq 2$, $j = 0$} \\ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \frac{x_{i - 1}^{k}}{\mu^{k} \times k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) & \text{where $i \geq 2$, $j \geq 1$} \end{cases}
 	\label{eqn:StaticProbSystem}
 \end{multline}
 
 \subsection{Computing the Objective Function}
-
 \citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}$ and parameters $\gamma$ and $\mu$.
 \begin{algorithm}[htb]
 \caption{Return $\phi (\mathbf{x})$ for a given vector $\mathbf{x}$, $\gamma$ and $\mu$}
@@ -104,7 +103,7 @@ Therefore, the full recursive expression for the probability of $j$ customers in
 \Function{ObjectiveFunction}{$\mathbf{x}$,$\gamma$,$\mu$}
     \For {$i = 1, 2, \ldots, n$}
     	\For {$j = 0, 1, \ldots, (i - 1)$}
-    		\State compute $\mathbb{P} \left( N (t_{i}) = j \right)$ by Equation~\ref{eqn:StaticProbSystem}
+    		\State compute $\mathbb{P} (N_{i} = j)$ by Equation~\ref{eqn:StaticProbSystem}
     	\EndFor
     \EndFor
     \For {$i = 1, 2, \ldots, n$}
@@ -119,7 +118,6 @@ Therefore, the full recursive expression for the probability of $j$ customers in
 \section{Example Models}
 \subsection{Model for Two Customers}
 \label{sec:StaticTwoCust}
-
 We consider the simplest case of this model where there are two customers to be scheduled (i.e., $n = 2$). As the first customer is scheduled to arrive at the start of service, the only unknown variable is the time interval between the first and second customers' arrivals (i.e., $x_{1}$).
 
 By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are:
@@ -143,20 +141,14 @@ Due to the convexity of the objective function, the optimal policy that minmises
 	\phi' (x_{1}) = 0 \implies - \exp \left( \frac{- x_{1}}{\mu} \right) + \gamma = 0
 \end{equation}
 
-Thus, the optimal policy is:
+Therefore, the optimal policy is:
 \begin{equation}
 	x_{1}^{*} = \argmin_{x_{1}} \phi (x_{1}) = - \mu \ln \gamma
 \end{equation}
 
-Therefore, the optimal arrival times of the two customers are:
-\begin{equation}
-	\mathbf{t}^{*} = \left( t_{1}^{*}, t_{2}^{*} \right) = \Big( 0, - \mu \ln \gamma \Big)
-\end{equation}
-
-As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $t_{2}^{*}$ decreases).
+As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
 \subsection{Model for Three Customers}
-
 The next simplest case is where there are three customers to be scheduled (i.e., $n = 3$). In this case, there are two unknown variables $x_{1}$ and $x_{2}$. Without loss of generalisation, can let $\mu = 1$.
 
 By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the three customers are:
@@ -190,7 +182,7 @@ Unfortunately, as \citet{Pegden} found, no algebraic solution for $(x_{1}, x_{2}
 \begin{table}[htb]
 \centering
 \begin{tabular}{|c|c|c|c|} \hline
- $\gamma$ &  $x_{1}$ &  $x_{2}$ &  $\phi (\mathbf{x})$ \\ \hline
+ $\gamma$ &  $x_{1}^{*}$ &  $x_{2}^{*}$ &  $\phi (\mathbf{x}^{*})$ \\ \hline
      1.00 &     0.00 &     0.00 &                 3.00 \\
      0.95 &     0.07 &     0.30 &                 2.99 \\
      0.90 &     0.14 &     0.41 &                 2.96 \\
@@ -212,8 +204,11 @@ Unfortunately, as \citet{Pegden} found, no algebraic solution for $(x_{1}, x_{2}
      0.10 &     2.48 &     2.49 &                 0.78 \\
      0.05 &     3.12 &     3.13 &                 0.46 \\ \hline
 \end{tabular}
-\caption{Optimal solution for $n = 2$ customers with mean service time $\mu = 1$ over various values of $\gamma$ found using \texttt{scipy.optimize.minimize} in Python. For $\mu \neq 1$, these solutions are the optimal values of $\mu x_{1}$ and $\mu x_{2}$.}
+\caption{Optimal scheduled interarrival times for $n = 2$ customers with mean service time $\mu = 1$ over various values of $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$ found using \texttt{scipy.optimize.minimize} in Python. For $\mu \neq 1$, these solutions are the optimal values of $\mu x_{1}$ and $\mu x_{2}$.}
+\label{Static_2_Cust_Pedgen}
 \end{table}
+
+Instead of finding an algebraic solution, can solve using $\texttt{scipy.optimize.minimize}$ in Python to find a numeric solution for the constrained optimization problem. Table~\ref{Static_2_Cust_Pedgen} displays the optimal scheduled interarrival times for $n = 2$ (i.e., $x_{1}^{*}$ and $x_{2}^{*}$) for various values of $\gamma \in [0.05, 1]$. These results agree with the results found by \citet{Pegden}.
 
 
 

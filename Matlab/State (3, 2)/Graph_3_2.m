@@ -4,7 +4,7 @@ h = 0.01;
 n = 3;
 k = 2;
 aOptimal = 1.90481;
-costOptimal = 8.64338;
+costOptimal = 4.32169;
 
 cost0 = Cost_3_2(0);
 
@@ -25,6 +25,7 @@ plot(a, costVec, 'LineWidth', 4)
 scatter([0, aOptimal], [cost0, costOptimal], 300, [1, 0.54902, 0], ...
     'filled')
 
+ylim([0, 10])
 xlabel('a')
 ylabel(sprintf('C_{%d} (a, %d)', n, k))
 
