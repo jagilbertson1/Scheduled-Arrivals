@@ -2,6 +2,9 @@ import numpy as np
 import math
 import scipy.optimize as optimize
 import pandas as pd
+import matplotlib.pyplot as plt
+
+from timeit import default_timer as timer
 
 def probSystem(i, j, x, mu):
     if (i == 1 and j == 0):
@@ -65,7 +68,32 @@ def solver(n, gamma, mu = 1):
     
         return (res)
 
-#"""
+mu = 1
+gamma = 0.5
+n = 10
+
+res = solver(n, gamma, mu)
+print(res)
+
+plt.plot(np.arange(1, n), res.x, 'o')
+
+plt.xlim((0, n))
+plt.ylim((0, round(max(res.x) + 0.5)))
+
+"""
+mu = 1
+gamma = 0.5
+
+nVec = np.arange(6, 11)
+
+for n in nVec:
+    start = timer()
+    res = solver(n, gamma, mu)
+    end = timer()
+    
+    print("For n = " + str(n) + ", time: " + str(round(end - start, 3)))
+"""
+"""
 mu = 1
 
 nVec = np.arange(2, 7, 1)
@@ -84,8 +112,7 @@ for gamma in gammaVec:
         data.loc[i + 1, "gamma = " + str(gamma)] = res.fun
 
 print(data)
-#"""
-
+"""
 """
 n = 2
 mu = 1
