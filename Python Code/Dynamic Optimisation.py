@@ -1,9 +1,6 @@
 from scipy.stats import poisson
 import scipy.optimize as optimize
 
-import functools
-
-#@functools.lru_cache()
 def cdf(a, r, mu):
     if (a > 0):
         return poisson.sf(r - 1, a / mu)
@@ -11,7 +8,6 @@ def cdf(a, r, mu):
     elif (a == 0):
         return 0
 
-#@functools.lru_cache()
 def transProb(a, k, j, mu):
     if (k == 0):
         return int(j == 1)
@@ -28,7 +24,6 @@ def transProb(a, k, j, mu):
     else:
         return 0
 
-#@functools.lru_cache()
 def condExp(a, r, mu):
     if (a > 0):
         return mu * r * cdf(a, r + 1, mu) / cdf(a, r, mu)
@@ -36,7 +31,6 @@ def condExp(a, r, mu):
     elif (a == 0):
         return 0
 
-#@functools.lru_cache()
 def transCost(a, k, j, gamma, mu):
     if (k == 0 or k == 1):
         return gamma * a
@@ -50,30 +44,48 @@ def transCost(a, k, j, gamma, mu):
     elif (k >= 2 and j == (k + 1)):
         return (1 - gamma) * a * (j - 2) + gamma * a
 
-#@functools.lru_cache()
-def cost(a, n, k, gamma, mu):
+def cost(a, n, k, gamma, mu, computedDict):
     internal = 0
     for j in range(1, k + 2):
-        internal += transProb(a, k, j, mu) * (transCost(a, k, j, gamma, mu) + optimalCost(n - 1, j, gamma, mu))
+        internal += transProb(a, k, j, mu) * (transCost(a, k, j, gamma, mu) +
+                                                                    optimalCost(n - 1, j, gamma, mu, computedDict)[0])
     
     return internal
-  
-#@functools.lru_cache()  
-def optimalCost(n, k, gamma, mu):
+
+def optimalCost(n, k, gamma, mu, computedDict):
+    if (n, k, gamma, mu) in computedDict:
+        return computedDict[(n, k, gamma, mu)], computedDict
+    
     if (n == 0):
-        return (1 - gamma) * mu * k * (k - 1) / 2 + gamma * k * mu
+        newCost = (1 - gamma) * mu * k * (k - 1) / 2 + gamma * k * mu
+        computedDict[(n, k, gamma, mu)] = newCost       
+        
+        return newCost, computedDict
     
     elif (n >= 1 and k == 0):
-        return optimalCost(n - 1, 1, gamma, mu)
+        newCost = optimalCost(n - 1, 1, gamma, mu)
+        computedDict[(n, k, gamma, mu)] = newCost
+        
+        return newCost, computedDict
     
-    elif (n >= 1 and k >= 1):
-        res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu), bounds = ((0, None),))
-        return res.fun[0]
+    elif (n >= 1 and k >= 1):              
+        res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu, computedDict), bounds = ((0, None),))
+        
+        newCost = res.fun[0]
+        computedDict[(n, k, gamma, mu)] = newCost
+        
+        return newCost, computedDict
 
-mu = 1
-gamma = 0.5
+if __name__ == "__main__":
+    mu = 1
+    N = 20
 
-n = 4
-k = 1
+    gamma = 0.5
 
-print(optimalCost(n, k, gamma, mu))
+    allResults = dict()
+
+    for n in range(N + 1):
+        for k in range(1, N - n + 1):
+            singleCost, allResults = optimalCost(n, k, gamma, mu, allResults)        
+            
+            print("For (n, k) = (" + str(n) + ", " + str(k) + "), cost: " + str(round(singleCost, 3)))
