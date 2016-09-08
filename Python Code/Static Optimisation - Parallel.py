@@ -1,8 +1,8 @@
 import numpy as np
 import math
 import scipy.optimize as optimize
-import pandas as pd
 
+import os
 from multiprocessing import Pool
 
 def probSystem(i, j, x, mu):
@@ -54,23 +54,40 @@ def phi(x, gamma, mu):
     return (value)
 
 def solver(args):
-    n, gamma, mu = args    
+    n, gamma, mu, fname = args    
     
+    # find bounds
     bnds = ()
     for i in range(n - 1):
         bnds += ((0, None),)
     
+    # minimise
     res = optimize.minimize(fun = phi, x0 = [0]*(n - 1), args = (gamma, mu), bounds = bnds)
+ 
+    # write output    
+    with open(fname, "a+") as outputFile:
+        outputFile.write(str(n) + "," + str(gamma) + "," + str(mu) + "," + repr(res.x) + "," + str(res.fun) + "\n")
+
+if __name__ == "__main__":
+    mu = 1
     
-    return {'n' : n, 'gamma' : gamma, 'mu' : mu, 'x' : res.x, 'cost' : res.fun}
+    # output file name
+    output = "Static_Output.txt"
 
-mu = 1
+    nVec = np.arange(2, 20, 1)
+    gammaVec = np.arange(0.1, 1, 0.1)
 
-nVec = np.arange(2, 20, 1)
-gammaVec = np.arange(0.1, 1, 0.1)
+    args = [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
 
-args = [(n, gamma, mu) for n in nVec for gamma in gammaVec]
+    # run on 4 cores
+    p = Pool(4)
 
-p = Pool(4)
+    # delete output file if exists
+    if os.path.exists(output):
+        os.remove(output)
 
-print(p.map(solver, args))
+    # create header
+    with open(output, "w+") as outputFile:
+        outputFile.write("n,gamma,mu,x,cost\n")
+
+    p.map(solver, args)
