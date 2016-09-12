@@ -40,6 +40,11 @@ def waitTime(i, x, mu):
         return (value)
 
 def phi(x, gamma, mu):
+    # if any x tries to be negative in optimisation, set to zero
+    for i in range(len(x)):
+        if (x[i] < 0):
+            x[i] = 0
+    
     n = len(x) + 1    
     value = 0
     
@@ -74,20 +79,26 @@ if __name__ == "__main__":
     # output file name
     output = "Static_Output.txt"
 
-    nVec = np.arange(2, 20, 1)
-    gammaVec = np.arange(0.1, 1, 0.1)
+    args = [(13, gamma, mu, output) for gamma in np.arange(0.4, 1, 0.1)]
 
-    args = [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
+    #nVec = np.arange(2, 21, 1)
+    nVec = np.arange(14, 21, 1)  
+    gammaVec = np.arange(0.1, 1, 0.1)  
 
-    # run on 4 cores
-    p = Pool(4)
+    #args = [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
+    args += [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
+
+    # run on 10 cores
+    p = Pool(10)
+
+    # add to output file
 
     # delete output file if exists
-    if os.path.exists(output):
-        os.remove(output)
+    #if os.path.exists(output):
+    #    os.remove(output)
 
     # create header
-    with open(output, "w+") as outputFile:
-        outputFile.write("n,gamma,mu,x,cost\n")
+    #with open(output, "w+") as outputFile:
+    #    outputFile.write("n,gamma,mu,x,cost\n")
 
     p.map(solver, args)
