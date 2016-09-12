@@ -67,7 +67,7 @@ def solver(args):
         bnds += ((0, None),)
     
     # minimise
-    res = optimize.minimize(fun = phi, x0 = [0]*(n - 1), args = (gamma, mu), bounds = bnds)
+    res = optimize.minimize(fun = phi, x0 = [0]*(n - 1), args = (gamma, mu), method = "L-BFGS-B", bounds = bnds)
  
     # write output    
     with open(fname, "a+") as outputFile:
