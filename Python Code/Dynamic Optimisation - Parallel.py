@@ -71,13 +71,14 @@ def optimalCost(n, k, gamma, mu, computedDict):
         return newCost, computedDict
     
     elif (n >= 1 and k == 0):
-        newCost = optimalCost(n - 1, 1, gamma, mu)
+        newCost = optimalCost(n - 1, 1, gamma, mu, computedDict)[0]
         computedDict[(n, k, gamma, mu)] = newCost
         
         return newCost, computedDict
     
     elif (n >= 1 and k >= 1):              
-        res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu, computedDict), bounds = ((0, None),))
+        res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu, computedDict), method = "L-BFGS-B",
+                                bounds = ((0, None),))
         
         newCost = res.fun[0]
         computedDict[(n, k, gamma, mu)] = newCost
@@ -90,7 +91,7 @@ def solver(args):
     allResults = dict()
     
     for n in range(N + 1):
-        for k in range(1, N - n + 1):
+        for k in range(N - n + 1):
             singleCost, allResults = optimalCost(n, k, gamma, mu, allResults)
             
             # write output    
