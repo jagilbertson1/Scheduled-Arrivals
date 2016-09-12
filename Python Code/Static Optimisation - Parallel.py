@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # output file name
     output = "Static_Output.txt"
 
-    args = [(13, gamma, mu, output) for gamma in np.arange(0.4, 1, 0.1)]
+    args = [(13, gamma, mu, output) for gamma in [0.5,0.7,0.9]]
 
     #nVec = np.arange(2, 21, 1)
     nVec = np.arange(14, 21, 1)  
@@ -88,8 +88,8 @@ if __name__ == "__main__":
     #args = [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
     args += [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
 
-    # run on 10 cores
-    p = Pool(10)
+    # run on 12 cores
+    p = Pool(12)
 
     # add to output file
 
