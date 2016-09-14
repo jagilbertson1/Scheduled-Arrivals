@@ -79,10 +79,10 @@ if __name__ == "__main__":
     # output file name
     output = "Static_Output.txt"
 
-    args = [(13, gamma, mu, output) for gamma in [0.5,0.7,0.9]]
+    args = [(14, gamma, mu, output) for gamma in [0.1,0.3,0.5,0.6,0.7,0.9]]
 
     #nVec = np.arange(2, 21, 1)
-    nVec = np.arange(14, 21, 1)  
+    nVec = np.arange(15, 21, 1)  
     gammaVec = np.arange(0.1, 1, 0.1)  
 
     #args = [(n, gamma, mu, output) for n in nVec for gamma in gammaVec]
