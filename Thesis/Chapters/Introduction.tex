@@ -1,3 +1,17 @@
 \chapter{Introduction}
 
-Introduction goes here.
+Queues with scheduled arrivals occur frequently in society. These are queues where instead of customers arriving randomly, their arrival times are scheduled in advance. A common example of such queues is a doctor's surgery where patients are given appointment times. Moreover, these queues also occur in shipping when ship docking times are scheduled.
+
+Throughout this thesis, we make several assumptions about the underlying system. First, we assume a single server queue with exponential service times. We assume that customers arrive punctually at their scheduled arrival times. In addition, all customers have the same mean service time $\mu$.
+
+The objective is to find a schedule of customer arrival times that minimises a linear combination of the expected total waiting time of all the customers and the expected time where the server is available (i.e., the total time between the start of service and conclusion of service of the last customer).
+
+A customer's waiting time is the time from the customer's arrival until the server begins serving that customer. Instead of queue size, we refer to the number of customers in the system at a given point in time. This number includes both any customers currently being served and any customers currently waiting for service.
+
+Bailey was the first to study such queues. His ideas have been extended in various ways including allowing for some non-punctuality of customers. However, few authors have considered the problem of adjusting a given schedule.
+
+Most authors assume that a schedule is fixed at the start of service and cannot be altered during service. This static schedule appears to be a restrictive assumption. Through this thesis, we look at the potential advantage of being able to alter a schedule during service.
+
+We consider a special case whereby customer arrivals are scheduled iteratively (i.e., one by one). A customer's arrival time is only decided on arrival of the customer to be served immediately before them. The expected cost of this dynamic schedule must be at least as good as the static schedule
+
+Due to the relatively small number of customers in these queues, they do not reach steady state.
