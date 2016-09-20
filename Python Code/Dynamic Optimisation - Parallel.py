@@ -62,28 +62,34 @@ def cost(a, n, k, gamma, mu, computedDict):
 
 def optimalCost(n, k, gamma, mu, computedDict):
     if (n, k, gamma, mu) in computedDict:
-        return computedDict[(n, k, gamma, mu)], computedDict
+        return computedDict[(n, k, gamma, mu)][0], computedDict[(n, k, gamma, mu)][1], computedDict
     
     if (n == 0):
         newCost = (1 - gamma) * mu * k * (k - 1) / 2 + gamma * k * mu
-        computedDict[(n, k, gamma, mu)] = newCost       
+        time = float('nan')
         
-        return newCost, computedDict
+        computedDict[(n, k, gamma, mu)] = [newCost, time]      
+        
+        return newCost, time, computedDict
     
     elif (n >= 1 and k == 0):
         newCost = optimalCost(n - 1, 1, gamma, mu, computedDict)[0]
-        computedDict[(n, k, gamma, mu)] = newCost
+        time = 0        
         
-        return newCost, computedDict
+        computedDict[(n, k, gamma, mu)] = [newCost, time]
+        
+        return newCost, time, computedDict
     
     elif (n >= 1 and k >= 1):              
         res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu, computedDict), method = "L-BFGS-B",
                                 bounds = ((0, None),))
         
         newCost = res.fun[0]
-        computedDict[(n, k, gamma, mu)] = newCost
+        time = res.x[0]
         
-        return newCost, computedDict
+        computedDict[(n, k, gamma, mu)] = [newCost, time]
+        
+        return newCost, time, computedDict
 
 def solver(args):
     N, gamma, mu, fname = args
@@ -92,12 +98,12 @@ def solver(args):
     
     for n in range(N + 1):
         for k in range(N - n + 1):
-            singleCost, allResults = optimalCost(n, k, gamma, mu, allResults)
-            
+            singleCost, time, allResults = optimalCost(n, k, gamma, mu, allResults)
+
             # write output    
             with open(fname, "a+") as outputFile:
-                outputFile.write(str(n) + "," + str(k) + "," + str(gamma) + "," + str(mu) + "," + str(singleCost)
-                                                                    + "\n")
+                outputFile.write(str(n) + "," + str(k) + "," + str(gamma) + "," + str(mu) + "," + str(time) + ","
+                                                                    + str(singleCost) + "\n")
 
 if __name__ == "__main__":
     mu = 1
@@ -119,6 +125,6 @@ if __name__ == "__main__":
 
     # create header
     with open(output, "w+") as outputFile:
-        outputFile.write("n,k,gamma,mu,cost\n")
+        outputFile.write("n,k,gamma,mu,a,cost\n")
 
     p.map(solver, args)
