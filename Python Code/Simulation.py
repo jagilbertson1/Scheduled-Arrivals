@@ -1,12 +1,11 @@
 import csv
 import numpy as np
-import pandas as pd
 
 mu = 1
 N = 15
-gamma = 0.5
+gamma = 0.9
 
-numRuns = 100000
+numRuns = 10**6
 
 # store arrival times, service start and end times for each customer, run and schedule
 arrivalTime = np.zeros(shape = (2,numRuns,N))
@@ -55,29 +54,48 @@ for run in range(numRuns):
     # calculate arrival time of all N customers for static schedule
     arrivalTime[0,run] = np.append(0, np.cumsum(interarrivalStatic))    
     
-    # calculate time service starts and time service ends for each customer
-    # first customer
-    serviceStart[0,run,0] = arrivalTime[0,run,0]
-    serviceEnd[0,run,0] = serviceStart[0,run,0] + serviceTime[run,0]
+    # arrival time for first customer in dynamic schedule
+    arrivalTime[1,run,0] = interarrivalDynamic[(N, 0)]
+    
+    # calculate time service starts and time service ends for first customer
+    for sch in range(2):
+        serviceStart[sch,run,0] = arrivalTime[sch,run,0]
+        serviceEnd[sch,run,0] = serviceStart[sch,run,0] + serviceTime[run,0]
 
-    # all other customers
     for i in range(1, N):
-        serviceStart[0,run,i] = max(arrivalTime[0,run,i], serviceEnd[0,run,i-1])
-        serviceEnd[0,run,i] = serviceStart[0,run,i] + serviceTime[run,i]
+        # arrival time for customer i in dynamic schedule
+        arrivalTime[1,run,i] = arrivalTime[1,run,i-1] + \
+                                    interarrivalDynamic[(N-i, sum(serviceEnd[1,run,0:i] > arrivalTime[1,run,i-1]))]        
+        
+        # calculate time service starts and time service ends
+        for sch in range(2):
+            serviceStart[sch,run,i] = max(arrivalTime[sch,run,i], serviceEnd[sch,run,i-1])
+            serviceEnd[sch,run,i] = serviceStart[sch,run,i] + serviceTime[run,i]
 
     # calculate waiting time of each customer
     for i in range(N):
-        waitingTime[0,run,i] = serviceStart[0,run,i] - arrivalTime[0,run,i]
+        for sch in range(2):
+            waitingTime[sch,run,i] = serviceStart[sch,run,i] - arrivalTime[sch,run,i]
 
     # calculate total waiting time and total service time
-    totalWaitTime[0,run] = sum(waitingTime[0,run])
-    totalServiceTime[0,run] = serviceEnd[0,run,N-1]
+    for sch in range(2):
+        totalWaitTime[sch,run] = sum(waitingTime[sch,run])
+        totalServiceTime[sch,run] = serviceEnd[sch,run,N-1]
 
     # calculate total idle time
-    totalIdleTime[0,run] = totalServiceTime[0,run] - sum(serviceTime[run])
+    for sch in range(2):
+        totalIdleTime[sch,run] = totalServiceTime[sch,run] - sum(serviceTime[run])
     
     # calculate total cost
-    totalCost[0,run] = gamma * totalServiceTime[0,run] + (1 - gamma) * totalWaitTime[0,run]
+    for sch in range(2):
+        totalCost[sch,run] = gamma * totalServiceTime[sch,run] + (1 - gamma) * totalWaitTime[sch,run]
 
+print('For Static Schedule:')
 print('Expected Cost is ' + str(cost[0]))
 print('Mean Cost is ' + str(np.mean(totalCost[0])))
+
+print('')
+
+print('For Dynamic Schedule:')
+print('Expected Cost is ' + str(cost[1]))
+print('Mean Cost is ' + str(np.mean(totalCost[1])))
