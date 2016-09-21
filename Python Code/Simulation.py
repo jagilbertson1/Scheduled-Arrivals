@@ -1,11 +1,14 @@
+import os
 import csv
 import numpy as np
 
 mu = 1
 N = 15
-gamma = 0.9
+gamma = 0.5
 
 numRuns = 10**6
+
+outputName = "Simulation_Output.csv"
 
 # store arrival times, service start and end times for each customer, run and schedule
 arrivalTime = np.zeros(shape = (2,numRuns,N))
@@ -99,3 +102,53 @@ print('')
 print('For Dynamic Schedule:')
 print('Expected Cost is ' + str(cost[1]))
 print('Mean Cost is ' + str(np.mean(totalCost[1])))
+
+# delete output file if exists
+if os.path.exists(outputName):
+    os.remove(outputName)
+
+# create header
+header = ['schedule','run']
+
+for i in range(1, N + 1):
+    header += ['AT[' + str(i) + ']']
+
+for i in range(1, N + 1):
+    header += ['WT[' + str(i) + ']']
+
+header += ['TWT', 'TST', 'TIT', 'Cost']
+
+with open(outputName, "w+") as outputFile:
+    writer = csv.writer(outputFile)
+    writer.writerow(header)
+
+for sch in range(2):
+    for run in range(numRuns):
+        if (sch == 0):
+            row = ['static']
+        else:
+            row = ['dynamic']
+        
+        row += [run]        
+        
+        row += [arrivalTime[sch,run,i] for i in range(N)]
+        row += [waitingTime[sch,run,i] for i in range(N)]
+
+        row += [totalWaitTime[sch,run], totalServiceTime[sch,run], totalIdleTime[sch,run], totalCost[sch,run]]
+        
+        # write output    
+        with open(outputName, "a+") as outputFile:
+            writer = csv.writer(outputFile)
+            writer.writerow(row)
+
+"""
+Potential commands
+
+np.mean(totalCost[0] - totalCost[1])
+np.median(totalCost[0] - totalCost[1])
+np.percentile(totalCost[0] - totalCost[1], [25,75])
+np.mean(totalCost[1]>cost[1])
+np.array([np.mean([int(waitingTime[0,run,n] == 0) - int(waitingTime[1,run,n] == 0) for run in range(numRuns)]) for n in range(N)])
+np.array([np.mean([waitingTime[0,run,n] - waitingTime[1,run,n] == 0 for run in range(numRuns)]) for n in range(N)])
+interarrivalStatic - np.mean(np.diff(arrivalTime[1]), axis = 0)
+"""
