@@ -2,11 +2,15 @@ import os
 import csv
 import numpy as np
 
+# set seed
+seed = 1984
+np.random.seed(seed)
+
 mu = 1
 N = 15
 gamma = 0.5
 
-numRuns = 10**6
+numRuns = 10**4
 
 outputName = "Simulation_Output.csv"
 
