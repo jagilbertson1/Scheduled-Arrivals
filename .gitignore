@@ -15,3 +15,6 @@
 
 # Python Files
 *.pyc
+
+# Ignore Simulation Output File
+Simulation_Output.csv
