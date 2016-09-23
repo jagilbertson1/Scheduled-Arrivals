@@ -10,7 +10,7 @@ mu = 1
 N = 15
 gamma = 0.5
 
-numRuns = 10**4
+numRuns = 10**6
 
 outputName = "Simulation_Output.csv"
 
