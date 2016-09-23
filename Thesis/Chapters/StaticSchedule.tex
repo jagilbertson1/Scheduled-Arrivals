@@ -1,101 +1,54 @@
 \chapter{Static Schedule}
-\section{Aim}
-The aim is to choose a schedule that minimises the expected cost of the system. The expected cost is a linear combination of the total customers' waiting time and the server's idle time. The schedule is fixed and chosen at the start of service.
+This chapter largely follows the results of \citet{Pegden}. The aim is to derive a method for choosing an optimal static schedule. A static schedule is a sequence of $n$ customer arrival times $t_{1}, \ldots, t_{n}$ chosen at the start of service and fixed for the duration of service. 
 
-\section{Assumptions}
-To simplify this problem, need to make several assumptions:
-\begin{itemize}[nosep]
-	\item Service times are independent and identically distributed (iid)
-	\item Each service time has an exponential distribution with mean service time $\mu$
-	\item There is a single server
-	\item The queue operates on a first in, first out (FIFO) basis
-	\item Customers are punctual and arrive at their scheduled time
-\end{itemize}
-
-\section{List of Variables}
-\begin{tabularx}{\textwidth}{c c X}
-	$\mu$ & : & mean service time of each customer \\
-	$c_{W}$ & : & cost of total customers' waiting time per unit time \\
-	$c_{S}$ & : & cost of total server's availability time per unit time \\
-	$n$ & : & total number of customers \\
-	$w_{i}$ & : & expected waiting time of customer $i$ \\
-	$t_{1}$ & : & scheduled arrival time of the first customer \\
-	$x_{i}$ & : & interarrival time between customer $i$ and $(i + 1)$ \\
-	$x_{i}^{*}$ & : & optimal interarrival time between customer $i$ and $(i + 1)$ \\
-	$N_{i}$ & : & number of customers in the system immediately prior to the arrival of customer $i$ \\
-	$\phi (\mathbf{x})$ & : & the expected cost of the policy given by $\mathbf{x} = (x_{1}, \ldots, x_{n - 1})$
-\end{tabularx}
+For simplicity, these results assume the customer service times are independent and identically distributed (iid) and follow an exponential distribution with mean $\mu$. There is a single server. All customers are punctual and arrive at their scheduled arrival time.
 
 \section{Objective Function}
-These results largely follow the results presented by \citet{Pegden} with small notation changes so can be compared to the dynamic schedule presented later.
+The optimal schedule minimises the expected cost, which is a linear combination of the expected total customers' waiting time and total expected server availability time.
 
-The expected total customers' waiting time is the sum of the individual customer's expected waiting times.
+Denote the expected waiting time of customer $i$ as $w_{i}$. The expected total customers' waiting time is the sum of the individual customer's expected waiting times.
 \begin{equation}
 	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
 \end{equation}
 
-The expected total server availability time is the sum of customer $n$'s scheduled arrival time, the expected waiting time of customer $n$, and the expected service time of customer $n$.
+Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$. The expected total server availability time is the expected time from the start of service until the end of service. This the sum of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time.
 \begin{equation}
 	\mathbb{E} \Big[\text{total server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
 \end{equation}
 
-The objective function is a linear combination of the expected total customers' waiting time and the expected total server availability time.
+Denote $c_{W}$ and $c_{I}$ as the per unit time cost of the expected total customer's waiting time and the per unit time cost of the expected total server availability time respectively. The objective function to be minimised is thus,
 \begin{equation}
-	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (t_{1}, \mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 \end{equation}
 
-The first customer should obviously be scheduled for the start of service, so $t_{1} = 0$, which implies the objective function is:
-\begin{equation}
-	\phi (\mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
-\end{equation}
-
-Scale $\phi (\mathbf{x})$ by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$.
+The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$.
 \begin{equation}
 	\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 	\label{eqn:StaticObjective}
 \end{equation}
 
-\subsection{Expected Customer Waiting Times}
-Want to express the expected waiting time of customer $i$ as a function of the scheduled arrival time intervals $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. Just prior to the arrival of customer $i$, the number of customers in the system must be $\in \{ 0, \ldots, i - 1 \}$.
+The optimal static schedule is thus the interarrival times that minimise Equation~\ref{eqn:StaticObjective}
 
-Thus, the expected waiting time of customer $i$ is:
+\section{Expected Customer Waiting Times}
+We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
+
+Denote the number of customers in the system just prior to the arrival of customer $i$ as $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
 \begin{equation}
-	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \times \mathbb{P} (N_{i} = j) = \begin{cases} 0 & \text{where $i = 1$} \\ \sum_{j = 1}^{i - 1} (j \mu) \times \mathbb{P} (N_{i} = j) & \text{where $i \geq 2$} \end{cases}
+	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \mathbb{P} (N_{i} = j)
 	\label{eqn:StaticWaiting}
 \end{equation}
 
-As there are no customers in the system before the start of service:
+The probability of a given number of customers in the system can be expressed recursively. This probability depends on the number of departures from the system between the arrival of customer $(i - 1)$ and customer $i$. The number of departures is the minimum of $(N_{i - 1} + 1)$ and a Poisson random variable with mean $\frac{x_{i - 1}}{\mu}$.
+
+The full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is
 \begin{equation}
-	\mathbb{P} (N_{1} = 0) = 1
+	\mathbb{P} (N_{i} = j) = \begin{cases} 1 & \text{for $i = 1$, $j = 0$} \\
+	\sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} l!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}}\right] & \text{for $i \geq 2$, $j = 0$} \\
+	\sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \left[ \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}} \right] & \text{for $i \geq 2$, $j \geq 1$} \end{cases}
+	\label{eqn:StaticProbSystem}
 \end{equation}
 
-For $i \geq 2$, can express the probability of a given number of customers in the system recursively. First, consider the base case of no customers in the system just prior to the arrival of customer $i$.
-\begin{align*}
-	& \mathbb{P} (N_{i} = 0) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \mathbb{P} (N_{i} = 0 \ | \ N_{i - 1} = k - 1) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \\
-	& \ \ \ \ \ \ \times \mathbb{P} \Big( \text{time between $(i - 1)$-th and $i$-th arrival allows for $\geq k$ departures} \Big) \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ \sum_{l = k}^{\infty} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] \\
-	= & \ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right]
-\end{align*}
-
-Next, calculate the probability for the other cases where $j \geq 1$.
-\begin{align*}
-	& \mathbb{P} (N_{i} = j) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \mathbb{P} (N_{i} = j \ | \ N_{i - 1} = j + k - 1) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \\
-	& \ \ \ \ \ \ \times \mathbb{P} \Big( \text{$k$ departures from queue between $(i - 1)$-th and $i$-th arrival} \Big) \\
-	= & \ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \frac{x_{i - 1}^{k}}{\mu^{k} \times k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right)
-\end{align*}
-
-Therefore, the full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is given by:
-\begin{multline}
-	\mathbb{P} (N_{i} = j) \\
-	= \begin{cases} 1 & \text{where $i = 1$, $j = 0$} \\ \sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \times \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} \times l!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) \right] & \text{where $i \geq 2$, $j = 0$} \\ \sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \times \frac{x_{i - 1}^{k}}{\mu^{k} \times k!} \exp \left( \frac{- x_{i - 1}}{\mu} \right) & \text{where $i \geq 2$, $j \geq 1$} \end{cases}
-	\label{eqn:StaticProbSystem}
-\end{multline}
-
-\subsection{Computing the Objective Function}
+\section{Computing the Objective Function}
 \citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}$ and parameters $\gamma$ and $\mu$.
 \begin{algorithm}[htb]
 \caption{Return $\phi (\mathbf{x})$ for a given vector $\mathbf{x}$, $\gamma$ and $\mu$}
@@ -118,20 +71,20 @@ Therefore, the full recursive expression for the probability of $j$ customers in
 \section{Example Models}
 \subsection{Model for Two Customers}
 \label{sec:StaticTwoCust}
-We consider the simplest case of this model where there are two customers to be scheduled (i.e., $n = 2$). As the first customer is scheduled to arrive at the start of service, the only unknown variable is the time interval between the first and second customers' arrivals (i.e., $x_{1}$).
+We consider the simplest case of this model where there are two customers to be scheduled (i.e., $n = 2$). As the first customer is scheduled to arrive at the start of service, the only unknown variable is the optimal interarrival time between the first and second customer (i.e., $x_{1}$).
 
-By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are:
+By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are
 \begin{align}
 	w_{1} & = 0 \\
-	w_{2} & = \mu \exp \left( \frac{- x_{1}}{\mu} \right)
+	w_{2} & = \mu \mathrm{e}^{\frac{- x_{1}}{\mu}}
 \end{align}
 
-By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is:
+By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is given by
 \begin{equation}
 	\phi (x_{1}) = \mu \left[ \gamma + \exp \left( \frac{- x_{1}}{\mu} \right) \right] + \gamma x_{1}
 \end{equation}
 
-This objective function is convex as:
+This objective function is convex as
 \begin{equation}
 	\forall x_{1} \ \ \phi'' (x_{1}) = \frac{1}{\mu} \exp \left( \frac{- x_{1}}{\mu} \right) > 0
 \end{equation}
@@ -148,68 +101,12 @@ Therefore, the optimal policy is:
 
 As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
-\subsection{Model for Three Customers}
-The next simplest case is where there are three customers to be scheduled (i.e., $n = 3$). In this case, there are two unknown variables $x_{1}$ and $x_{2}$. Without loss of generalisation, can let $\mu = 1$.
+Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. \citet{Pegden} proved that the objective function $\phi (\mathbf{x})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
-By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the three customers are:
-\begin{align}
-	w_{1} & = 0 \\
-	w_{2} & = \exp (- x_{1}) \\
-	w_{3} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big[ 1 + x_{2} + \exp (x_{1}) \Big]
-\end{align}
+\subsection{Model for 15 Customers}
+The more interesting case concerns scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
-By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is:
-\begin{multline}
-	\phi (x_{1}, x_{2}) = \exp \Big( - (x_{1} + x_{2}) \Big) \Bigg[ 1 + x_{2} + \exp (x_{1}) \\
-	+ \exp (x_{2}) \Big( 1 - \gamma + \gamma (1 + x_{1} + x_{2}) \exp (x_{1}) \Big) \Bigg]
-\end{multline}
-
-This objective function is convex for $x_{1}, x_{2} \geq 0$ and $0 \leq \gamma \leq 1$ as:
-\begin{align}
-	\frac{\partial^{2} \phi}{\partial x_{1}^{2}} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big( 1 + x_{2} + \exp (x_{2}) (1 - \gamma) \Big) > 0 \\
-	\frac{\partial^{2} \phi}{\partial x_{2}^{2}} & = \exp \Big( - (x_{1} + x_{2}) \Big) \Big( x_{2} + \big[ \exp (x_{1}) - 1 \big] \Big) \geq 0 \\
-	\frac{\partial^{2} \phi}{\partial x_{1} \partial x_{2}} & = x_{2} \exp \Big( - (x_{1} + x_{2}) \Big) \geq 0
-\end{align}
-
-In a similar way to Section~\ref{sec:StaticTwoCust}, due to the convexity of the objective function, the optimal policy that minimises $\phi (x_{1}, x_{2})$ can be found by jointly solving:
-\begin{align}
-	\frac{\partial \phi}{\partial x_{1}} & = 0 \implies \exp (x_{2}) \Big( \gamma - 1 + \gamma \exp (x_{2}) \Big) = x_{2} + 1 \\
-	\frac{\partial \phi}{\partial x_{2}} & = 0 \implies \exp (x_{1}) \Big( \gamma \exp (x_{2}) - 1 \Big) = x_{2}
-\end{align}
-
-Unfortunately, as \citet{Pegden} found, no algebraic solution for $(x_{1}, x_{2})$ exists to these equations, so they need to be solved numerically.
-
-\begin{table}[htb]
-\centering
-\begin{tabular}{|c|c|c|c|} \hline
- $\gamma$ &  $x_{1}^{*}$ &  $x_{2}^{*}$ &  $\phi (\mathbf{x}^{*})$ \\ \hline
-     1.00 &     0.00 &     0.00 &                 3.00 \\
-     0.95 &     0.07 &     0.30 &                 2.99 \\
-     0.90 &     0.14 &     0.41 &                 2.96 \\
-     0.85 &     0.22 &     0.50 &                 2.92 \\
-     0.80 &     0.30 &     0.58 &                 2.87 \\
-     0.75 &     0.39 &     0.65 &                 2.80 \\
-     0.70 &     0.48 &     0.73 &                 2.73 \\
-     0.65 &     0.58 &     0.80 &                 2.65 \\
-     0.60 &     0.68 &     0.88 &                 2.55 \\
-     0.55 &     0.78 &     0.96 &                 2.44 \\
-     0.50 &     0.89 &     1.05 &                 2.32 \\
-     0.45 &     1.01 &     1.15 &                 2.19 \\
-     0.40 &     1.13 &     1.26 &                 2.04 \\
-     0.35 &     1.27 &     1.38 &                 1.88 \\
-     0.30 &     1.43 &     1.51 &                 1.70 \\
-     0.25 &     1.61 &     1.68 &                 1.51 \\
-     0.20 &     1.83 &     1.87 &                 1.29 \\
-     0.15 &     2.10 &     2.13 &                 1.05 \\
-     0.10 &     2.48 &     2.49 &                 0.78 \\
-     0.05 &     3.12 &     3.13 &                 0.46 \\ \hline
-\end{tabular}
-\caption{Optimal scheduled interarrival times for $n = 2$ customers with mean service time $\mu = 1$ over various values of $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$ found using \texttt{scipy.optimize.minimize} in Python. For $\mu \neq 1$, these solutions are the optimal values of $\mu x_{1}$ and $\mu x_{2}$.}
-\label{Static_2_Cust_Pedgen}
-\end{table}
-
-Instead of finding an algebraic solution, can solve using $\texttt{scipy.optimize.minimize}$ in Python to find a numeric solution for the constrained optimization problem. Table~\ref{Static_2_Cust_Pedgen} displays the optimal scheduled interarrival times for $n = 2$ (i.e., $x_{1}^{*}$ and $x_{2}^{*}$) for various values of $\gamma \in [0.05, 1]$. These results agree with the results found by \citet{Pegden}.
-
+Minimising the objective function is a constrained optimization problem. A numeric solution can be found using $\texttt{scipy.optimize.minimize}$ in Python.
 
 
 
