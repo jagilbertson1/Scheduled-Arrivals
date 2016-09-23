@@ -13,17 +13,16 @@
 % main page style
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[LE,RO]{Valuing Queues with a Dynamic Schedule}
 \fancyhead[RE,LO]{\nouppercase{\leftmark}}
 \fancyfoot{}
-\fancyfoot[RE,LO]{\thepage}
+\fancyfoot[C]{\thepage}
 
 % chapter page style
 \fancypagestyle{chapter} {
 	\fancyhead{}
 	\renewcommand{\headrulewidth}{0pt}
 	\fancyfoot{}
-	\fancyfoot[RE,LO]{\thepage}
+	\fancyfoot[C]{\thepage}
 }
 
 % redefine chapter command
@@ -78,7 +77,15 @@
 
 \input{Chapters/Title}
 
+\null
+\thispagestyle{empty}
+\addtocounter{page}{-1}
+
 \input{Chapters/Declaration}
+
+\null
+\thispagestyle{empty}
+\addtocounter{page}{-1}
 
 \input{Chapters/Abstract}
 
