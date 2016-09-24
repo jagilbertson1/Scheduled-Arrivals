@@ -6,6 +6,7 @@
 *.synctex.gz
 *.toc
 *.fls
+*.out
 
 # Latex Bibliography Files
 *.bbl
