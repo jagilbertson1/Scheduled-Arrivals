@@ -1,8 +1,7 @@
 \documentclass[12pt, twoside]{report}
 
-% a4 paper (margins of 300mm don't make sense)
-%\usepackage[a4paper, width = 150mm, top = 25mm, bottom = 25mm, bindingoffset = 6mm]{geometry}
-\usepackage[a4paper, bindingoffset = 2mm]{geometry}
+% a4 paper
+\usepackage[a4paper, margin = 30mm, bindingoffset = 6mm]{geometry}
 
 % set 1.5 line spacing
 \usepackage[onehalfspacing]{setspace}
@@ -69,6 +68,14 @@
 \usepackage{bbm}
 \usepackage{multirow}
 
+% empty page
+\newcommand*\emptypage{
+    \newpage
+    \null
+    \thispagestyle{empty}
+    \newpage
+}
+
 % define argmin and argmax
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -77,17 +84,15 @@
 
 \input{Chapters/Title}
 
-\null
-\thispagestyle{empty}
-\addtocounter{page}{-1}
+\emptypage
 
 \input{Chapters/Declaration}
 
-\null
-\thispagestyle{empty}
-\addtocounter{page}{-1}
+\emptypage
 
 \input{Chapters/Abstract}
+
+\emptypage
 
 \tableofcontents
 
