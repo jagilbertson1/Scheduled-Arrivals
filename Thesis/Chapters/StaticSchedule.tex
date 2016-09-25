@@ -2,7 +2,7 @@
 \label{chap:Static}
 This chapter largely follows the results of \citet{Pegden}. The aim is to derive a method for choosing an optimal static schedule. A static schedule is a sequence of $n$ customer arrival times $t_{1}, \ldots, t_{n}$ chosen at the start of service and fixed for the duration of service. 
 
-For simplicity, these results assume the customer service times are independent and identically distributed (iid) and follow an exponential distribution with mean $\mu$. There is a single server. All customers are punctual and arrive at their scheduled arrival time.
+For simplicity, these results assume the customer service times are independent and identically distributed (iid) exponential random variables with mean $\mu$. There is a single server. All customers are punctual and arrive at their scheduled arrival time.
 
 \section{Objective Function}
 The optimal schedule minimises the expected cost, which is a linear combination of the expected total customers' waiting time and total expected server availability time.
@@ -30,7 +30,7 @@ The first customer should obviously be scheduled for the start of service so $t_
 
 The optimal static schedule is thus the interarrival times that minimise Equation~\ref{eqn:StaticObjective}
 
-\section{Expected Customer Waiting Times}
+\section{Expected Waiting Time}
 We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
 
 Denote the number of customers in the system just prior to the arrival of customer $i$ as $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
@@ -108,6 +108,18 @@ Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for
 The more interesting case concerns scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
 Minimising the objective function is a constrained optimization problem. A numeric solution can be found using $\texttt{scipy.optimize.minimize}$ in Python.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Gamma.eps}
+	\caption{}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Num.eps}
+	\caption{}
+\end{figure}
 
 
 
