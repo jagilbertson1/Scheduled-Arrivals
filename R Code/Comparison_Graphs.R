@@ -27,7 +27,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Comparison_Line
          ggplot(data = data, aes(x = factor(n), y = cost, group = factor(schedule), colour = factor(schedule))) +
          stat_summary(fun.y = "mean", geom = "point", size = 3) +
          stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
-         labs(x = "Number of Customers (N)", y = "Cost of Schedule") +
+         labs(x = "Number of Customers (N)", y = "Expected Cost of Schedule") +
          guides(colour = guide_legend(override.aes = list(shape = 15, size = 10))) + 
          coord_cartesian(ylim = c(0, 15)) +
          theme_bw() +
@@ -55,7 +55,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Saving_Lin
          ggplot(data = costDiff, aes(x = factor(gamma), y = saving, group = n, colour = n)) +
          stat_summary(fun.y = "mean", geom = "point", size = 3) +
          stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
-         labs(x = expression(bold("Gamma"~(gamma))), y = expression(bold("Percentage Cost Saving"~(Delta~C)))) +
+         labs(x = expression(bold("Gamma"~(gamma))), y = expression(bold("Expected Percentage Cost Saving"~(Delta~C)))) +
          guides(color = guide_colorbar(title = "Number of Customers    ", nbin = 1000, ticks = FALSE, barwidth = 40)) +
          scale_colour_gradient(limits = c(0,15), breaks = 0:15) +
          coord_cartesian(ylim = c(0, 15)) +
