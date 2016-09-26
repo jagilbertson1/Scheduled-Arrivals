@@ -19,7 +19,7 @@ def transProb(a, k, j, mu):
     elif (k >= 1 and j == 1):
         return cdf(a, k, mu)
     
-    elif (k >= 1 and 2 <= j and j <= k):
+    elif (k >= 2 and 2 <= j and j <= k):
         return cdf(a, k - j + 1, mu) - cdf(a, k - j + 2, mu)
     
     elif (k >= 1 and j == (k + 1)):
@@ -42,11 +42,8 @@ def transCost(a, k, j, gamma, mu):
     elif (k >= 2 and j == 1):
         return (1 - gamma) * condExp(a, k, mu) * (k - 1) / 2 + gamma * a
     
-    elif (k >= 2 and 2 <= j and j <= k):
-        return (1 - gamma) * (a * (j - 2) + condExp(a, k - (j - 1), mu) * (k - (j - 2)) / 2) + gamma * a
-    
-    elif (k >= 2 and j == (k + 1)):
-        return (1 - gamma) * a * (j - 2) + gamma * a
+    elif (k >= 2 and 2 <= j and j <= k + 1):
+        return (1 - gamma) * a * (k + j - 3) / 2 + gamma * a
 
 def cost(a, n, k, gamma, mu, computedDict):
     # set a to zero if try negative a in optimisation code
@@ -107,7 +104,7 @@ def solver(args):
 
 if __name__ == "__main__":
     mu = 1
-    N = 20
+    N = 15
 
     # output file name
     output = "Dynamic_Output.csv"
