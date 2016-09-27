@@ -24,7 +24,7 @@ Denote $c_{W}$ and $c_{I}$ as the per unit time cost of the expected total custo
 
 The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$.
 \begin{equation}
-	\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (\mathbf{x}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 	\label{eqn:StaticObjective}
 \end{equation}
 
