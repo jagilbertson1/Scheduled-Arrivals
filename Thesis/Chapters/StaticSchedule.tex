@@ -19,19 +19,19 @@ Instead of solving for the customer arrival times, it is easier to solve for the
 
 Denote $c_{W}$ and $c_{I}$ as the per unit time cost of the expected total customer's waiting time and the per unit time cost of the expected total server availability time respectively. The objective function to be minimised is thus,
 \begin{equation}
-	\phi (t_{1}, \mathbf{x}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (t_{1}, \mathbf{x}_{n}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 \end{equation}
 
 The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$.
 \begin{equation}
-	\phi (\mathbf{x}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (\mathbf{x}_{n}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 	\label{eqn:StaticObjective}
 \end{equation}
 
 The optimal static schedule is thus the interarrival times that minimise Equation~\ref{eqn:StaticObjective}
 
 \section{Expected Waiting Time}
-We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
+We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}_{n}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
 
 Denote the number of customers in the system just prior to the arrival of customer $i$ as $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
 \begin{equation}
@@ -50,11 +50,11 @@ The full recursive expression for the probability of $j$ customers in the system
 \end{equation}
 
 \section{Computing the Objective Function}
-\citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}$ and parameters $\gamma$ and $\mu$.
+\citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}_{n}$ and parameters $\gamma$ and $\mu$.
 \begin{algorithm}[htb]
-\caption{Return $\phi (\mathbf{x})$ for a given vector $\mathbf{x}$, $\gamma$ and $\mu$}
+\caption{Return $\phi (\mathbf{x}_{n})$ for a given vector $\mathbf{x}_{n}$, $\gamma$ and $\mu$}
 \begin{algorithmic}
-\Function{ObjectiveFunction}{$\mathbf{x}$,$\gamma$,$\mu$}
+\Function{ObjectiveFunction}{$\mathbf{x}_{n}$,$\gamma$,$\mu$}
     \For {$i = 1, 2, \ldots, n$}
     	\For {$j = 0, 1, \ldots, (i - 1)$}
     		\State compute $\mathbb{P} (N_{i} = j)$ by Equation~\ref{eqn:StaticProbSystem}
@@ -63,7 +63,7 @@ The full recursive expression for the probability of $j$ customers in the system
     \For {$i = 1, 2, \ldots, n$}
     	\State compute $w_{i}$ by Equation~\ref{eqn:StaticWaiting}
     \EndFor
-    \State \Return $\phi (\mathbf{x})$ computed by Equation~\ref{eqn:StaticObjective}
+    \State \Return $\phi (\mathbf{x}_{n})$ computed by Equation~\ref{eqn:StaticObjective}
 \EndFunction
 \end{algorithmic}
 \label{alg:StaticObjective}
@@ -104,24 +104,36 @@ Therefore, the optimal policy is:
 
 As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
-Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. \citet{Pegden} proved that the objective function $\phi (\mathbf{x})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
+Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. \citet{Pegden} proved that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
 \subsection{Model for 15 Customers}
-The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
+The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
 Minimising the objective function is a constrained optimization problem. A numeric solution can be found using $\texttt{scipy.optimize.minimize}$ in Python.
 
+Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{14}^{*})$ for scheduling $15$ customers with a mean service time $\mu = 1$ for various values of $\gamma$.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Gamma.eps}
-	\caption{}
+	\caption{Optimal interarrival time for each of the $14$ customers after the first customer. Figure generated assuming $\mu = 1$. Each line is plotted for a fixed value of $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$. The darkest line is for $\gamma = 0.1$. As $\gamma$ increases, the lines become lighter.}
+	\label{fig:Static_Time_Gamma}
 \end{figure}
 
+The optimal interarrival time increases for the initial few customers, remains constant for the majority of customers, and then it decreases for the last few customers. This is the dome-shape that was observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that was first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
+
+The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1}^{*} = \ldots = x_{n - 1}^{*}$). \citet{Stein} justifies this simplification by Theorem 1.1 of \citet{Hajek}. The theorem states that the average customer waiting time for an exponential server queue will be at a minimum for constant interarrival times. This guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$), but does not imply that it's optimal for $\gamma > 0$.
+
+The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. Instead, Figure~\ref{fig:Static_Time_Num} suggests an alternative simplfication to reduce computation time.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Num.eps}
-	\caption{}
+	\caption{Optimal interarrival time for each of the customers after the first customer. Figure generated assuming $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$ and $\mu = 1$. Each line is plotted for a different total number of customers. The lightest line is for $n = 15$. As $n$ decreases, the lines become darker.}
+	\label{fig:Static_Time_Num}
 \end{figure}
+
+Figure~\ref{fig:Static_Time_Num} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{n - 1}^{*})$ for $n \in \{ 2, \ldots, 15 \}$ and $\gamma = 0.5$ fixed. All the plotted curves display the dome-shape as before. If we consider a fixed customer position, we observe that the optimal interarrival time $x_{i}^{*}$ converges reasonably quickly to a constant value as $n$ increases.
+
+It may be possible to decompose the static problem into a series of subproblems that can be solved individually. Rather than solving for all of $\mathbf{x}_{1}^{*}, \ldots, \mathbf{x}_{15}^{*}$ separately, it might be possible to use the previously computed $\mathbf{x}_{1}^{*}, \ldots, \mathbf{x}_{i - 1}^{*}$ to efficiently solve for $\mathbf{x}_{i}^{*}$.
 
 
 

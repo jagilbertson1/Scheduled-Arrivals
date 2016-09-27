@@ -1,8 +1,8 @@
 \chapter{Schedule Comparison}
 \section{Expected Cost Comparison}
-Suppose that there are $N$ customers to be scheduled. In the case of the static schedule, the optimal policy is given by $\mathbf{x}^{*} = (x_{1}^{*}, \ldots, x_{N - 1}^{*})$ and the expected cost of the optimal policy is given by $\phi (\mathbf{x}^{*})$. In the case of the dynamic schedule, the initial state is $(N, 0)$, so the expected cost of the optimal policy is given by $C_{N}^{*} (0)$.
+Suppose that there are $N$ customers to be scheduled. In the case of the static schedule, the optimal policy is given by $\mathbf{x}_{N}^{*} = (x_{1}^{*}, \ldots, x_{N - 1}^{*})$ and the expected cost of the optimal policy is given by $\phi (\mathbf{x}_{N}^{*})$. In the case of the dynamic schedule, the initial state is $(N, 0)$, so the expected cost of the optimal policy is given by $C_{N}^{*} (0)$.
 
-Clearly, as the dynamic schedule has the ability to match the optimal policy for the static schedule, $C_{N}^{*} (0) \leq \phi (\mathbf{x}^{*})$ (i.e., the dynamic schedule cannot have greater expected cost) regardless of the number of customers to be scheduled. As found in Chapter~\ref{chap:Dynamic}, equality is attained for the cases where $N \in \{ 0, 1, 2 \}$ as the schedules are identical in those cases.
+Clearly, as the dynamic schedule has the ability to match the optimal policy for the static schedule, $C_{N}^{*} (0) \leq \phi (\mathbf{x}_{N}^{*})$ (i.e., the dynamic schedule cannot have greater expected cost) regardless of the number of customers to be scheduled. As found in Chapter~\ref{chap:Dynamic}, equality is attained for the cases where $N \in \{ 0, 1, 2 \}$ as the schedules are identical in those cases.
 
 Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both the static and dynamic schedules against the number of customers to be scheduled ($N$) assuming $\gamma = 0.5$ and $\mu = 1$.
 \begin{figure}[htb]
@@ -17,7 +17,7 @@ As expected, the costs are identical for $N \in \{ 0, 1, 2 \}$. For all other $N
 \section{Expected Percentage Cost Saving}
 Define the expected percentage cost saving $\Delta C$ (i.e., the expected percentage difference between the cost of the static schedule and the dynamic schedule).
 \begin{equation}
-	\Delta C \coloneqq 100 \times \frac{\phi (\mathbf{x}^{*}) - C_{N}^{*} (0)}{\phi (\mathbf{x}^{*})}
+	\Delta C \coloneqq 100 \times \frac{\phi (\mathbf{x}_{N}^{*}) - C_{N}^{*} (0)}{\phi (\mathbf{x}_{N}^{*})}
 \end{equation}
 
 Figure~\ref{Graph_Cost_Saving} plots the percentage cost saving by using the dynamic schedule as opposed to the static schedule ($\Delta C$) against $\gamma$ for various values of the number of customers ($N$) to be scheduled. 
