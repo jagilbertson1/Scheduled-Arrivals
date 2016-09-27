@@ -70,15 +70,17 @@ The full recursive expression for the probability of $j$ customers in the system
 \end{algorithm}
 
 \section{Example Models}
-\subsection{Model for Two Customers}
+\subsection{Model for 2 Customers}
 \label{sec:StaticTwoCust}
 We consider the simplest case of this model where there are two customers to be scheduled (i.e., $n = 2$). As the first customer is scheduled to arrive at the start of service, the only unknown variable is the optimal interarrival time between the first and second customer (i.e., $x_{1}$).
 
 By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are
-\begin{align}
-	w_{1} & = 0 \\
-	w_{2} & = \mu \mathrm{e}^{\frac{- x_{1}}{\mu}}
-\end{align}
+\begin{equation}
+	\begin{split}
+		w_{1} & = 0 \\
+		w_{2} & = \mu \mathrm{e}^{\frac{- x_{1}}{\mu}}
+	\end{split}
+\end{equation}
 
 By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is given by
 \begin{equation}
@@ -105,7 +107,7 @@ As the server availability cost increases relative to the customer waiting cost 
 Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. \citet{Pegden} proved that the objective function $\phi (\mathbf{x})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
 \subsection{Model for 15 Customers}
-The more interesting case concerns scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
+The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
 Minimising the objective function is a constrained optimization problem. A numeric solution can be found using $\texttt{scipy.optimize.minimize}$ in Python.
 
