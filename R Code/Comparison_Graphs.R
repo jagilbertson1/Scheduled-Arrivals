@@ -56,7 +56,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Saving_Lin
          stat_summary(fun.y = "mean", geom = "point", size = 3) +
          stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
          labs(x = expression(bold("Gamma"~(gamma))), y = expression(bold("Expected Percentage Cost Saving"~(Delta~C)))) +
-         guides(color = guide_colorbar(title = "Number of Customers    ", nbin = 1000, ticks = FALSE, barwidth = 40)) +
+         guides(color = guide_colorbar(title = "Number of Customers (N)    ", nbin = 1000, ticks = FALSE, barwidth = 40)) +
          scale_colour_gradient(limits = c(0,15), breaks = 0:15) +
          coord_cartesian(ylim = c(0, 15)) +
          theme_bw() +
