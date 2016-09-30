@@ -123,17 +123,7 @@ The optimal interarrival time increases for the initial few customers, remains c
 
 The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1}^{*} = \ldots = x_{n - 1}^{*}$). \citet{Stein} justifies this simplification by Theorem 1.1 of \citet{Hajek}. The theorem states that the average customer waiting time for an exponential server queue will be at a minimum for constant interarrival times. This guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$), but does not imply that it's optimal for $\gamma > 0$.
 
-The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. Instead, Figure~\ref{fig:Static_Time_Num} suggests an alternative simplfication to reduce computation time.
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Num.eps}
-	\caption{Optimal interarrival time for each of the customers after the first customer. Figure generated assuming $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$ and $\mu = 1$. Each line is plotted for a different total number of customers. The lightest line is for $n = 15$. As $n$ decreases, the lines become darker.}
-	\label{fig:Static_Time_Num}
-\end{figure}
-
-Figure~\ref{fig:Static_Time_Num} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{n - 1}^{*})$ for $n \in \{ 2, \ldots, 15 \}$ and $\gamma = 0.5$ fixed. All the plotted curves display the dome-shape as before. If we consider a fixed customer position, we observe that the optimal interarrival time $x_{i}^{*}$ converges reasonably quickly to a constant value as $n$ increases.
-
-It may be possible to decompose the static problem into a series of subproblems that can be solved individually. Rather than solving for all of $\mathbf{x}_{1}^{*}, \ldots, \mathbf{x}_{15}^{*}$ separately, it might be possible to use the previously computed $\mathbf{x}_{1}^{*}, \ldots, \mathbf{x}_{i - 1}^{*}$ to efficiently solve for $\mathbf{x}_{i}^{*}$.
+The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented next. Thus, this simplification is not pursued here.
 
 
 
