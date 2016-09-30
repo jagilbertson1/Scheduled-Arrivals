@@ -30,7 +30,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Hist_Stati
          ggplot(data = static, aes(static$Cost)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(6, 30, by = 0.5), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(static$Cost), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(static$Cost,0.025), quantile(static$Cost,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(static$Cost,0.25), quantile(static$Cost,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Static Schedule Cost', y = 'Frequency') +
          scale_x_continuous(breaks = 2*(3:15)) +
@@ -47,7 +47,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Hist_Dynam
          ggplot(data = dynamic, aes(dynamic$Cost)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(6, 30, by = 0.5), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(dynamic$Cost), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(dynamic$Cost,0.025), quantile(dynamic$Cost,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(dynamic$Cost,0.25), quantile(dynamic$Cost,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Dynamic Schedule Cost', y = 'Frequency') +
          scale_x_continuous(breaks = 2*(3:15)) +
@@ -64,7 +64,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Hist_Diff.
          ggplot(data = diff, aes(diff$Cost)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(-4, 8, by = 0.25), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(diff$Cost), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(diff$Cost,0.025), quantile(diff$Cost,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(diff$Cost,0.25), quantile(diff$Cost,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Difference in Schedule Cost', y = 'Frequency') +
          scale_x_continuous(breaks = -4:8) +
@@ -82,7 +82,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/WT_Hist_Diff.ep
          ggplot(data = diff, aes(diff$TWT/15)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(-0.4, 1, by = 0.025), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(diff$TWT/15), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(diff$TWT/15,0.025), quantile(diff$TWT/15,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(diff$TWT/15,0.25), quantile(diff$TWT/15,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Difference in Average Customer Waiting Time', y = 'Frequency') +
          scale_x_continuous(breaks = (-2:5)/5) +
@@ -100,7 +100,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/TST_Hist_Static
          ggplot(data = static, aes(static$TST)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(10, 30, by = 0.5), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(static$TST), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(static$TST,0.025), quantile(static$TST,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(static$TST,0.25), quantile(static$TST,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Total Service Time of Static Schedule', y = 'Frequency') +
          scale_x_continuous(breaks = 2*(5:15)) +
@@ -117,46 +117,11 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/TST_Hist_Dynami
          ggplot(data = dynamic, aes(dynamic$TST)) +
          geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(10, 30, by = 0.5), col = "black", fill = "#56B4E9") +
          geom_vline(xintercept = median(dynamic$TST), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(dynamic$TST,0.025), quantile(dynamic$TST,0.975)), colour = "#0072B2",
+         geom_vline(xintercept = c(quantile(dynamic$TST,0.25), quantile(dynamic$TST,0.75)), colour = "#0072B2",
                     linetype = 'longdash', size = 1.5) +
          labs(x = 'Total Service Time of Dynamic Schedule', y = 'Frequency') +
          scale_x_continuous(breaks = 2*(5:15)) +
          coord_cartesian(ylim = c(0, 0.25)) +
-         theme_bw() +
-         theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
-               axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
-               axis.title.y = element_text(face = "bold", size = 28, margin = margin(0, 20, 0, 20)))
-)
-
-# total idle time histograms
-ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/TIT_Hist_Static.eps",
-       width = 20, height = 10,
-       plot =
-         ggplot(data = static, aes(static$TIT)) +
-         geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(0, 18, by = 0.5), col = "black", fill = "#56B4E9") +
-         geom_vline(xintercept = median(static$TIT), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(static$TIT,0.025), quantile(static$TIT,0.975)), colour = "#0072B2",
-                    linetype = 'longdash', size = 1.5) +
-         labs(x = 'Total Idle Time of Static Schedule', y = 'Frequency') +
-         scale_x_continuous(breaks = 2*(0:9)) +
-         coord_cartesian(ylim = c(0, 0.15)) +
-         theme_bw() +
-         theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
-               axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
-               axis.title.y = element_text(face = "bold", size = 28, margin = margin(0, 20, 0, 20)))
-)
-
-ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/TIT_Hist_Dynamic.eps",
-       width = 20, height = 10,
-       plot =
-         ggplot(data = dynamic, aes(dynamic$TIT)) +
-         geom_histogram(aes(y=..count../sum(..count..)), breaks = seq(0, 18, by = 0.5), col = "black", fill = "#56B4E9") +
-         geom_vline(xintercept = median(dynamic$TIT), colour = "black", size = 2.5) +
-         geom_vline(xintercept = c(quantile(dynamic$TIT,0.025), quantile(dynamic$TIT,0.975)), colour = "#0072B2",
-                    linetype = 'longdash', size = 1.5) +
-         labs(x = 'Total Idle Time of Dynamic Schedule', y = 'Frequency') +
-         scale_x_continuous(breaks = 2*(0:9)) +
-         coord_cartesian(ylim = c(0, 0.15)) +
          theme_bw() +
          theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
                axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
