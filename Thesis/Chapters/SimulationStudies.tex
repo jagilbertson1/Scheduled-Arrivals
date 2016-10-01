@@ -1,10 +1,11 @@
 \chapter{Simulation Studies}
+\label{chap:Simulation}
 The previous chapter compared the static and dynamic schedules in terms of the expected cost of each schedule. We found for $15$ customers, the dynamic schedule is about $5 - 10 \%$ better than the static schedule depending on the value of $\gamma$. However, this does not provide any information about the other properties of each schedule. For example, one of the scheduled could have a greater variability in customer waiting times.
 
 To understand each schedule more fully, we'll use a simulation study. We simulated a million runs and measured the performance of both the static and dynamic schedules on each run. Each run involved simulating the service times of the $15$ customers assuming $\mu = 1$. All the simulations were completed assuming $\gamma = 0.5$.
 
 \section{Schedule Cost}
-The mean costs of the static and dynamic schedule were $15.05$ and $13.55$ respectively. As expected, these mean costs match closely the expected costs of the schedules.Figure~\ref{fig:Two_Cost} plots the histograms of the costs of the static and dynamic schedules for each run of the simulation.
+The mean costs of the static and dynamic schedule were $15.05$ and $13.55$ respectively. As expected, these mean costs match closely the expected costs of the schedules. Figure~\ref{fig:Two_Cost} plots the histograms of the costs of the static and dynamic schedules for each run of the simulation.
 \begin{figure}[htb]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
@@ -17,7 +18,7 @@ The mean costs of the static and dynamic schedule were $15.05$ and $13.55$ respe
 		\includegraphics[width=\textwidth]{Cost_Hist_Dynamic.eps}
 		\caption{}
 	\end{subfigure}
-	\caption{Histogram plot of the costs of the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartile.}
+	\caption{Histogram plot of the costs of the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartiles.}
 	\label{fig:Two_Cost}
 \end{figure}
 
@@ -27,11 +28,11 @@ Figure~\ref{fig:Diff_Cost} plots the histogram of the difference in costs betwee
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Cost_Hist_Diff.eps}
-	\caption{Histogram plot of the cost of the static schedule minus the cost of the dynamic schedule for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartile.}
+	\caption{Histogram plot of the cost of the static schedule minus the cost of the dynamic schedule for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartiles.}
 	\label{fig:Diff_Cost}
 \end{figure}
 
-The $25$-th percentile of the difference in cost is $0.35$. For more than $75 \%$ of runs, the static schedule has a larger cost than the dynamic schedule. The $75$-th percentile is $2.13$ (i.e., more than twice the mean service time). For a large proportion of the runs, the dynamic schedule significantly outperforms the static schedule.
+While the expected cost of the static schedule is greater than the expected cost of the dynamic schedule, the static schedule outperforms the dynamic schedule for a proportion of the simulation runs. This is indicated by a negative cost difference in the plotted histogram. The $25$-th percentile of the difference in cost is $0.35$. For more than $75 \%$ of runs, the static schedule has a larger cost than the dynamic schedule. The $75$-th percentile is $2.13$ (i.e., more than twice the mean service time). For a large proportion of the runs, the dynamic schedule significantly outperforms the static schedule.
 
 \section{Customer Arrival Times}
 We have now observed that the dynamic schedule performs better than the static schedule both in expectation and for the majority of the simulation runs. The next step is to attempt to understand how the dynamic schedule is able to outperform the static schedule. Figure~\ref{fig:Avg_Arrival} plots the average arrival time for each of the $15$ customers for each schedule.
@@ -49,7 +50,7 @@ We would expect that the earlier arrival of the customers in the dynamic schedul
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{WT_Hist_Diff.eps}
-	\caption{Histogram plot of the average waiting time for the static schedule minus the average waiting time for the dynamic schedule where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartile.}
+	\caption{Histogram plot of the average waiting time for the static schedule minus the average waiting time for the dynamic schedule where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartiles.}
 	\label{fig:Diff_Wait}
 \end{figure}
 
@@ -75,7 +76,7 @@ Intuitively, customers prefer schedules where they are served immediately and do
 	\label{fig:No_Wait_Position}
 \end{figure}
 
-In both schedules, the first customer never waits and is served immeidately $100 \%$ of the runs. The dynamic schedule again appears to be fairer. The proportion of runs with no waiting appears to be constant for all except the first and last customers. All customers (except the first and last) are served immediately a greater proportion of the time in the static schedule than the dynamic schedule. While this is advantageous for the customers, it leads to a longer idle time of the server and thus a longer server availability time.
+In both schedules, the first customer never waits and is served immediately in $100 \%$ of the runs. The dynamic schedule again appears to be fairer. The proportion of runs with no waiting appears to be constant for all except the first and last customers. All customers (except the first and last) are served immediately a greater proportion of the time in the static schedule than the dynamic schedule. While this is advantageous for the customers, it leads to a longer idle time of the server and thus a longer server availability time.
 
 \section{Server Availability Time}
 The schedules do not only attempt to minimise customer waiting time, but they also attempt to minimise the total server availability time. Figure~\ref{fig:Two_Server} plots the histograms of the total server availability times of the static and dynamic schedules for each run of the simulation.
@@ -91,7 +92,7 @@ The schedules do not only attempt to minimise customer waiting time, but they al
 		\includegraphics[width=\textwidth]{TST_Hist_Dynamic.eps}
 		\caption{}
 	\end{subfigure}
-	\caption{Histogram plot of the total server availability times for the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartile.}
+	\caption{Histogram plot of the total server availability times for the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashes lines indicate the upper and lower quartiles.}
 	\label{fig:Two_Server}
 \end{figure}
 
