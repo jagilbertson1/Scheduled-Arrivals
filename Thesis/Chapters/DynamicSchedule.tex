@@ -15,7 +15,7 @@ The expected cost of a schedule is a linear combination of the expected total cu
 
 For any $n \geq 1$, the probability of transitioning from state $(n, k)$ to state $(n - 1, j)$ over time interval $a$ if the next customer is scheduled to arrive in $a$ time units is denoted by $p_{a} (k, j)$. The expected cost over this transition is denoted by $R_{a} (k, j)$. Note that $j$ is the total number of customers in the system immediately after the next customer's arrival.
 
-For $n \geq 1$, the expected cost of state $(n, k)$ can be computed by the following form of Bellman's equation:
+For $n \geq 1$, the expected cost of state $(n, k)$ can be computed by the Bellman equation \citep{Bellman}:
 \begin{equation}
 	C_{n}^{*} (k) \coloneqq \min_{a \geq 0} C_{n} (a, k) = \min_{a \geq 0} \left[ \sum_{j = 1}^{k + 1} p_{a} (k, j) \Big( R_{a} (k, j) + C_{n - 1}^{*} (j) \Big) \right]
 	\label{Eqn_Bellman}
@@ -182,7 +182,7 @@ Finding the optimal dynamic schedule for 15 customers involves solving several c
 	\Big\{ (n, k) \in \{ 0, \ldots, 15 \}^{2} : n + k \leq 15 \Big\}
 \end{equation}
 
-In a similar way to Chapter~\ref{chap:Static}, the expected cost of each state $(n, k)$ is found using $\texttt{scipy.optimize.minimize}$ in Python. The results are plotted in Figure~\ref{fig:Dynamic_Cost_15}.
+In a similar way to Chapter~\ref{chap:Static}, the expected cost of each state $(n, k)$ is found using the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python. The results are plotted in Figure~\ref{fig:Dynamic_Cost_15}.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Dynamic_Line_Cost_n.eps}

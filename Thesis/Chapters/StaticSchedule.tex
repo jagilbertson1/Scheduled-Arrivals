@@ -109,7 +109,7 @@ Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for
 \subsection{Model for 15 Customers}
 The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
-Minimising the objective function is a constrained optimization problem. A numeric solution can be found using $\texttt{scipy.optimize.minimize}$ in Python.
+Minimising the objective function is a constrained optimization problem. A numeric solution to this problem can be found using the `L-BFGS-B' method of \newline $\texttt{scipy.optimize.minimize}$ in Python. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a more detailed explanation of the method, see \citet{Byrd}.
 
 Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{14}^{*})$ for scheduling $15$ customers with a mean service time $\mu = 1$ for various values of $\gamma$.
 \begin{figure}[htb]
