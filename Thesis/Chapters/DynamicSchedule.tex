@@ -1,19 +1,19 @@
 \chapter{Dynamic Schedule}
 \label{chap:Dynamic}
-The static schedule presented in Chapter~\ref{chap:Static} and commonly throughout the scheduled arrivals literature is fixed for the duration of service. It was intuitively be advantageous to allow the schedule to vary during service. For example, if the service times of the first few customers are longer than expected, then it would be beneficial to schedule the remaining customers to arrive later.
+The static schedule presented in Chapter~\ref{chap:Static} and applied commonly in the scheduled arrivals literature is fixed for the duration of service. It would intuitively be advantageous to allow the schedule to vary during service. For example, if the service times of the first few customers are longer than expected, then it would be beneficial to schedule the remaining customers to arrive later.
 
-This chapter approaches the problem of choosing a schedule in a similar way to Chapter~\ref{chap:Static}. The aim is to find the arrival time of the first customer and the customer interarrival times that minimise the expected cost. The assumptions on iid service times and punctual customers are the same as Chapter~\ref{chap:Static}.
+This chapter approaches the problem of choosing a schedule in a similar way to Chapter~\ref{chap:Static}. The aim is to find the arrival time of the first customer and the customer interarrival times that minimise the expected cost. The assumptions of iid service times and punctual customers are the same as Chapter~\ref{chap:Static}.
 
-This dynamic schedule is chosen progressively during service. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer. Most real-world situations are obviously more restrictive than this. It is often not possible to schedule the customer arrivals one-by-one.
+The dynamic schedule is chosen progressively during service. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer. Most real-world situations are obviously more restrictive than this. It is often not possible to schedule the customer arrivals one-by-one.
 
-Real-world situations would sometimes allow a degree of flexibility in regards to rescheduling customers. The theory is that if the (probably unrealistic) dynamic schedule presented here is significantly better than the static schedule, than the rescheduling ability should be included in real-world models for scheduled arrivals. However, if the dynamic schedule performs similarly to the static schedule than it is likely reasonable to ignore the rescheduling in the model formulation.
+Real-world situations may sometimes allow a degree of flexibility in regards to rescheduling customers. The theory is that if the dynamic schedule presented here is significantly better than the static schedule, than (if possible) the rescheduling ability should be included in real-world models for scheduled arrivals. However, if the dynamic schedule performs similarly to the static schedule than it is likely reasonable to ignore the rescheduling in the model formulation.
 
 \section{Objective Function}
 The state $(n, k)$ refers to $n$ customers remaining to be scheduled and $k$ customers currently in the system (i.e., either waiting or being served). The time the next customer is scheduled to arrive relative to the current time is $a$.
 
-The expected cost of a schedule is a linear combination of the expected total customers' waiting time and the total expected server availability time. The expected cost of the current state is a function of the expected cost involved in transitioning to the next state, the expected cost of the next state and the probability of transitioning to the next state (over all possible next states).
+The expected cost of a schedule is a linear combination of the expected total customers' waiting time and the expected server availability time. The expected cost of the current state is a function of the expected cost involved in transitioning to the next state, the expected cost of the next state and the probability of transitioning to the next state (over all possible next states).
 
-For any $n \geq 1$, the probability of transitioning from state $(n, k)$ to state $(n - 1, j)$ over time interval $a$ if the next customer is scheduled to arrive in $a$ time units is denoted by $p_{a} (k, j)$. The expected cost over this transition is denoted by $R_{a} (k, j)$. Note that $j$ is the total number of customers in the system immediately after the next customer's arrival.
+For any $n \geq 1$, if the next customer is scheduled to arrive in $a$ time units, the probability of transitioning from state $(n, k)$ to state $(n - 1, j)$ over time interval $a$ is denoted by $p_{a} (k, j)$. The expected cost during this transition is denoted by $R_{a} (k, j)$. Note that $j$ is the total number of customers in the system immediately after the next customer's arrival.
 
 For $n \geq 1$, the expected cost of state $(n, k)$ can be computed by the Bellman equation \citep{Bellman}:
 \begin{equation}
@@ -23,11 +23,11 @@ For $n \geq 1$, the expected cost of state $(n, k)$ can be computed by the Bellm
 
 Equation~\ref{Eqn_Bellman} is a recursive equation involving $C^{*}$. The optimal dynamic schedule is found by solving for each customer interarrival time $a$ iteratively. The optimal policy $a^{*}$ is the interarrival time that attains the minimum cost whereby
 \begin{equation}
-	C_{n}^{*} (k) = C_{n} (a^{*}, k) = \min_{a \geq 0} C_{n} (a, k)
+	C_{n}^{*} (k) = C_{n} (a^{*}, k)
 \end{equation}
 
 \section{Base Case}
-Solving Equation~\ref{Eqn_Bellman} requires a solution for the base case where $n = 0$. The state $(0, k)$ is the state where there are no customers remaining to be scheduled and $k$ customers currently in the system.
+Solving Equation~\ref{Eqn_Bellman} requires a solution for the base case where $n = 0$. The state $(0, k)$ is the state where there are no customers remaining to be scheduled and $k$ customers currently in the system. No futher scheduling decisions are required at this state.
 
 Denote the expected waiting time of the customer that is currently in position $i$ as $w_{i}$. This expected waiting time is the summation of the expected service times of all the customers in positions $\{ 1, \ldots, i - 1 \}$. The expected total customers' waiting time for the $k$ remaining customers is the sum of their individual waiting times.
 \begin{align}
@@ -37,12 +37,12 @@ Denote the expected waiting time of the customer that is currently in position $
 	\end{split}
 \end{align}
 
-If there are no customers remaining to be scheduled, then the expected total server availability time is the expected time until the customer currently in the last position in the queue finishes service. This time is the summation of the expected service times of all the customers currently in the system.
+If there are no customers remaining to be scheduled, then the expected server availability time is the expected time until the customer currently in the last position in the queue finishes service. This time is the summation of the expected service times of the $k$ customers currently in the system.
 \begin{equation}
-	\mathbb{E} \Big[\text{total server availability time at state $(0, k)$} \Big] = \sum_{i = 1}^{k} \mu = k \mu
+	\mathbb{E} \Big[\text{server availability time at state $(0, k)$} \Big] = \sum_{i = 1}^{k} \mu = k \mu
 \end{equation}
 
-The per unit costs $c_{W}$ and $c_{S}$ are defined as before in Chapter~\ref{chap:Static}. The cost of the base case is thus given by
+The per unit time costs $c_{W}$ and $c_{S}$ are defined as before in Chapter~\ref{chap:Static}. The expected cost of the base case is thus given by
 \begin{equation}
  	C_{0}^{*} (k) = c_{W} \frac{\mu k (k - 1)}{2} + c_{S} k \mu
 \end{equation}
@@ -53,7 +53,7 @@ In order to compare $C_{0}^{*} (k)$ with the cost of the static schedule, need t
 \end{equation}
 
 \section{Erlang Distribution}
-The transition probability and expected transition cost for the dynamic schedule depend on the cdf and conditional expectation of the Erlang distribution, which are shown here.
+The transition probability and expected transition cost for the dynamic schedule depend on the cdf and conditional expectations of the Erlang distribution, which are shown here.
 
 Denote the service time of the customer that is currently in position $i$ in the queue as $S_{i}$. For $n$ customers, the service times $S_{1}, \ldots, S_{n}$ are iid exponential random variables with mean $\mu$.
 
@@ -64,7 +64,7 @@ For $r \geq 1$, the waiting time of the customer in position $(r + 1)$ is given 
 
 which has the pdf
 \begin{equation}
-	f (x; r) \coloneqq \frac{1}{\mu (r - 1)!} \left( \frac{x}{\mu} \right)^{r - 1} \mathrm{e}^{\frac{-x}{\mu}}
+	f (x; r) \coloneqq \frac{1}{\mu (r - 1)!} \left( \frac{x}{\mu} \right)^{r - 1} \mathrm{e}^{\frac{-x}{\mu}} \text{ for } x > 0
 \end{equation}
 
 The cdf of the Erlang distribution is
@@ -72,7 +72,7 @@ The cdf of the Erlang distribution is
 	F (a; r) \coloneqq \mathbb{P} (X \leq a) = \begin{cases} 0 & \text{for $a = 0$} \\ 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \mathrm{e}^{\frac{-a}{\mu}} & \text{for $a > 0$} \end{cases}
 \end{equation}
 
-For $r \geq 1$, $F (a; r)$ is continuous for $a \geq 0$ as
+For $a \geq 0$, $F (a; r)$ is continuous as
 \begin{equation}
 	\lim_{a \to 0^{+}} F (a; r) = 0 = F (0; r)
 \end{equation}
@@ -99,7 +99,7 @@ Finally, suppose there is an exponential random variable $Y$ with mean $\mu$ tha
 The conditional expectation $H (a; r)$ doesn't depend on $\mu$.
 
 \section{Transition Probability}
-The transition probability $p_{a} (k, j)$ is the probability that the queue length changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the queue over a time interval of length $a$.
+The transition probability $p_{a} (k, j)$ is the probability that the number of customers in the system changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the queue over a time interval of length $a$.
 
 The transition probability is most easily derived on a case by case basis. The full derivation is included in the appendix and only the final equation is presented here.
 \begin{equation}
@@ -112,13 +112,13 @@ The transition probability is most easily derived on a case by case basis. The f
 	\end{cases}
 \end{equation}
 
-Given a current state $(n, k)$ and a time interval $a$, the total probability over all possible next states $(n - 1, j)$ is one.
+Given a current state $(n, k)$ and a time interval $a$, the total probability over all possible next states $\big\{ (n - 1, j) : 1 \leq j \leq k + 1 \big\}$ is one.
 \begin{equation}
 	\forall k \in \mathbb{N}_{0}, a \geq 0 \ \ \sum_{j = 1}^{k + 1} p_{a} (k, j) = 1
 \end{equation}
 
 \section{Expected Transition Cost}
-The expected transition cost is the expected cost of transitioning from state $(n, k)$ to state $(n - 1, j)$ where the next customer is scheduled to arrive in $a$ time units.
+The expected transition cost is the expected cost of transitioning from state $(n, k)$ to state $(n - 1, j)$ if the next customer is scheduled to arrive in $a$ time units.
 
 In a similar way to the transition probability, the expected transition cost is derived on a case by case basis. To compare the dynamic schedule with the static schedule, the cost is scaled by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$. The full derivation is included in the appendix and the final equation is presented here.
 \begin{equation}
@@ -136,7 +136,7 @@ Assume there are two customers that need to be scheduled for service. The initia
 	\Big\{ (n, k) \in \{ 0, 1, 2 \}^{2} : n + k \leq 2 \Big\}
 \end{equation}
 
-For $n \geq 1$, the expected cost of state $(n, 0)$ (i.e., no customers currently in the system) as a function of the time interval $a$ until the next customer arrival is given by
+From Equation~\ref{Eqn_Bellman}, for $n \geq 1$, the expected cost of state $(n, 0)$ (i.e., no customers currently in the system) as a function of the time interval $a$ until the next customer arrival is given by
 \begin{equation}
 	C_{n} (a, 0) = C_{n - 1}^{*} (1) + \gamma a 	
 \end{equation}
@@ -154,7 +154,7 @@ As the transition occurs immediately, the expected cost of state $(n, 0)$ equals
 	C_{n}^{*} (0) = C_{n - 1}^{*} (1)
 \end{equation}
 
-For $n \geq 1$, the expected cost of state $(n, 1)$ (i.e., one customer currently in the system) as a function of the time interval $a$ until the next customer arrival is given by
+From Equation~\ref{Eqn_Bellman}, for $n \geq 1$, the expected cost of state $(n, 1)$ (i.e., one customer currently in the system) as a function of the time interval $a$ until the next customer arrives is given by
 \begin{equation}
 	C_{n} (a, 1) = C_{n - 1}^{*} (1) + \mathrm{e}^{\frac{-a}{\mu}} \Big[ C_{n - 1}^{*} (2) - C_{n - 1}^{*} (1) \Big] + \gamma a
 \end{equation}
@@ -165,14 +165,14 @@ The optimal policy $a^{*}$ where $C_{n} (a, 1)$ attains a minimum is
 	\label{eqn:Dynamic_One_Waiting}
 \end{equation}
 
-Returning to the case of scheduling two customers using this dynamic schedule where initial state is $(2, 0)$. By Equation~\ref{eqn:Dynamic_No_Waiting}, the first customer should be scheduled to arrive immediately. On the first customer's arrival, the system is at state $(1, 1)$. By Equation~\ref{eqn:Dynamic_One_Waiting}, the second customer should be scheduled to arrive $a^{*}$ after the arrival of the first customer where
+Returning to the case of scheduling two customers using this dynamic schedule. By Equation~\ref{eqn:Dynamic_No_Waiting}, the first customer should be scheduled to arrive immediately. On the first customer's arrival, the system is at state $(1, 1)$. By Equation~\ref{eqn:Dynamic_One_Waiting}, the second customer should be scheduled to arrive $a^{*}$ after the arrival of the first customer where
 \begin{equation}
 	a^{*} = \mu \left[ \frac{C_{0}^{*} (2) - C_{0}^{*} (1)}{\gamma \mu} \right] = - \mu \ln \gamma
 \end{equation}
 
-This dynamic schedule for two customers is exactly the same as the static schedule for two customers. As the first customer is scheduled to arrive at the start of service, all arrival times are decided at the start of service. Therefore, the optimal policy is the same for both schedules.
+This dynamic schedule is exactly the same as the static schedule for two customers. As the first customer is scheduled to arrive at the start of service, all arrival times are decided at the start of service. Therefore, the optimal policy is the same for both schedules.
 
-Unfortunately, for $k \geq 2$, no algebraic solution exists for the optimal policy for state $(n, k)$. Thus, cannot analytically derive the dynamic schedule for more than two customers. All other cases need to be solved analytically.
+Unfortunately, for $k \geq 2$, no algebraic solution exists for the optimal policy for state $(n, k)$. Thus, we cannot analytically derive the dynamic schedule for more than two customers. Those cases need to be solved numerically.
 
 \subsection{Model for 15 Customers}
 The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
@@ -196,7 +196,7 @@ The lines plotted on Figure~\ref{fig:Dynamic_Cost_15} are the expected costs wit
 
 It's difficult to observe, but for $n \geq 1$, Figure~\ref{fig:Dynamic_Cost_15} shows that $C_{n}^{*} (0) = C_{n - 1}^{*} (1)$. This confirms the previous result that if there are no customers currently in the system (e.g., initially), then it is always optimal to schedule the next arrival immediately. The expected cost does not change as the next arrival occurs immediately.
 
-Figure~\ref{fig:Dynamic_Time_15} plots the corresponding interarrival times $a^{*}$ for the states plotted in Figure~\ref{fig:Dynamic_Cost_15}. This figure does not include any optimal times for $n = 0$ as there is no next customer to schedule in those states.
+Figure~\ref{fig:Dynamic_Time_15} plots the corresponding interarrival times $a^{*}$ for the states plotted in Figure~\ref{fig:Dynamic_Cost_15}. This figure does not include optimal times for the states with $n = 0$ as there is no next customer to schedule in those states.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Dynamic_Line_Interarrival_k.eps}
@@ -204,11 +204,11 @@ Figure~\ref{fig:Dynamic_Time_15} plots the corresponding interarrival times $a^{
 	\label{fig:Dynamic_Time_15}
 \end{figure}
 
-Understanding Figure~\ref{fig:Dynamic_Time_15} is helped by looking at some examples. The optimal interarrival time for the initial state $(15, 0)$ is $0$. The first customer should be scheduled to arrive immediately. In addition, the optimal interarrival time for the state $(3, 10)$ is $10.17$. If (on arrival of a customer), there are $10$ customers in the system and $3$ customers remaining to be scheduled, then the next customer should be scheduled to arrive in $10.17$ time units. This is slightly above the expected service time of the $10$ customers currently in the system to account for the customer waiting cost.
+Understanding Figure~\ref{fig:Dynamic_Time_15} is helped by looking at some examples. The optimal interarrival time for the initial state $(15, 0)$ is $0$. The first customer should be scheduled to arrive immediately. The optimal interarrival time for the state $(3, 10)$ is $10.17$. If (on arrival of a customer), there are $10$ customers in the system and $3$ customers remaining to be scheduled, then the next customer should be scheduled to arrive in $10.17$ time units. This is slightly greater than the expected service time of the $10$ customers currently in the system to account for the customer waiting cost.
 
-The first pattern to notice is if there are no customers currently waiting (i.e., $k = 0$), then (as discussed earlier) the optimal policy is to schedule the next arrival immediately. This makes intutive sense as scheduling the next arrival immediately minimises the expected total server availability time without affecting the expected total customers' waiting times.
+The first pattern to notice is that if there are no customers currently waiting (i.e., $k = 0$), then (as discussed earlier) the optimal policy is to schedule the next arrival immediately. This makes intutive sense as scheduling the next arrival immediately minimises the expected server availability time without effecting the expected total customers' waiting times.
 
-As $k$ increases for fixed $n$, the optimal interarrival time $a^{*}$ appears to increase at a slightly decreasing rate. The optimal $a^{*}$ increases by approximately $\mu$ for each additional $k$. In contrast, for $n \geq 2$ and fixed $k$, $a^{*}$ appears to be constant at a value similar to $\mu k$ (i.e., the expected time for the system to be empty). The optimal $a^{*}$ appears to be independent of the the number of customers still to be scheduled provided that there are at least two customers still to be scheduled.
+As $k$ increases for fixed $n$, the optimal interarrival times $a^{*}$ appear to increase at a slightly decreasing rate. The optimal $a^{*}$ increases by approximately $\mu$ for each additional $k$. In contrast, for $n \geq 2$ and fixed $k$, $a^{*}$ appears to be constant at a value close to $\mu k$ (i.e., the expected time for the system to be empty). The optimal $a^{*}$ appears to be independent of the the number of customers still to be scheduled provided that there are at least two customers still to be scheduled.
 
 
 

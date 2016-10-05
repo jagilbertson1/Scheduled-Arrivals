@@ -5,7 +5,7 @@ Suppose that there are $N$ customers to be scheduled. In the case of the static 
 
 Clearly, as the dynamic schedule has the ability to match the optimal policy for the static schedule, $C_{N}^{*} (0) \leq \phi (\mathbf{x}_{N}^{*})$ (i.e., the dynamic schedule cannot have greater expected cost) regardless of the number of customers to be scheduled. As found in Chapter~\ref{chap:Dynamic}, equality is attained for the cases where $N \in \{ 0, 1, 2 \}$ as the schedules are identical in those cases.
 
-Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both the static and dynamic schedules against the number of customers to be scheduled ($N$) assuming $\gamma = 0.5$ and $\mu = 1$.
+Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both schedules against the number of customers to be scheduled ($N$) assuming $\gamma = 0.5$ and $\mu = 1$.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Comparison_Line_Cost_Num.eps}
@@ -16,12 +16,12 @@ Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both the static a
 As expected, the costs are identical for $N \in \{ 0, 1, 2 \}$. For all other $N$ values, the cost of the static schedule is greater than the cost of the dynamic schedule. The cost difference appears to be minimal for $N \leq 5$, but as $N$ increases the cost difference increases.
 
 \section{Expected Percentage Cost Saving}
-Define the expected percentage cost saving $\Delta C$ (i.e., the expected percentage difference between the cost of the static schedule and the dynamic schedule).
+Define the expected percentage cost saving $\Delta C$ (i.e., the percentage difference between the expected cost of the static schedule and the dynamic schedule).
 \begin{equation}
 	\Delta C \coloneqq 100 \times \frac{\phi (\mathbf{x}_{N}^{*}) - C_{N}^{*} (0)}{\phi (\mathbf{x}_{N}^{*})}
 \end{equation}
 
-Figure~\ref{Graph_Cost_Saving} plots the percentage cost saving by using the dynamic schedule as opposed to the static schedule ($\Delta C$) against $\gamma$ for various values of the number of customers ($N$) to be scheduled. 
+Figure~\ref{Graph_Cost_Saving} plots the percentage cost saving ($\Delta C$) against $\gamma$ for various values of the number of customers ($N$) to be scheduled. 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Cost_Saving_Line_Num.eps}
@@ -29,9 +29,9 @@ Figure~\ref{Graph_Cost_Saving} plots the percentage cost saving by using the dyn
 	\label{Graph_Cost_Saving}
 \end{figure}
 
-For $N \in \{ 0, 1, 2 \}$, $\Delta C = 0$ for all values of $\gamma$ as the schedules are identical. As $N$ increases with $\gamma$ held constant, $\Delta C$ increases as the dynamic schedule begins to outperform the static schedule. $\Delta C$ increases at a decreasing rate (i.e., the curves become closer together as $N$ increases). The maximal value of $\Delta C$ is $10.6 \%$. Even if $N$ were to increase further beyond $15$, it doesn't appear that the expected percentage cost saving would exceed $15 \%$.
+For $N \in \{ 0, 1, 2 \}$, $\Delta C = 0$ for all values of $\gamma$ as the schedules are identical. As $N$ increases with $\gamma$ held constant, $\Delta C$ increases as the dynamic schedule begins to outperform the static schedule. $\Delta C$ increases at a decreasing rate (i.e., the curves become closer together as $N$ increases). The maximal value of $\Delta C$ is $10.6 \%$. Even if $N$ were to increase further beyond $15$, it does not appear that the expected percentage cost saving would exceed $15 \%$.
 
-For the extreme values of $\gamma$ (i.e., $\gamma = 0.1$ and $\gamma = 0.9$), $\Delta C$ is at a minimum for each value of $N$. An extreme value of $\gamma$ indicates that the either the customer waiting cost or the server availability cost is significantly priorities (i.e., $c_{W} \gg c_{S}$ or $c_{S} \gg c_{W}$). If one of the costs is heavily prioritised, there is little difference between the static and dynamic schedules, thus $\Delta C$ is small.
+$\Delta C$ is at a minimum for the extreme values of $\gamma$ (i.e., $\gamma = 0.1$ and $\gamma = 0.9$). An extreme value of $\gamma$ indicates that the either the customer waiting cost or the server availability cost is significantly priorities (i.e., $c_{W} \gg c_{S}$ or $c_{S} \gg c_{W}$). If one of the costs is heavily prioritised, there is little difference between the static and dynamic schedules, thus $\Delta C$ is small.
 
 For each value of $N \geq 3$, the peak value of $\Delta C$ occurs at a middle value of $\gamma$. As $N$ increases, the peak occurs at a larger value of $\gamma$. For $N = 3$ the peak occurs at $\gamma = 0.3$, whereas for $N = 15$ the peak occurs at $\gamma = 0.7$.
 

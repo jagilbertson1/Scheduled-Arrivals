@@ -1,7 +1,7 @@
 \chapter{Dynamic Schedule Derivation}
 
 \section{Transition Probability}
-This is a derivation of the probability $p_{a} (k, j)$. This is the probability that there are $k - (j - 1)$ departures from a queue over $a$ time units assuming the queue initially has $k$ customers and no new arrivals. The customer service times are iid exponential random variables with mean $\mu$.
+This is a derivation of the transition probability $p_{a} (k, j)$. This is the probability that there are $k - (j - 1)$ departures from a queue over $a$ time units assuming the queue initially has $k$ customers and no new arrivals. The customer service times are iid exponential random variables with mean $\mu$.
 
 The probabililty is most easily derived on a case by case basis.
 
@@ -64,7 +64,7 @@ These results can be summarised as:
 \end{equation}
 
 \section{Expected Transition Cost}
-This is a derivation of the expected cost $R_{a} (k, j)$. This is the expected cost of transitioning from the state $(n, k)$ to the state $(n - 1, j)$ over $a$ time units if the next customer is scheduled to arrive in $a$ time units. The expected cost is a linear combination of the expected total customers' waiting times and the expected server availability time. The per unit time costs $c_{W}$ and $c_{S}$ are defined as in Chapter~\ref{chap:Static}.
+This is a derivation of the expected transition cost $R_{a} (k, j)$. This is the expected cost of transitioning from the state $(n, k)$ to the state $(n - 1, j)$ over $a$ time units if the next customer is scheduled to arrive in $a$ time units. The expected cost is a linear combination of the expected total customers' waiting times and the expected server availability time. The per unit time costs $c_{W}$ and $c_{S}$ are defined as in Chapter~\ref{chap:Static}.
 
 In a similar way to the transition probability, the cost is most easily derived on a case by case basis.
 
@@ -75,7 +75,7 @@ The first case is that the system initially has either no customers or only a si
 \end{equation}
 
 \subsection{Case 2 $k \geq 2, j = 1$}
-If $j = 1$, then all $k$ customers finish service during the transition. This implies that $\displaystyle \sum_{n = 1}^{k} S_{n} \leq a$. The total customers' waiting time is a linear combination of the service times given that the sum of all $k$ is smaller than $k$. The server is still available for the entire transition, so the server availability time is $a$.
+If $j = 1$, then all $k$ customers finish service during the transition. This implies that $\displaystyle \sum_{n = 1}^{k} S_{n} \leq a$. The total customers' waiting time is a linear combination of the service times given that the summation of the service time is smaller than $a$. The server is still available for the entire transition, so the server availability time is $a$.
 \begin{equation}
 	\begin{split}
 		R_{a} (k, j) & = c_{W} \sum_{i = 2}^{k} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k} S_{n} \leq a \right] + c_{S} a \\
@@ -91,14 +91,18 @@ The term $\displaystyle \mathbb{E} \left[ \sum_{n = 1}^{k} S_{n} \ \vline \ \sum
 \end{equation}
 
 \subsection{Case 3 $k \geq 2, 2 \leq j \leq k$}
-For $2 \leq j \leq k$, then the first $k - (j - 1)$ customers finish service during the transition, but customer $k - (j - 1) + 1$ does not. This implies that $\displaystyle \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a$ and $\displaystyle \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a$. The last $j - 2$ customers wait for the entire transition. In addition, the server is available for the entire transition.
+For $2 \leq j \leq k$, the first $k - (j - 1)$ customers finish service during the transition, but customer $k - (j - 1) + 1$ does not. This implies that $\displaystyle \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a$ and $\displaystyle \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a$. The last $j - 2$ customers wait for the entire transition. In addition, the server is available for the entire transition.
+\begin{align*}
+	R_{a} (k, j)
+	= & \ c_{W} \sum_{i = 2}^{k - (j - 2)} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \\
+	& + c_{W} \sum_{i = 1}^{j - 2} a + c_{S} a \\
+	= & \ c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \sum_{i = 2}^{k - (j - 2)} (i - 1) \\
+	& + c_{W} a (j - 2) + c_{S} a \\
+\end{align*}
+
 \begin{equation}
 	\begin{split}
 		R_{a} (k, j)
-		= & \ c_{W} \sum_{i = 2}^{k - (j - 2)} \mathbb{E} \left[ \sum_{l = 1}^{i - 1} S_{l} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \\
-		& + c_{W} \sum_{i = 1}^{j - 2} a + c_{S} a \\
-		= & \ c_{W} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \sum_{i = 2}^{k - (j - 2)} (i - 1) \\
-		& + c_{W} a (j - 2) + c_{S} a \\
 		= & \ c_{W} \frac{ \big[ k - (j - 1) \big] \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ S_{1} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \\
 		& + c_{W} a (j - 2) + c_{S} a \\
 		= & \ c_{W} \frac{ \big[ k - (j - 2) \big]}{2} \mathbb{E} \left[ \sum_{n = 1}^{k - (j - 1)} S_{n} \ \vline \ \sum_{n = 1}^{k - (j - 1)} S_{n} \leq a, \sum_{n = 1}^{k - (j - 1) + 1} S_{n} > a \right] \\

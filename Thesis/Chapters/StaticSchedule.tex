@@ -5,19 +5,19 @@ This chapter largely follows the results of \citet{Pegden}. The aim is to derive
 For simplicity, these results assume the customer service times are independent and identically distributed (iid) exponential random variables with mean $\mu$. There is a single server. All customers are punctual and arrive at their scheduled arrival time.
 
 \section{Objective Function}
-The optimal schedule minimises the expected cost, which is a linear combination of the expected total customers' waiting time and total expected server availability time.
+The optimal schedule minimises the expected cost, which is a linear combination of the expected total customers' waiting time and the expected server availability time.
 
 Denote the expected waiting time of customer $i$ as $w_{i}$. The expected total customers' waiting time is the sum of the individual customer's expected waiting times.
 \begin{equation}
 	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
 \end{equation}
 
-Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$. The expected total server availability time is the expected time from the start of service until the end of service. This the sum of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time.
+Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x}_{n} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$. The expected server availability time is the expected time from the start of service until the end of service. This time is the summation of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time.
 \begin{equation}
-	\mathbb{E} \Big[\text{total server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
+	\mathbb{E} \Big[\text{server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
 \end{equation}
 
-Denote $c_{W}$ and $c_{I}$ as the per unit time cost of the expected total customer's waiting time and the per unit time cost of the expected total server availability time respectively. The objective function to be minimised is thus,
+Denote $c_{W}$ and $c_{S}$ as the per unit time cost of the expected total customer's waiting time and the per unit time cost of the expected server availability time respectively. The objective function to be minimised is thus,
 \begin{equation}
 	\phi (t_{1}, \mathbf{x}_{n}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
 \end{equation}
@@ -99,12 +99,12 @@ Due to the convexity of the objective function, the optimal policy that minmises
 
 Therefore, the optimal policy is:
 \begin{equation}
-	x_{1}^{*} = \argmin_{x_{1}} \phi (x_{1}) = - \mu \ln \gamma
+	x_{1}^{*} = \argmin_{x_{1} \geq 0} \phi (x_{1}) = - \mu \ln \gamma
 \end{equation}
 
 As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
-Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. \citet{Pegden} proved that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
+Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. Pegden and Rosenshine prove that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
 \subsection{Model for 15 Customers}
 The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
@@ -119,11 +119,11 @@ Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf
 	\label{fig:Static_Time_Gamma}
 \end{figure}
 
-The optimal interarrival time increases for the initial few customers, remains constant for the majority of customers, and then it decreases for the last few customers. This is the dome-shape that was observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that was first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
+The optimal interarrival times increase for the initial few customers, remain constant for the majority of customers, and then decrease for the last few customers. This is the dome-shape that was observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that was first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
 
-The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1}^{*} = \ldots = x_{n - 1}^{*}$). \citet{Stein} justifies this simplification by Theorem 1.1 of \citet{Hajek}. The theorem states that the average customer waiting time for an exponential server queue will be at a minimum for constant interarrival times. This guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$), but does not imply that it's optimal for $\gamma > 0$.
+The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justifies this simplification by Theorem 1.1 of \citet{Hajek}. This theorem states that the average customer waiting time for an exponential server queue will be at a minimum for constant interarrival times. This guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$), but does not imply that it's optimal for $\gamma > 0$.
 
-The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented next. Thus, this simplification is not pursued here.
+The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented in the following chapter. Thus, this simplification is not pursued here.
 
 
 
