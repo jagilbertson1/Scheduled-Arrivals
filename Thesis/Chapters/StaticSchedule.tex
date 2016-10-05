@@ -1,4 +1,4 @@
-\chapter{Static Schedule}
+\chapter{Static Schedules}
 \label{chap:Static}
 This chapter largely follows the results of \citet{Pegden}. The aim is to derive a method for choosing an optimal static schedule. A static schedule is a sequence of $n$ customer arrival times $t_{1}, \ldots, t_{n}$ chosen at the start of service and fixed for the duration of service. 
 
@@ -31,17 +31,16 @@ The first customer should obviously be scheduled for the start of service so $t_
 The optimal static schedule is thus the interarrival times that minimise Equation~\ref{eqn:StaticObjective}
 
 \section{Expected Waiting Time}
-We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}_{n}$. If there are $j$ customers in the system just prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
+We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}_{n}$. If there are $j$ customers in the system immediately prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
 
-Denote the number of customers in the system just prior to the arrival of customer $i$ as $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
+Denote the number of customers in the system immediately prior to the arrival of customer $i$ by $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
 \begin{equation}
 	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \mathbb{P} (N_{i} = j)
-	\label{eqn:StaticWaiting}
 \end{equation}
 
-The probability of a given number of customers in the system can be expressed recursively. This probability depends on the number of departures from the system between the arrival of customer $(i - 1)$ and customer $i$. The number of departures is the minimum of $(N_{i - 1} + 1)$ and a Poisson random variable with mean $\frac{x_{i - 1}}{\mu}$.
+It is more common in queuing theory to consider the queue length as a right-continuous process. This would involve considering the number of customers in the system on the arrival of the customer $i$. However, in this chapter, we choose to remain consistent with the notation of \citet{Pegden} and consider the system size as a left-continuous process.
 
-The full recursive expression for the probability of $j$ customers in the system immediately before the arrival of customer $i$ is
+\citet{Pegden} derive the following complicated recursive equation for calculating the probability of a given number of customers in the system.
 \begin{equation}
 	\mathbb{P} (N_{i} = j) = \begin{cases} 1 & \text{for $i = 1$, $j = 0$} \\
 	\sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} l!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}}\right] & \text{for $i \geq 2$, $j = 0$} \\
@@ -49,25 +48,51 @@ The full recursive expression for the probability of $j$ customers in the system
 	\label{eqn:StaticProbSystem}
 \end{equation}
 
-\section{Computing the Objective Function}
-\citet{Pegden} suggest a similar algorithm to Algorithm~\ref{alg:StaticObjective} for computing the value of the objective function given by Equation~\ref{eqn:StaticObjective} for a given vector $\mathbf{x}_{n}$ and parameters $\gamma$ and $\mu$.
-\begin{algorithm}[htb]
-\caption{Return $\phi (\mathbf{x}_{n})$ for a given vector $\mathbf{x}_{n}$, $\gamma$ and $\mu$}
-\begin{algorithmic}
-\Function{ObjectiveFunction}{$\mathbf{x}_{n}$,$\gamma$,$\mu$}
-    \For {$i = 1, 2, \ldots, n$}
-    	\For {$j = 0, 1, \ldots, (i - 1)$}
-    		\State compute $\mathbb{P} (N_{i} = j)$ by Equation~\ref{eqn:StaticProbSystem}
-    	\EndFor
-    \EndFor
-    \For {$i = 1, 2, \ldots, n$}
-    	\State compute $w_{i}$ by Equation~\ref{eqn:StaticWaiting}
-    \EndFor
-    \State \Return $\phi (\mathbf{x}_{n})$ computed by Equation~\ref{eqn:StaticObjective}
-\EndFunction
-\end{algorithmic}
-\label{alg:StaticObjective}
-\end{algorithm}
+Pegden and Rosenshine's formulation can be solved more efficiently by identifying that $\{ N_{i} \}$ forms a discrete time Markov chain with nonstationary transition probabilities. \citet{Stein} show that the transition from $N_{i - 1}$ to $N_{i}$ is governed by the transition matrix
+\begin{equation*}
+	T (x_{i - 1}) = \kbordermatrix{
+	& 0 & 1 & 2 & 3 & \ldots & n - 1 & n \\
+	0 & r_{0} & a_{0} & 0 & 0 & \ldots & 0 & 0 \\
+	1 & r_{1} & a_{1} & a_{0} & 0 & \ldots & 0 & 0 \\
+	2 & r_{2} & a_{2} & a_{1} & a_{0} & \ldots & 0 & 0 \\
+	\vdots & \vdots & \vdots & \vdots & \vdots & \ldots & \vdots & \vdots \\
+	n - 1 & r_{n - 1} & a_{n - 1} & a_{n - 2} & a_{n - 3} & \ldots & a_{1} & a_{0} \\
+	n & 0 & 0 & 0 & 0 & \ldots & 0 & 1
+	}
+\end{equation*}
+
+where
+\begin{align}
+	\begin{split}
+		a_{k} & = \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}} \\
+		r_{k} & = 1 - \sum_{l = 0}^{k} a_{l}
+	\end{split}
+\end{align}
+
+The last row of $T (x_{i - 1})$ is arbitrary as it is not possible to have $n$ customers in the system immediately before a customer's arrival.
+
+Instead of Equation~\ref{eqn:StaticProbSystem}, for $i \geq 2$, the distribution of $N_{i}$ is more clearly expressed by
+\begin{align}
+	\begin{split}
+		& \ \left( \begin{array}{ccc} \mathbb{P} (N_{i} = 0) & \ldots & \mathbb{P} (N_{i} = n) \end{array} \right) \\
+		= & \ \left( \begin{array}{ccc} \mathbb{P} (N_{i - 1} = 0) & \ldots & \mathbb{P} (N_{i - 1} = n) \end{array} \right) T (x_{i - 1}) \\
+		= & \ \left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) T (x_{1}) T (x_{2}) \cdots T (x_{i - 1})
+	\end{split}
+\end{align}
+
+The distribution of $N_{1}$ (i.e., the initial distribution) is given by
+\begin{equation}
+	\left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) = \left( \begin{array}{cccc} 1 & 0 & \ldots & 0 \end{array} \right)
+\end{equation}
+
+Therefore, the expected waiting time of customer $i$ can be compactly expressed using the transition matrices as
+\begin{equation}
+	w_{i}
+	= \left( \begin{array}{cccc} 1 & 0 & \ldots & 0 \end{array} \right)
+	T (x_{1}) T (x_{2}) \cdots T (x_{i - 1})
+	\left( \begin{array}{c} 0 \\ 1 \\ 2 \\ \vdots \\ n \end{array} \right)
+	\label{eqn:StaticWaiting}
+\end{equation}
 
 \section{Example Models}
 \subsection{Model for 2 Customers}
@@ -121,7 +146,7 @@ Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf
 
 The optimal interarrival times increase for the initial few customers, remain constant for the majority of customers, and then decrease for the last few customers. This is the dome-shape that was observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that was first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
 
-The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justifies this simplification by Theorem 1.1 of \citet{Hajek}. This theorem states that the average customer waiting time for an exponential server queue will be at a minimum for constant interarrival times. This guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$), but does not imply that it's optimal for $\gamma > 0$.
+The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justify this simplification by claiming that for any single server queue with exponential service times, the average waiting time of a customer will be at a minimum for constant interarrival times. If this justification holds true, then this guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$). However, it does not imply that it's optimal for $\gamma > 0$.
 
 The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented in the following chapter. Thus, this simplification is not pursued here.
 
