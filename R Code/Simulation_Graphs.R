@@ -170,7 +170,7 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/WT_Line_Prop.ep
                                       colour = factor(schedule))) +
          stat_summary(fun.y = "mean", geom = "point", size = 3) +
          stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
-         labs(x = "Customer", y = "Proportion with No Waiting") +
+         labs(x = "Customer", y = "Proportion with Zero Waiting Time") +
          guides(colour = guide_legend(override.aes = list(shape = 15, size = 10))) + 
          coord_cartesian(ylim = c(0, 1)) +
          theme_bw() +
