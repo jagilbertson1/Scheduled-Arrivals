@@ -5,6 +5,7 @@ import scipy.optimize as optimize
 import os
 from multiprocessing import Pool
 
+# distribution functions
 def cdf(a, r, mu):
     if (a > 0):
         return poisson.sf(r - 1, a / mu)
@@ -12,6 +13,7 @@ def cdf(a, r, mu):
     elif (a == 0):
         return 0
 
+# transition probability
 def transProb(a, k, j, mu):
     if (k == 0):
         return int(j == 1)
@@ -28,6 +30,7 @@ def transProb(a, k, j, mu):
     else:
         return 0
 
+# conditional expectation
 def condExp(a, r, mu):
     if (a > 0):
         return mu * r * cdf(a, r + 1, mu) / cdf(a, r, mu)
@@ -35,40 +38,54 @@ def condExp(a, r, mu):
     elif (a == 0):
         return 0
 
+
+
+
+# expected transition cost
 def transCost(a, k, j, gamma, mu):
     if (k == 0 or k == 1):
         return gamma * a
     
     elif (k >= 2 and j == 1):
-        return (1 - gamma) * condExp(a, k, mu) * (k - 1) / 2 + gamma * a
+        return (1 - gamma) * condExp(a, k, mu) * (k - 1) / 2 + \
+                    gamma * a
     
     elif (k >= 2 and 2 <= j and j <= k + 1):
         return (1 - gamma) * a * (k + j - 3) / 2 + gamma * a
 
+# schedule cost
 def cost(a, n, k, gamma, mu, computedDict):
-    # set a to zero if try negative a in optimisation code
+    # if a is negative during optimisation, set to zero
     if (a < 0):
         a = 0
     
     internal = 0
     for j in range(1, k + 2):
-        internal += transProb(a, k, j, mu) * (transCost(a, k, j, gamma, mu) +
-                                                                    optimalCost(n - 1, j, gamma, mu, computedDict)[0])
+        internal += transProb(a, k, j, mu) * \
+                        (transCost(a, k, j, gamma, mu) +
+                        optimalCost(n - 1, j, gamma, mu,
+                        computedDict)[0])
     
     return internal
 
+# optimal schedule cost
 def optimalCost(n, k, gamma, mu, computedDict):
     if (n, k, gamma, mu) in computedDict:
-        return computedDict[(n, k, gamma, mu)][0], computedDict[(n, k, gamma, mu)][1], computedDict
+        return (computedDict[(n, k, gamma, mu)][0],
+                computedDict[(n, k, gamma, mu)][1], computedDict)
     
     if (n == 0):
-        newCost = (1 - gamma) * mu * k * (k - 1) / 2 + gamma * k * mu
+        newCost = (1 - gamma) * mu * k * (k - 1) / 2 + \
+                        gamma * k * mu
         time = float('nan')
         
         computedDict[(n, k, gamma, mu)] = [newCost, time]      
         
         return newCost, time, computedDict
     
+    
+
+
     elif (n >= 1 and k == 0):
         newCost = optimalCost(n - 1, 1, gamma, mu, computedDict)[0]
         time = 0        
@@ -78,8 +95,9 @@ def optimalCost(n, k, gamma, mu, computedDict):
         return newCost, time, computedDict
     
     elif (n >= 1 and k >= 1):              
-        res = optimize.minimize(fun = cost, x0 = [0], args = (n, k, gamma, mu, computedDict), method = "L-BFGS-B",
-                                bounds = ((0, None),))
+        res = optimize.minimize(fun = cost, x0 = [0],
+                    args = (n, k, gamma, mu, computedDict),
+                    method = "L-BFGS-B", bounds = ((0, None),))
         
         newCost = res.fun[0]
         time = res.x[0]
@@ -88,6 +106,7 @@ def optimalCost(n, k, gamma, mu, computedDict):
         
         return newCost, time, computedDict
 
+# function to find optimal solution
 def solver(args):
     N, gamma, mu, fname = args
     
@@ -95,12 +114,14 @@ def solver(args):
     
     for n in range(N + 1):
         for k in range(N - n + 1):
-            singleCost, time, allResults = optimalCost(n, k, gamma, mu, allResults)
+            singleCost, time, allResults = optimalCost(n, k, gamma,
+                                                mu, allResults)
 
             # write output    
             with open(fname, "a+") as outputFile:
-                outputFile.write(str(n) + "," + str(k) + "," + str(gamma) + "," + str(mu) + "," + str(time) + ","
-                                                                    + str(singleCost) + "\n")
+                outputFile.write(str(n) + "," + str(k) + "," +
+                    str(gamma) + "," + str(mu) + "," + str(time) +
+                    "," + str(singleCost) + "\n")
 
 if __name__ == "__main__":
     mu = 1
@@ -110,7 +131,6 @@ if __name__ == "__main__":
     output = "Dynamic_Output.csv"
 
     gammaVec = np.arange(0.1, 1, 0.1)
-    
     args = [(N, gamma, mu, output) for gamma in gammaVec]
     
     # run on two cores
