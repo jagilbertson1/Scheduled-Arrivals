@@ -1,8 +1,8 @@
 \documentclass[12pt, twoside]{report}
 
 % a4 paper
-\usepackage[a4paper, margin = 30mm, bindingoffset = 6mm]{geometry}
-%\usepackage[a4paper, margin = 30mm, bindingoffset = 6mm, showframe]{geometry}
+%\usepackage[a4paper, margin = 30mm, bindingoffset = 6mm]{geometry}
+\usepackage[a4paper, margin = 30mm, bindingoffset = 6mm, showframe]{geometry}
 
 % set 1.5 line spacing
 \usepackage[onehalfspacing]{setspace}
@@ -51,7 +51,8 @@
 \usepackage[shortlabels]{enumitem}
 
 % add bibliography
-\usepackage[backend = bibtex, style = authoryear, sorting = ynt, natbib]{biblatex}
+\usepackage[backend = bibtex, style = authoryear, sorting = nyt, dashed = false, natbib]{biblatex}
+\renewbibmacro{in:}{}
 \addbibresource{bibliography.bib}
 
 % add figures
@@ -62,6 +63,44 @@
 % format for algorithms
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
+
+% kbordermatrix
+\usepackage{kbordermatrix}
+
+% change default array delimiters to parentheses
+\renewcommand{\kbldelim}{(}
+\renewcommand{\kbrdelim}{)}
+
+% listings
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+\lstset{inputpath = "../Python Code/"}
 
 % import packages
 \usepackage{amssymb}
@@ -116,6 +155,8 @@
 \appendix
 
 \input{Chapters/DynamicScheduleDerivation}
+
+\input{Chapters/PythonCode}
 
 \printbibliography
 
