@@ -1,4 +1,4 @@
-\chapter{Dynamic Schedule}
+\chapter{Dynamic Schedules}
 \label{chap:Dynamic}
 The static schedule presented in Chapter~\ref{chap:Static} and applied commonly in the scheduled arrivals literature is fixed for the duration of service. It would intuitively be advantageous to allow the schedule to vary during service. For example, if the service times of the first few customers are longer than expected, then it would be beneficial to schedule the remaining customers to arrive later.
 
@@ -53,7 +53,7 @@ In order to compare $C_{0}^{*} (k)$ with the cost of the static schedule, need t
 \end{equation}
 
 \section{Erlang Distribution}
-The transition probability and expected transition cost for the dynamic schedule depend on the cdf and conditional expectations of the Erlang distribution, which are shown here.
+The transition probability and expected transition cost for the dynamic schedule depend on the distribution function and conditional expectations of the Erlang distribution, which are shown here.
 
 Denote the service time of the customer that is currently in position $i$ in the queue as $S_{i}$. For $n$ customers, the service times $S_{1}, \ldots, S_{n}$ are iid exponential random variables with mean $\mu$.
 
@@ -62,22 +62,34 @@ For $r \geq 1$, the waiting time of the customer in position $(r + 1)$ is given 
 	X = \sum_{i = 1}^{r} S_{i} \sim \text{Erlang}(r, \mu)
 \end{equation}
 
-which has the pdf
+which has density
 \begin{equation}
-	f (x; r) \coloneqq \frac{1}{\mu (r - 1)!} \left( \frac{x}{\mu} \right)^{r - 1} \mathrm{e}^{\frac{-x}{\mu}} \text{ for } x > 0
+	f (x; r) \coloneqq \frac{1}{\mu (r - 1)!} \left( \frac{x}{\mu} \right)^{r - 1} \mathrm{e}^{\frac{-x}{\mu}}
 \end{equation}
 
-The cdf of the Erlang distribution is
+and distribution function
 \begin{equation}
-	F (a; r) \coloneqq \mathbb{P} (X \leq a) = \begin{cases} 0 & \text{for $a = 0$} \\ 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{a}{\mu} \right)^{i} \mathrm{e}^{\frac{-a}{\mu}} & \text{for $a > 0$} \end{cases}
+	F (x; r) \coloneqq \mathbb{P} (X \leq x) = \begin{cases} 0 & \text{for $x = 0$} \\ 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{x}{\mu} \right)^{i} \mathrm{e}^{\frac{-x}{\mu}} & \text{for $x > 0$} \end{cases}
 \end{equation}
 
-For $a \geq 0$, $F (a; r)$ is continuous as
+For $x \geq 0$, $F (x; r)$ is continuous as
 \begin{equation}
-	\lim_{a \to 0^{+}} F (a; r) = 0 = F (0; r)
+	\lim_{x \to 0^{+}} F (x; r) = 0 = F (0; r)
 \end{equation}
 
-The conditional expectation of $X$ given $X \leq a$ is
+Computing the expected transition cost requires the conditional expectation of $X$ given $X \leq a$. We are unable to find reference to this conditional expectation in the literature so derive it here (for $a > 0$).
+\begin{align}
+	\begin{split}
+		\mathbb{E} [X | X \leq a]
+		& = \int x \ \mathbb{P} (X \in d x | X \leq a) \\
+		& = \frac{1}{\mathbb{P} (X \leq a)} \int x \ \mathbb{P} (X \in d x, X \leq a) \\
+		& = \frac{1}{F (a; r)} \int_{0}^{a} x f(x; r) d x \\
+		& = \frac{\mu r}{F (a; r)} \int_{0}^{a} \frac{1}{\mu r!} \left( \frac{x}{\mu} \right)^{r} \mathrm{e}^{\frac{-x}{\mu}} d x \\
+		& = \frac{\mu r F (a; r + 1)}{F (a; r)}
+	\end{split}
+\end{align}
+
+Moreover, $\mathbb{E} [X | X \leq 0] = 0$ by definition. Therefore, the conditional expectation of $X$ given $X \leq a$ is defined as
 \begin{equation}
 	G (a; r) \coloneqq \mathbb{E} [X | X \leq a] = \begin{cases} 0 & \text{for $a = 0$} \\ \frac{\mu r F (a; r + 1)}{F (a; r)} & \text{for $a > 0$} \end{cases}
 \end{equation}
@@ -91,12 +103,47 @@ Moreover,
 
 Thus, $\displaystyle \lim_{a \to \infty} \mathbb{E} [X | X \leq a] = \mathbb{E} [X]$ as expected.
 
-Finally, suppose there is an exponential random variable $Y$ with mean $\mu$ that is independent of $X$. The conditional expectation of $X$ given $X \leq a$ and $X + Y > a$ is
+Finally, suppose there is an exponential random variable $Y$ with mean $\mu$ that is independent of $X$. The expected transition cost also requires the conditional expectation of $X$ given $X \leq a$ and $X + Y > a$. We were again unable to find reference to this conditional expectation in the literature so derive it here (for $a > 0$).
+\begin{align}
+	\begin{split}
+		& \ \mathbb{E} [X | X \leq a, X + Y > a] \\
+		= & \ \int x \ \mathbb{P} (X \in d x | X \leq a, X + Y > a) \\
+		= & \ \frac{1}{\mathbb{P} (X \leq a, X + Y > a)} \int x \ \mathbb{P} (X \in d x, X \leq a, X + Y > a) \\
+		= & \ \frac{1}{\mathbb{P} (X \leq a, X + Y > a)} \iint_{D} x \ \mathbb{P} (X \in d x, X \leq a, X + y > a) f (y; 1) d y
+	\end{split}
+\end{align}
+
+The double integral needs to be evaluated over
 \begin{equation}
-	H (a; r) \coloneqq \mathbb{E} [X | X \leq a, X + Y > a] = \frac{ar}{r + 1}
+	D = \Big\{ (x, y) : x \geq 0, y \geq 0, x \leq a, x + y > a \Big\}
 \end{equation}
 
-The conditional expectation $H (a; r)$ doesn't depend on $\mu$.
+$D$ can be expressed as the union of two disjoint sets in the following way.
+\begin{equation}
+	D = \Big\{ (x, y) : x \in (a - y, a], y \in [0, a] \Big\} \bigcup \Big\{ (x, y) : x \in [0, a], y \in (a, \infty) \Big\}
+\end{equation}
+
+In addition, we show in the appendix that
+\begin{equation}
+	\mathbb{P} (X \leq a, X + Y > a) = \frac{1}{r!} \left( \frac{a}{\mu} \right)^{r} \mathrm{e}^{\frac{-a}{\mu}}
+\end{equation}
+
+Thus, the conditional expectation can be further derived below.
+\begin{align}
+	\begin{split}
+		& \ \mathbb{E} [X | X \leq a, X + Y > a] \\
+		= & \ \frac{1}{\ \frac{1}{r!} \left( \frac{a}{\mu} \right)^{r} \mathrm{e}^{\frac{-a}{\mu}}} \left[ \int_{0}^{a} \int_{a - y}^{a} + \int_{a}^{\infty} \int_{0}^{a} \right] x f (x; r) f (y; 1) d x d y \\
+		= & \ \frac{\frac{a}{r + 1} \frac{1}{(r - 1)!} \left( \frac{a}{\mu} \right)^{r} \mathrm{e}^{\frac{-a}{\mu}}}{\frac{1}{r!} \left( \frac{a}{\mu} \right)^{r} \mathrm{e}^{\frac{-a}{\mu}}} \\
+		= & \ \frac{a r}{r + 1}
+	\end{split}
+\end{align}
+
+Moreover, $\mathbb{E} [X | X \leq 0, X + Y > 0] = 0$ by definition. Therefore, the conditional expectation of $X$ given $X \leq a$ and $X + Y > a$ is defined as
+\begin{equation}
+	H (a; r) \coloneqq \mathbb{E} [X | X \leq a, X + Y > a] = \frac{a r}{r + 1}
+\end{equation}
+
+Perhaps surprisingly, the conditional expectation $H (a; r)$ does not depend on the parameter $\mu$.
 
 \section{Transition Probability}
 The transition probability $p_{a} (k, j)$ is the probability that the number of customers in the system changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the queue over a time interval of length $a$.
