@@ -221,6 +221,23 @@ This dynamic schedule is exactly the same as the static schedule for two custome
 
 Unfortunately, for $k \geq 2$, no algebraic solution exists for the optimal policy for state $(n, k)$. Thus, we cannot analytically derive the dynamic schedule for more than two customers. Those cases need to be solved numerically.
 
+To further illustrate this point, we consider the cost of the state $(1, 2)$ (i.e., one customer remaining to schedule and two customers currently in the system). From Equation~\ref{Eqn_Bellman}, the expected cost of this state as a function of the time until the last customer's arrival ($a$) is given by
+\begin{equation}
+	C_{1} (a, 2) = \gamma a + \mu + \mathrm{e}^{\frac{-a}{\mu}} (a + 2 \mu)
+\end{equation}
+
+The optimal policy $a^{*}$ where $C_{1} (a, 2)$ attains a minimum is given by the $a^{*}$ that solves the equation
+\begin{equation}
+	- \left( 1 + \frac{a^{*}}{\mu} \right) \mathrm{e}^{- \left( 1 + \frac{a^{*}}{\mu} \right)} = - \gamma \mathrm{e}^{-1}
+\end{equation}
+
+The optimal policy can be defined in terms of the Lambert $W$ function as
+\begin{equation}
+	a^{*} = - \mu \left[ 1 + W \left( - \gamma \mathrm{e}^{-1} \right) \right]
+\end{equation}
+
+Unfortunately, $W$ is not an elementary function \citep{Chow}. The optimal arrival time of the last customer needs to be approximated numerically for given values of $\gamma$ and $\mu$.
+
 \subsection{Model for 15 Customers}
 The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
 
