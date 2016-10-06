@@ -6,7 +6,7 @@ This chapter approaches the problem of choosing a schedule in a similar way to C
 
 The dynamic schedule is chosen progressively during service. Immediately after a customer arrives and begins waiting for service, the scheduler chooses the arrival time of the next customer. Most real-world situations are obviously more restrictive than this. It is often not possible to schedule the customer arrivals one-by-one.
 
-Real-world situations may sometimes allow a degree of flexibility in regards to rescheduling customers. The theory is that if the dynamic schedule presented here is significantly better than the static schedule, than (if possible) the rescheduling ability should be included in real-world models for scheduled arrivals. However, if the dynamic schedule performs similarly to the static schedule than it is likely reasonable to ignore the rescheduling in the model formulation.
+Real-world situations may sometimes allow a degree of flexibility in regards to rescheduling customers. The theory is that if the dynamic schedules presented here are significantly better than the static schedules, then (if possible) the rescheduling ability should be included in real-world models for scheduled arrivals. However, if the dynamic schedules perform similarly to the static schedules then it is likely reasonable to ignore the rescheduling in the model formulation.
 
 \section{Markov Decision Process}
 We consider the problem of scheduling $M$ customers. Denote the number of customers in the system on arrival of customer $i$ by $k_{i}$. Like the sequence $\{ N_{i} \}$ in Chapter~\ref{chap:Static}, the sequence $\{ k_{1}, \ldots, k_{M} \}$ is a discrete-time Markov chain with a finite horizon. In contrast to Chapter~\ref{chap:Static}, we follow the general convention here and define $\{ k_{i} \}$ to be a right-continuous process with left limits.
@@ -38,7 +38,7 @@ For $n \geq 1$, the expected cost of state $(n, k)$ can thus be computed by the 
 	\label{Eqn_Bellman}
 \end{equation}
 
-Equation~\ref{Eqn_Bellman} is a recursive equation involving $C^{*}$. The optimal dynamic schedule is found by solving for each optimal interarrival time $a$ iteratively.
+Equation~\ref{Eqn_Bellman} is a recursive equation involving $C^{*}$. The optimal dynamic schedule is found by solving for each optimal interarrival time $a^{*}$ iteratively.
 
 \section{Base Case}
 Solving Equation~\ref{Eqn_Bellman} requires a solution for the base case where $n = 0$. The state $(0, k)$ is the state where there are no customers remaining to be scheduled and $k$ customers currently in the system. No futher scheduling decisions are required at this state.
@@ -54,17 +54,17 @@ Denote the expected waiting time of the customer that is currently in position $
 
 If there are no customers remaining to be scheduled, then the expected server availability time is the expected time until the customer currently in the last position in the queue finishes service. This time is the summation of the expected service times of the $k$ customers currently in the system,
 \begin{equation}
-	\mathbb{E} \Big[\text{server availability time at state $(0, k)$} \Big] = \sum_{i = 1}^{k} \mu = k \mu.
+	\mathbb{E} \Big[\text{server availability time at state $(0, k)$} \Big] = \sum_{i = 1}^{k} \mu = \mu k.
 \end{equation}
 
 The per unit time costs $c_{W}$ and $c_{S}$ are defined as before in Chapter~\ref{chap:Static}. The expected cost of the base case is thus given by
 \begin{equation}
- 	C_{0}^{*} (k) = c_{W} \frac{\mu k (k - 1)}{2} + c_{S} k \mu.
+ 	C_{0}^{*} (k) = c_{W} \frac{\mu k (k - 1)}{2} + c_{S} \mu k.
 \end{equation}
 
-In order to compare $C_{0}^{*} (k)$ with the cost of the static schedule, we need to scale it by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$,
+In order to compare $C_{0}^{*} (k)$ with the expected cost of the static schedule, we need to scale it by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$,
 \begin{equation}
-	C_{0}^{*} (k) \coloneqq (1 - \gamma) \frac{\mu k (k - 1)}{2} + \gamma k \mu.
+	C_{0}^{*} (k) \coloneqq (1 - \gamma) \frac{\mu k (k - 1)}{2} + \gamma \mu k.
 \end{equation}
 
 \section{Erlang Distribution}
@@ -182,7 +182,7 @@ Given a current state $(n, k)$ and a time interval $a$, the total probability ov
 \end{equation}
 
 \section{Expected Transition Cost}
-The expected transition cost is the expected cost of transitioning from state $(n, k)$ to state $(n - 1, j)$ if the next customer is scheduled to arrive in $a$ time units.
+The expected transition cost $R_{a} (k, j)$ is the expected cost of transitioning from state $(n, k)$ to state $(n - 1, j)$ if the next customer is scheduled to arrive in $a$ time units.
 
 In a similar way to the transition probability, the expected transition cost is derived on a case by case basis. To compare the dynamic schedule with the static schedule, the cost is scaled by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$. The full derivation is included in the appendix and the final equation is presented here,
 \begin{equation}
@@ -211,7 +211,7 @@ As $\gamma \in (0, 1)$, the optimal policy $a^{*}$ where $C_{n} (a, 0)$ attains 
 	\label{eqn:Dynamic_No_Waiting}
 \end{equation}
 
-Thus, if there are no customers currently waiting, then the next customer should be scheduled to arrive immediately. This agrees with the result of the static schedule that the first customer should be scheduled to arrive immediately at the state of service.
+Thus, if there are no customers currently in the system, then the next customer should be scheduled to arrive immediately. This agrees with the result of the static schedule that the first customer should be scheduled to arrive immediately at the state of service.
 
 As the transition occurs immediately, the expected cost of state $(n, 0)$ equals the expected cost of state $(n - 1, 1)$ for $n \geq 1$,
 \begin{equation}
@@ -238,7 +238,7 @@ This dynamic schedule is exactly the same as the static schedule for two custome
 
 Unfortunately, for $k \geq 2$, no algebraic solution exists for the optimal policy for state $(n, k)$. Thus, we cannot analytically derive the dynamic schedule for more than two customers. Those cases need to be solved numerically.
 
-To further illustrate this point, we consider the state $(1, 2)$ (i.e., one customer remaining to be scheduled and two customers currently in the system). From Equation~\ref{Eqn_Bellman}, the expected cost of this state as a function of the time until the last customer's arrival ($a$) is given by
+To further illustrate this point, we consider the state $(1, 2)$ (i.e., one customer remaining to be scheduled and two customers currently in the system). From Equation~\ref{Eqn_Bellman}, the expected cost of this state as a function of the time $a$ until the last customer's arrival is given by
 \begin{equation}
 	C_{1} (a, 2) = \gamma a + \mu + \mathrm{e}^{\frac{-a}{\mu}} (a + 2 \mu).
 \end{equation}
@@ -261,7 +261,7 @@ where the Lambert $W$ function is the inverse function of
 Unfortunately, $W$ is not an elementary function \citep{Chow}. The optimal arrival time of the last customer needs to be computed numerically for a given value of $\gamma$.
 
 \subsection{Model for 15 Customers}
-We consider here the case of $n = 15$. Without loss of generality, we can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
+We consider here the case of $n = 15$. Without loss of generality, we can let $\mu = 1$. For $\mu \neq 1$, the optimal policies found are the optimal interarrival times $\frac{a^{*}}{\mu}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
 
 In a similar way to Chapter~\ref{chap:Static}, we developed an algorithm in Python to quickly solve for a numerical approximation to the optimal dynamic schedule. This algorithm is included in the appendix. We again use the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python.
 

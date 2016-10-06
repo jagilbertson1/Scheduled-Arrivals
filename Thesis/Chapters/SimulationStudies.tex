@@ -18,7 +18,7 @@ The mean costs of the static and dynamic schedules were $15.05$ and $13.55$ resp
 		\includegraphics[width=\textwidth]{Cost_Hist_Dynamic.eps}
 		\caption{}
 	\end{subfigure}
-	\caption{Histogram plot of the costs of the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashed lines indicate the upper and lower quartiles.}
+	\caption{Histogram plots of the costs of the static (a) and dynamic (b) schedules for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashed lines indicate the upper and lower quartiles.}
 	\label{fig:Two_Cost}
 \end{figure}
 
@@ -28,7 +28,7 @@ Figure~\ref{fig:Diff_Cost} plots a histogram of the difference in costs between 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Cost_Hist_Diff.eps}
-	\caption{Histogram plots of the cost of the static schedule minus the cost of the dynamic schedule for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashed lines indicate the upper and lower quartiles.}
+	\caption{Histogram plot of the cost of the static schedule minus the cost of the dynamic schedule for each simulation run where $\mu = 1$ and $\gamma = \frac{c_{S}}{c_{S} + c_{W}} = 0.5$. The black vertical line indicates the median and the blue dashed lines indicate the upper and lower quartiles.}
 	\label{fig:Diff_Cost}
 \end{figure}
 
@@ -58,7 +58,7 @@ The $75$-th percentile of the difference in average waiting times is $0.00$. As 
 
 However, the minimum difference in average waiting times is only $-0.33$, whereas the maximum is $8.57$. It appears that in the simulation runs where the dynamic schedule has a shorter waiting time than the static schedule, it tends to have a significantly shorter waiting time. The dynamic schedule is less prone to runs with extremely long waiting times. This is expected behaviour as the dynamic schedule is able to adjust to customers having longer than expected service times by rescheduling the later customers. When the static schedule performs poorly, it tends to perform extremely poorly.
 
-Another important consideration is the treatment of the customers individually. Figure~\ref{fig:Avg_Wait_Position} plots the average waiting time of each customer individually.
+Another important consideration is the treatment of the customers individually. Figure~\ref{fig:Avg_Wait_Position} plots the average waiting time of each customer individually under the two schedules.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{WT_Line_Avg.eps}
@@ -66,11 +66,11 @@ Another important consideration is the treatment of the customers individually. 
 	\label{fig:Avg_Wait_Position}
 \end{figure}
 
-In both schedules, the average waiting time of the first customer is $0$ as they are always served immediately. The first few customers wait longer on average in the dynamic schedule than the static schedule. In contrast, the later few customers tend to wait significantly longer in the static schedule.
+In both schedules, the average waiting time of the first customer is zero as they are always served immediately. The first few customers wait longer on average in the dynamic schedule than the static schedule. In contrast, the later few customers tend to wait significantly longer in the static schedule.
 
 For customer $3$ to customer $14$, their average waiting times are approximately constant in the dynamic schedule, but increasing in the static schedule. It appears that the dynamic schedule is `fairer' and able to spread the waiting time more evenly amongst the customers. The static schedule tends to favour the earlier customers.
 
-Intuitively, customers prefer schedules where they are served immediately and do not have to wait. Figure~\ref{fig:No_Wait_Position} plots the proportion of runs where each customer does not have to wait.
+Intuitively, customers prefer schedules where they are served immediately and do not have to wait. Figure~\ref{fig:No_Wait_Position} plots the proportion of runs where each customer does not have to wait under the two schedules.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{WT_Line_Prop.eps}
