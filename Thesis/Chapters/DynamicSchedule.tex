@@ -238,7 +238,7 @@ This dynamic schedule is exactly the same as the static schedule for two custome
 
 Unfortunately, for $k \geq 2$, no algebraic solution exists for the optimal policy for state $(n, k)$. Thus, we cannot analytically derive the dynamic schedule for more than two customers. Those cases need to be solved numerically.
 
-To further illustrate this point, we consider the cost of the state $(1, 2)$ (i.e., one customer remaining to be scheduled and two customers currently in the system). From Equation~\ref{Eqn_Bellman}, the expected cost of this state as a function of the time until the last customer's arrival ($a$) is given by
+To further illustrate this point, we consider the state $(1, 2)$ (i.e., one customer remaining to be scheduled and two customers currently in the system). From Equation~\ref{Eqn_Bellman}, the expected cost of this state as a function of the time until the last customer's arrival ($a$) is given by
 \begin{equation}
 	C_{1} (a, 2) = \gamma a + \mu + \mathrm{e}^{\frac{-a}{\mu}} (a + 2 \mu).
 \end{equation}
@@ -261,9 +261,11 @@ where the Lambert $W$ function is the inverse function of
 Unfortunately, $W$ is not an elementary function \citep{Chow}. The optimal arrival time of the last customer needs to be computed numerically for a given value of $\gamma$.
 
 \subsection{Model for 15 Customers}
-We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
+We consider here the case of $n = 15$. Without loss of generality, we can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
 
-In a similar way to Chapter~\ref{chap:Static}, we developed an algorithm in Python to quickly solve for a numerical approximation to the optimal dynamic schedule. This algorithm is included in the appendix. We again use the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python. We refer to the numerical approximation found by the algorithm as the `optimal schedule' and it consists of the `optimal interarrival times'. We were able to verify that the schedule found by the algorithm is in fact optimal for a small number of customers. We conjecture that it always finds the optimal solution, but are unable to prove it. Future work should attempt to prove that the solution found is optimal.
+In a similar way to Chapter~\ref{chap:Static}, we developed an algorithm in Python to quickly solve for a numerical approximation to the optimal dynamic schedule. This algorithm is included in the appendix. We again use the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python.
+
+We refer to the numerical approximation found by the algorithm as the `optimal schedule' and it consists of the `optimal interarrival times'. We were able to verify that the schedule found by the algorithm is in fact optimal for a small number of customers. We conjecture that it always finds the optimal solution, but are unable to prove it. Future work should attempt to prove that the solution found is optimal.
 
 Finding the optimal dynamic schedule for 15 customers involves solving several contrained optimisation problems. We solve for the optimal policy $a^{*}$ at each possible state in the set
 \begin{equation}
@@ -275,7 +277,7 @@ Our algorithm finds the optimal policy at each of the states in the order given 
 	(0, 0), (0, 1), \ldots, (0, 15), (1, 0), \ldots, (1, 14), (2, 1), \ldots, (14, 1), (15, 0).
 \end{equation}
 
-By choosing this order and storing the results of previous computations, our algorithm is able to easily find the dynamic schedule for $15$ customers. This algorithm is significantly more efficient than our algorithm for finding the optimal static schedule. Moreover, due to the nature of the dynamic schedule, the optimal schedule for scheduling $15$ customers includes the optimal schedule for scheduling $n \leq 15$ customers.
+By choosing this order and storing the results of previous computations, our algorithm is able to easily find the dynamic schedule for $15$ customers. This algorithm is significantly more efficient than our algorithm for finding the optimal static schedule. Moreover, due to the nature of the dynamic schedule, the optimal schedule for $15$ customers includes the optimal schedule for $n \leq 15$ customers.
 
 We compute the expected cost of each state $(n, k)$ using our algorithm and the results are plotted in Figure~\ref{fig:Dynamic_Cost_15}.
 \begin{figure}[htb]
