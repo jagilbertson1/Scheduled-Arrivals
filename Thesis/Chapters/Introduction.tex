@@ -3,7 +3,9 @@ Queues with scheduled arrivals occur frequently in society. These are queues whe
 
 In this thesis, we make several assumptions about the underlying system. First, we assume a single server queue with independent exponential service times. We assume that customers arrive punctually at their scheduled arrival times. In addition, all customers have the same mean service time $\mu$.
 
-The objective is to find a schedule of customer arrival times that minimises a linear combination of the expected total waiting time of the customers and the expected server availability time (i.e., the expected time between the start of the first customer's service and end of the last customer's function). This linear combination is referred to as the expected cost of a schedule.
+The objective is to find a schedule of customer arrival times that minimises a linear combination of the expected total waiting time of the customers and the expected server availability time (i.e., the expected time between the start of the first customer's service and end of the last customer's service). This linear combination is referred to as the expected cost of a schedule.
+
+To be consistent with the results of \citet{Pegden}, we choose this objective that does not directly include minimising the expected server idle time. The server is idle if it is not currently serving a customer and it is not yet the end of the last customer's service. The server can only be idle if it is available, thus the server availability time must be greater than the server idle time. Minimising the server availability time should also indirectly reduce the server idle time.
 
 A customer's waiting time is the time from the customer's arrival until the server begins serving that customer. Throughout this thesis, we refer to the number of customers in the system at a given point in time. This number includes any customers currently being served and any customers who have arrived and are currently waiting for service.
 
@@ -21,6 +23,6 @@ In Chapter~\ref{chap:Dynamic}, we consider a special case where customer arrival
 
 Towards the end of both Chapters~\ref{chap:Static} and~\ref{chap:Dynamic}, a number of example models are considered. These models help to understand the properties of each of the schedules. We examine the simple case of a small number of customers to be scheduled, and the more interesting case of $15$ customers to be scheduled.
 
-The static schedule is simply a more restrictive case of the dynamic schedule. In Chapter~\ref{chap:Comparison}, we compare the expected cost of the two schedules. We investigate the percentage difference between each schedule's expected cost as the total number of customers.
+The static schedule is simply a more restrictive case of the dynamic schedule. In Chapter~\ref{chap:Comparison}, we compare the expected cost of the two schedules. We investigate the percentage difference between each schedule's expected cost as the total number of customers increases.
 
-In Chapter~\ref{chap:Simulation}, we seek a broader understanding of the differences between the two schedules. We simulate a million runs of each schedule and compare the two cost distributions. The mean customer arrival time and customer waiting time under each schedule is examined. This chapter gives us a fuller understanding of the properties of each schedule that are difficult to derive analytically.
+In Chapter~\ref{chap:Simulation}, we seek a broader understanding of the differences between the two schedules. We simulate a million runs of each schedule and compare the two cost distributions. The mean customer arrival time and customer waiting time are examined under each schedule. This chapter gives us a fuller understanding of the properties of each schedule that are difficult to derive analytically.

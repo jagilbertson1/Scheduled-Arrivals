@@ -5,7 +5,7 @@ import scipy.optimize as optimize
 import os
 from multiprocessing import Pool
 
-# distribution functions
+# distribution function
 def cdf(a, r, mu):
     if (a > 0):
         return poisson.sf(r - 1, a / mu)
