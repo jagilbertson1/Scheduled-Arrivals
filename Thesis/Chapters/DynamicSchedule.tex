@@ -9,7 +9,7 @@ The dynamic schedule is chosen progressively during service. Immediately after a
 Real-world situations may sometimes allow a degree of flexibility in regards to rescheduling customers. The theory is that if the dynamic schedule presented here is significantly better than the static schedule, than (if possible) the rescheduling ability should be included in real-world models for scheduled arrivals. However, if the dynamic schedule performs similarly to the static schedule than it is likely reasonable to ignore the rescheduling in the model formulation.
 
 \section{Markov Decision Process}
-We consider the problem of scheduling $M$ customers. Denote the number of customers in the system on arrival of customer $i$ by $k_{i}$. In a similar way to the sequence $\{ N_{i} \}$ in Chapter~\ref{chap:Static}, the sequence $\{ k_{1}, \ldots, k_{M} \}$ is a discrete time Markov chain with a finite horizon. In contrast to Chapter~\ref{chap:Static}, we follow the general convention here and define $\{ k_{i} \}$ to be a right-continuous process with left limits.
+We consider the problem of scheduling $M$ customers. Denote the number of customers in the system on arrival of customer $i$ by $k_{i}$. In a similar way to the sequence $\{ N_{i} \}$ in Chapter~\ref{chap:Static}, the sequence $\{ k_{1}, \ldots, k_{M} \}$ is a discrete-time Markov chain with a finite horizon. In contrast to Chapter~\ref{chap:Static}, we follow the general convention here and define $\{ k_{i} \}$ to be a right-continuous process with left limits.
 
 We denote the states of the Markov chain as $(n, k)$. This state refers to $n$ customers remaining to be scheduled and $k$ customers currently in the system (i.e., either waiting or being served). The state variable $n$ is treated as the current `time' of the Markov chain. On arrival of the first customer, the system is in state $(M - 1, k_{1})$. On arrival of the second customer, the system is in state $(M - 2, k_{2})$. On arrival of the last customer, the system is in state $(0, k_{M})$.
 
@@ -62,7 +62,7 @@ The per unit time costs $c_{W}$ and $c_{S}$ are defined as before in Chapter~\re
  	C_{0}^{*} (k) = c_{W} \frac{\mu k (k - 1)}{2} + c_{S} k \mu.
 \end{equation}
 
-In order to compare $C_{0}^{*} (k)$ with the cost of the static schedule, need to scale it by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$,
+In order to compare $C_{0}^{*} (k)$ with the cost of the static schedule, we need to scale it by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$,
 \begin{equation}
 	C_{0}^{*} (k) \coloneqq (1 - \gamma) \frac{\mu k (k - 1)}{2} + \gamma k \mu.
 \end{equation}
@@ -161,7 +161,7 @@ Moreover, $\mathbb{E} [X | X \leq 0, X + Y > 0] = 0$ by definition. Therefore, t
 Perhaps surprisingly, the conditional expectation $H (a; r)$ does not depend on the parameter $\mu$.
 
 \section{Transition Probability}
-The transition probability $p_{a} (k, j)$ is the probability that the number of customers in the system changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the queue over a time interval of length $a$.
+The transition probability $p_{a} (k, j)$ is the probability that the number of customers in the system changes from $k$ customers initially to $j$ customers on the arrival of the next customer after $a$ time units. In other words, it is the probability that there are $k - (j - 1)$ departures from the system over a time interval of length $a$.
 
 The transition probability is most easily derived on a case by case basis. The full derivation is included in the appendix and only the final equation is presented here,
 \begin{equation}

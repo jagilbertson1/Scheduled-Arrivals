@@ -22,13 +22,13 @@ Denote $c_{W}$ and $c_{S}$ as the per unit time cost of the expected total custo
 	\phi (t_{1}, \mathbf{x}_{n}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right].
 \end{equation}
 
-The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$,
+The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, we can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$,
 \begin{equation}
 	\phi (\mathbf{x}_{n}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right].
 	\label{eqn:StaticObjective}
 \end{equation}
 
-The optimal static schedule is thus the interarrival times that minimise Equation~\ref{eqn:StaticObjective}
+The optimal static schedule is thus the interarrival times that minimise the right hand side of Equation~\ref{eqn:StaticObjective}.
 
 \section{Expected Waiting Time}
 We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as a function of the interarrival times $\mathbf{x}_{n}$. If there are $j$ customers in the system immediately prior to the arrival of customer $i$, then $w_{i} = j \mu$ by the memoryless property of the exponential distribution. The number of customers in the system refers to both customers being served and customers waiting for service.
@@ -48,7 +48,7 @@ It is more common in queuing theory to consider the queue length as a right-cont
 	\label{eqn:StaticProbSystem}
 \end{equation}
 
-Pegden and Rosenshine's formulation can be solved more efficiently by identifying that $\{ N_{i} \}$ forms a discrete time Markov chain with nonstationary transition probabilities. \citet{Stein} show that the transition from $N_{i - 1}$ to $N_{i}$ is governed by the transition matrix
+Pegden and Rosenshine's formulation can be better expressed by identifying that $\{ N_{i} \}$ forms a discrete-time Markov chain with nonstationary transition probabilities. \citet{Stein} show that the transition from $N_{i - 1}$ to $N_{i}$ is governed by the transition matrix
 \begin{equation*}
 	T (x_{i - 1}) = \kbordermatrix{
 	& 0 & 1 & 2 & 3 & \ldots & n - 1 & n \\
@@ -134,9 +134,9 @@ Therefore, the optimal policy is
 
 As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
-Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. Pegden and Rosenshine prove that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
+Unfortunately, as \citet{Pegden} find, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solved numerically. Pegden and Rosenshine prove that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
-We developed an algorithm in Python to efficiently find a numeric approximation to the optimal static schedule. The algorithm is included in the appendix. We found that the algorithm can find the schedule when scheduling up to $15$ customers. Our algorithm uses the `L-BFGS-B' method in $\texttt{scipy.optimize.minimize}$. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a detailed explanation of the `L-BFGS-B' method, see \citet{Byrd}.
+We developed an algorithm in Python to efficiently find a numeric approximation to the optimal static schedule. The algorithm is included in the appendix. We find that the algorithm can determining the schedule for up to $15$ customers. Our algorithm uses the `L-BFGS-B' method in $\texttt{scipy.optimize.minimize}$. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a detailed explanation of the `L-BFGS-B' method, see \citet{Byrd}.
 
 \subsection{Model for 15 Customers}
 We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
@@ -151,7 +151,7 @@ Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf
 
 The optimal interarrival times increase for the initial few customers, remain constant for the majority of customers, and then decrease for the last few customers. This is the dome-shape that was observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that was first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
 
-The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justify this simplification by claiming that for any single server queue with exponential service times, the average waiting time of a customer will be at a minimum for constant interarrival times. If this justification holds true, then this guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$). However, it does not imply that it's optimal for $\gamma > 0$.
+The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justify this simplification by claiming that for any single server queue with exponential service times, the average waiting time of a customer will be at a minimum for constant interarrival times. If this justification holds true, then this guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$). However, it does not imply that it is optimal for $\gamma > 0$.
 
 The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented in the following chapter. Thus, this simplification is not pursued here.
 
