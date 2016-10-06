@@ -70,7 +70,7 @@ This is a derivation of the expected transition cost $R_{a} (k, j)$. This is the
 In a similar way to the transition probability, the cost is most easily derived on a case by case basis.
 
 \subsection{Case 1 $k \in \{ 0, 1 \}$}
-The first case is that the system initially has either no customers or only a single customer. In this case, no customers are waiting during the transition, so the total customers waiting time is zero. The only cost is the cost of the expected server availability time during the transition. The server is available for the entire transition, so the server availability time is $a$, thus
+The first case is that the system initially has either no customers or only a single customer. In this case, no customers are waiting during the transition, so the total customers' waiting time is zero. The only cost is the cost of the expected server availability time during the transition. The server is available for the entire transition, so the server availability time is $a$, thus
 \begin{equation}
 	R_{a} (k, j) = c_{S} a.
 \end{equation}
@@ -128,7 +128,7 @@ For $j = k + 1$, no customers finish service during the transition. All customer
 \end{equation}
 
 \subsection{Summary}
-In order to compare the dynamic schedule with the static schedule, need to scale these costs by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$. These results can be summarised as
+In order to compare the dynamic schedule with the static schedule, we need to scale these costs by dividing by $(c_{S} + c_{W})$ and defining $\gamma = \frac{c_{S}}{c_{S} + c_{W}}$. These results can be summarised as
 \begin{equation}
 	R_{a} (k, j) = \begin{cases}
 		\gamma a & \text{for $k \in \{ 0, 1 \}$} \\

@@ -1,11 +1,11 @@
 \chapter{Schedule Comparison}
 \label{chap:Comparison}
 \section{Expected Cost Comparison}
-Suppose that there are $N$ customers to be scheduled. In the case of the static schedule, the optimal policy is given by $\mathbf{x}_{N}^{*} = (x_{1}^{*}, \ldots, x_{N - 1}^{*})$ and the expected cost of the optimal policy is given by $\phi (\mathbf{x}_{N}^{*})$. In the case of the dynamic schedule, the initial state is $(N, 0)$, so the expected cost of the optimal policy is given by $C_{N}^{*} (0)$.
+Suppose that there are $N$ customers to be scheduled. In the case of a static schedule, the optimal schedule is given by $\mathbf{x}_{N}^{*} = (x_{1}^{*}, \ldots, x_{N - 1}^{*})$ and the expected cost of the optimal schedule is given by $\phi (\mathbf{x}_{N}^{*})$. In the case of a dynamic schedule, the initial state is $(N, 0)$, so the expected cost of the optimal schedule is given by $C_{N}^{*} (0)$.
 
-Clearly, as the dynamic schedule has the ability to match the optimal policy for the static schedule, $C_{N}^{*} (0) \leq \phi (\mathbf{x}_{N}^{*})$ (i.e., the dynamic schedule cannot have greater expected cost) regardless of the number of customers to be scheduled. As found in Chapter~\ref{chap:Dynamic}, equality is attained for the cases where $N \in \{ 0, 1, 2 \}$ as the schedules are identical in those cases.
+Clearly, as the dynamic schedule has the ability to match the optimal static schedule, $C_{N}^{*} (0) \leq \phi (\mathbf{x}_{N}^{*})$ (i.e., the dynamic schedule cannot have greater expected cost) regardless of the number of customers to be scheduled. We found in Chapter~\ref{chap:Dynamic} that equality is attained for the cases where $N \in \{ 0, 1, 2 \}$ as the schedules are identical in those cases.
 
-Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both schedules against the number of customers to be scheduled ($N$) assuming $\gamma = 0.5$ and $\mu = 1$.
+Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both schedules against the number of customers to be scheduled ($N$) assuming $\mu = 1$ and $\gamma = 0.5$.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Comparison_Line_Cost_Num.eps}
@@ -13,7 +13,7 @@ Figure~\ref{Graph_Cost_Comparison} plots the expected costs of both schedules ag
 	\label{Graph_Cost_Comparison}
 \end{figure}
 
-As expected, the costs are identical for $N \in \{ 0, 1, 2 \}$. For all other $N$ values, the cost of the static schedule is greater than the cost of the dynamic schedule. The cost difference appears to be minimal for $N \leq 5$, but as $N$ increases the cost difference increases.
+As expected, the costs are identical for $N \in \{ 0, 1, 2 \}$. For all other $N$ values, the expected cost of the static schedule is greater than the expected cost of the dynamic schedule. The expected cost difference appears to be minimal for $N \leq 5$, but as $N$ increases the cost difference increases.
 
 \section{Expected Percentage Cost Saving}
 Define the expected percentage cost saving $\Delta C$ (i.e., the percentage difference between the expected cost of the static schedule and the dynamic schedule) as
@@ -33,6 +33,6 @@ For $N \in \{ 0, 1, 2 \}$, $\Delta C = 0$ for all values of $\gamma$ as the sche
 
 $\Delta C$ is at a minimum for the extreme values of $\gamma$ (i.e., $\gamma = 0.1$ and $\gamma = 0.9$). An extreme value of $\gamma$ indicates that either the customer waiting cost or the server availability cost is a significant priority (i.e., $c_{W} \gg c_{S}$ or $c_{S} \gg c_{W}$). If one of the costs is heavily prioritised, there is little difference between the static and dynamic schedules, thus $\Delta C$ is small.
 
-For each value of $N \geq 3$, the peak value of $\Delta C$ occurs at a middle value of $\gamma$. As $N$ increases, the peak occurs at a larger value of $\gamma$. For $N = 3$ the peak occurs at $\gamma = 0.3$, whereas for $N = 15$ the peak occurs at $\gamma = 0.7$.
+For each value of $N \geq 3$, the peak value of $\Delta C$ occurs at a middle value of $\gamma$. As $N$ increases, the peak occurs at a larger value of $\gamma$. For $N = 3$ the peak occurs at $\gamma = 0.3$ whereas for $N = 15$ the peak occurs at $\gamma = 0.7$.
 
-The difference between the dynamic and static schedule is most significant for middle values of $\gamma$ (e.g., $\gamma \in [0.4, 0.7]$). For $\gamma = 0.1$, it doesn't appear that the expected percentage cost saving would exceed $5 \%$ indicating very little difference between the schedules.
+The difference between the dynamic and static schedules is most significant for the middle values of $\gamma$ (e.g., $\gamma \in [0.4, 0.7]$). For $\gamma = 0.1$, it does not appear that the expected percentage cost saving would exceed $5 \%$ indicating very little difference between the schedules.

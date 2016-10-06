@@ -1,6 +1,6 @@
 \chapter{Dynamic Schedules}
 \label{chap:Dynamic}
-The static schedule presented in Chapter~\ref{chap:Static} and applied commonly in the scheduled arrivals literature is fixed for the duration of service. It would intuitively be advantageous to allow the schedule to vary during service. For example, if the service times of the first few customers are longer than expected, then it would be beneficial to schedule the remaining customers to arrive later.
+The static schedules presented in Chapter~\ref{chap:Static} and applied commonly in the scheduled arrivals literature are fixed for the duration of service. It would intuitively be advantageous to allow the schedule to vary during service. For example, if the service times of the first few customers are longer than expected, then it would be beneficial to schedule the remaining customers to arrive later.
 
 This chapter approaches the problem of choosing a schedule in a similar way to Chapter~\ref{chap:Static}. The aim is to find the arrival time of the first customer and the customer interarrival times that minimise the expected cost. The assumptions of iid service times and punctual customers are the same as Chapter~\ref{chap:Static}.
 
@@ -27,7 +27,7 @@ Each transition in the Markov chain decrements the value of $n$ and transitions 
 
 Bellman's Principle of Optimality \citep{Sniedovich} states that
 \begin{quote}
-	An optimal policy has the property that, whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision.
+	an optimal policy has the property that, whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision.
 \end{quote}
 
 This implies that the expected cost of the current state (under the optimal policy) is a function of the expected cost involved in transitioning to the next state, the expected cost of the next state (under the optimal policy) and the probability of transitioning to the next state over all possible next states.
@@ -118,24 +118,24 @@ Moreover,
 
 Thus, $\displaystyle \lim_{a \to \infty} \mathbb{E} [X | X \leq a] = \mathbb{E} [X]$ as expected.
 
-Finally, suppose there is an exponential random variable $Y$ with mean $\mu$ that is independent of $X$. The expected transition cost also requires the conditional expectation of $X$ given $X \leq a$ and $X + Y > a$. We were again unable to find reference to this conditional expectation in the literature so derive it here (for $a > 0$),
+Finally, suppose there is an exponential random variable $Y$ with mean $\mu$ that is independent of $X$. The expected transition cost requires the conditional expectation of $X$ given $X \leq a$ and $X + Y > a$. We were again unable to find reference to this conditional expectation in the literature so derive it here (for $a > 0$),
 \begin{align}
 	\begin{split}
 		& \ \mathbb{E} [X | X \leq a, X + Y > a] \\
 		= & \ \int x \ \mathbb{P} (X \in d x | X \leq a, X + Y > a) \\
 		= & \ \frac{1}{\mathbb{P} (X \leq a, X + Y > a)} \int x \ \mathbb{P} (X \in d x, X \leq a, X + Y > a) \\
-		= & \ \frac{1}{\mathbb{P} (X \leq a, X + Y > a)} \iint_{D} x \ \mathbb{P} (X \in d x, X \leq a, X + y > a) f (y; 1) d y.
+		= & \ \frac{1}{\mathbb{P} (X \leq a, X + Y > a)} \iint_{\mathcal{D}} x \ \mathbb{P} (X \in d x, X \leq a, X + y > a) f (y; 1) d y.
 	\end{split}
 \end{align}
 
 The double integral needs to be evaluated over
 \begin{equation}
-	D = \Big\{ (x, y) : x \geq 0, y \geq 0, x \leq a, x + y > a \Big\}.
+	\mathcal{D} = \Big\{ (x, y) : x \geq 0, y \geq 0, x \leq a, x + y > a \Big\}.
 \end{equation}
 
-$D$ can be expressed as the union of two disjoint sets in the following way,
+$\mathcal{D}$ can be expressed as the union of two disjoint sets in the following way,
 \begin{equation}
-	D = \Big\{ (x, y) : x \in (a - y, a], y \in [0, a] \Big\} \bigcup \Big\{ (x, y) : x \in [0, a], y \in (a, \infty) \Big\}.
+	\mathcal{D} = \Big\{ (x, y) : x \in (a - y, a], y \in [0, a] \Big\} \bigcup \Big\{ (x, y) : x \in [0, a], y \in (a, \infty) \Big\}.
 \end{equation}
 
 In addition, we show in the appendix that
@@ -195,7 +195,7 @@ In a similar way to the transition probability, the expected transition cost is 
 
 \section{Example Models}
 \subsection{Model for 2 Customers}
-Assume there are two customers that need to be scheduled for service. The initial state is $(2, 0)$ (i.e., two customers to schedule and no customers currently in the system). The possible states during service are all the states in the set
+Assume there are two customers that need to be scheduled for service. The initial state is $(2, 0)$ (i.e., two customers remaining to be scheduled and no customers currently in the system). The possible states during service are all the states in the set
 \begin{equation}
 	\Big\{ (n, k) \in \{ 0, 1, 2 \}^{2} : n + k \leq 2 \Big\}.
 \end{equation}.
@@ -211,7 +211,7 @@ As $\gamma \in (0, 1)$, the optimal policy $a^{*}$ where $C_{n} (a, 0)$ attains 
 	\label{eqn:Dynamic_No_Waiting}
 \end{equation}
 
-Thus, if there are no customers currently waiting, then the next customer should be scheduled to arrive immediately. This agrees with the result of the static schedule that the first customer should be schedule to arrive immediately at the state of service.
+Thus, if there are no customers currently waiting, then the next customer should be scheduled to arrive immediately. This agrees with the result of the static schedule that the first customer should be scheduled to arrive immediately at the state of service.
 
 As the transition occurs immediately, the expected cost of state $(n, 0)$ equals the expected cost of state $(n - 1, 1)$ for $n \geq 1$,
 \begin{equation}
@@ -229,7 +229,7 @@ The optimal policy $a^{*}$ where $C_{n} (a, 1)$ attains a minimum is
 	\label{eqn:Dynamic_One_Waiting}
 \end{equation}
 
-Returning to the case of scheduling two customers using this dynamic schedule. By Equation~\ref{eqn:Dynamic_No_Waiting}, the first customer should be scheduled to arrive immediately. On the first customer's arrival, the system is at state $(1, 1)$. By Equation~\ref{eqn:Dynamic_One_Waiting}, the second customer should be scheduled to arrive $a^{*}$ after the arrival of the first customer where
+We return to the case of scheduling two customers using a dynamic schedule. By Equation~\ref{eqn:Dynamic_No_Waiting}, the first customer should be scheduled to arrive immediately. On the first customer's arrival, the system is at state $(1, 1)$. By Equation~\ref{eqn:Dynamic_One_Waiting}, the second customer should be scheduled to arrive $a^{*}$ after the arrival of the first customer where
 \begin{equation}
 	a^{*} = \mu \left[ \frac{C_{0}^{*} (2) - C_{0}^{*} (1)}{\gamma \mu} \right] = - \mu \ln \gamma.
 \end{equation}
@@ -263,9 +263,9 @@ Unfortunately, $W$ is not an elementary function \citep{Chow}. The optimal arriv
 \subsection{Model for 15 Customers}
 We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the optimal policies $a^{*}$ found are the optimal interarrival times $\mu a^{*}$. For simplicity, assume that the per unit time costs $c_{W}$ and $c_{S}$ are both equal such that $\gamma = 0.5$.
 
-In a similar way to Chapter~\ref{chap:Static}, we developed an algorithm in Python to quickly solve for a numeric approximation to the optimal dynamic schedule. The algorithm is included in the appendix. We refer to the numeric approximation found by the algorithm as the `optimal schedule' and it consists of the `optimal interarrival times'. We were able to verify that the schedule found by the algorithm is in fact optimal for a small number of customers. We conjecture that it always finds the optimal solution, but are unable to prove it. Future work should attempt to prove that the solution found is optimal.
+In a similar way to Chapter~\ref{chap:Static}, we developed an algorithm in Python to quickly solve for a numerical approximation to the optimal dynamic schedule. This algorithm is included in the appendix. We again use the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python. We refer to the numerical approximation found by the algorithm as the `optimal schedule' and it consists of the `optimal interarrival times'. We were able to verify that the schedule found by the algorithm is in fact optimal for a small number of customers. We conjecture that it always finds the optimal solution, but are unable to prove it. Future work should attempt to prove that the solution found is optimal.
 
-We again use the `L-BFGS-B' method of $\texttt{scipy.optimize.minimize}$ in Python. Finding the optimal dynamic schedule for 15 customers involves solving several contrained optimisation problems. We solve for the optimal policy $a^{*}$ at each possible state in the set
+Finding the optimal dynamic schedule for 15 customers involves solving several contrained optimisation problems. We solve for the optimal policy $a^{*}$ at each possible state in the set
 \begin{equation}
 	\Big\{ (n, k) \in \{ 0, \ldots, 15 \}^{2} : n + k \leq 15 \Big\}.
 \end{equation}
@@ -275,7 +275,7 @@ Our algorithm finds the optimal policy at each of the states in the order given 
 	(0, 0), (0, 1), \ldots, (0, 15), (1, 0), \ldots, (1, 14), (2, 1), \ldots, (14, 1), (15, 0).
 \end{equation}
 
-By choosing this order and storing the results of previous computations, our algorithm is able to easily find the dynamic schedule for $15$ customers. This algorithm is significantly more efficient than our algorithm for finding the optimal static schedule. Moreover, due to the nature of the dynamic schedule, the optimal schedule for scheduling $n = 15$ customers includes the optimal schedule for scheduling $n \leq 15$ customers.
+By choosing this order and storing the results of previous computations, our algorithm is able to easily find the dynamic schedule for $15$ customers. This algorithm is significantly more efficient than our algorithm for finding the optimal static schedule. Moreover, due to the nature of the dynamic schedule, the optimal schedule for scheduling $15$ customers includes the optimal schedule for scheduling $n \leq 15$ customers.
 
 We compute the expected cost of each state $(n, k)$ using our algorithm and the results are plotted in Figure~\ref{fig:Dynamic_Cost_15}.
 \begin{figure}[htb]
@@ -287,7 +287,7 @@ We compute the expected cost of each state $(n, k)$ using our algorithm and the 
 
 The cost of the initial state $(15, 0)$ is $13.55$, thus the expected cost of serving $15$ customers with a dynamic schedule is $13.55$. The worst state in Figure~\ref{fig:Dynamic_Cost_15} is the state $(0, 15)$, which is all $15$ customers in the system. This can occur if all $15$ customers are scheduled to arrive immediately at the start of service (to ensure minimal server availability time) or if the first customer has an extremely long service time.
 
-The lines plotted on Figure~\ref{fig:Dynamic_Cost_15} are the expected costs with fixed $n$ and varying $k$. As the number of customers in the system ($k$) increases, the expected cost increases exponentially. By contrast, as the number of customers to be scheduled ($n$) increases with $k$ fixed, the expected cost of the state increases approximately linearly at a significantly smaller rate.
+The lines plotted on Figure~\ref{fig:Dynamic_Cost_15} are the expected costs with fixed $n$ and varying $k$. As the number of customers in the system ($k$) increases with $n$ fixed, the expected cost increases exponentially. By contrast, as the number of customers to be scheduled ($n$) increases with $k$ fixed, the expected cost of the state increases approximately linearly at a significantly smaller rate.
 
 It is difficult to observe, but for $n \geq 1$, Figure~\ref{fig:Dynamic_Cost_15} shows that $C_{n}^{*} (0) = C_{n - 1}^{*} (1)$. This confirms the previous result that if there are no customers currently in the system (e.g., initially), then it is always optimal to schedule the next arrival immediately. The expected cost does not change as the next arrival occurs immediately.
 
@@ -299,11 +299,11 @@ Figure~\ref{fig:Dynamic_Time_15} plots the corresponding interarrival times $a^{
 	\label{fig:Dynamic_Time_15}
 \end{figure}
 
-Understanding Figure~\ref{fig:Dynamic_Time_15} is helped by looking at some examples. The optimal interarrival time for the initial state $(15, 0)$ is $0$. The first customer should be scheduled to arrive immediately. The optimal interarrival time for the state $(3, 10)$ is $10.17$. If (on arrival of a customer), there are $10$ customers in the system and $3$ customers remaining to be scheduled, then the next customer should be scheduled to arrive in $10.17$ time units. This is slightly greater than the expected service time of the $10$ customers currently in the system to account for the customer waiting cost.
+Understanding Figure~\ref{fig:Dynamic_Time_15} is helped by looking at some examples. The optimal interarrival time for the initial state $(15, 0)$ is $0$. The first customer should be scheduled to arrive immediately. The optimal interarrival time for the state $(3, 10)$ is $10.17$. If (on arrival of a customer) there are $10$ customers in the system and $3$ customers remaining to be scheduled, then the next customer should be scheduled to arrive in $10.17$ time units. This is slightly greater than the expected service time of the $10$ customers currently in the system to account for the customer waiting cost.
 
 As discussed earlier, the first pattern to notice is that for $n \geq 2$ and fixed $k$, the optimal interarrival time $a^{*}$ appears to be constant at a value close to $\mu k$ (i.e., the expected time for the system to be empty). The optimal $a^{*}$ appears to be independent of the the number of customers still to be scheduled provided that there are at least two customers still to be scheduled.
 
-In contrast, as $k$ increases for fixed $n$, the optimal interarrival times $a^{*}$ appear to increase at a slightly decreasing rate. The optimal $a^{*}$ increases by approximately $\mu$ for each additional $k$.
+In contrast, as $k$ increases for fixed $n$, the optimal interarrival times $a^{*}$ increase approximately linearly. The optimal $a^{*}$ increases by approximately $\mu$ for each additional $k$.
 
 Finally, if there are no customers currently waiting (i.e., $k = 0$), then the optimal policy is to schedule the next arrival immediately. This makes intutive sense as scheduling the next arrival immediately minimises the expected server availability time without effecting the expected total customers' waiting times.
 

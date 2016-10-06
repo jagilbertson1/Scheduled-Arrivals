@@ -14,7 +14,7 @@ Denote the expected waiting time of customer $i$ as $w_{i}$. The expected total 
 
 Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x}_{n} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$.
 
-The expected server availability time is the expected time from the start of service until the end of service. This time is the summation of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time,
+The expected server availability time is the expected time between the start of the first customer's service and the end of the last customer's service. This time is the summation of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time,
 \begin{equation}
 	\mathbb{E} \Big[\text{server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu.
 \end{equation}
@@ -42,7 +42,7 @@ Denote the number of customers in the system immediately prior to the arrival of
 
 It is more common in the literature to consider the system size as a right-continuous process. This would involve considering the number of customers in the system on the arrival of the customer $i$. However, in this chapter, we choose to remain consistent with the notation of \citet{Pegden} and consider the system size as a left-continuous process.
 
-\citet{Pegden} derive the following complicated recursive equation for calculating the probability of a given number of customers in the system,
+\citet{Pegden} derive the following recursive equation for calculating the probability of a given number of customers in the system,
 \begin{equation}
 	\mathbb{P} (N_{i} = j) = \begin{cases} 1 & \text{for $i = 1$, $j = 0$} \\
 	\sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} l!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}}\right] & \text{for $i \geq 2$, $j = 0$} \\
@@ -76,7 +76,7 @@ and
 
 The last row of $T (x_{i - 1})$ is arbitrary as it is not possible to have $n$ customers in the system immediately before a customer's arrival.
 
-Instead of Equation~\ref{eqn:StaticProbSystem}, for $i \geq 2$, the distribution of $N_{i}$ is more clearly expressed by
+Instead of Equation~\ref{eqn:StaticProbSystem}, (for $i \geq 2$) the distribution of $N_{i}$ is more clearly expressed by
 \begin{align}
 	\begin{split}
 		& \ \left( \begin{array}{ccc} \mathbb{P} (N_{i} = 0) & \ldots & \mathbb{P} (N_{i} = n) \end{array} \right) \\
@@ -99,7 +99,7 @@ Therefore, the expected waiting time of customer $i$ can be compactly expressed 
 	\label{eqn:StaticWaiting}
 \end{equation}
 
-Note \citet{Stein} omit $\mu$ from their expressions for the expected customer waiting times.
+Note \citet{Stein} omit $\mu$ from their expressions for the expected customer waiting times. Although, this does not affect their results as they assume $\mu = 1$ for their results.
 
 \section{Example Models}
 \subsection{Model for 2 Customers}
@@ -140,12 +140,12 @@ As the server availability cost increases relative to the customer waiting cost 
 
 Unfortunately, as \citet{Pegden} find, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solved numerically. Pegden and Rosenshine prove that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
-We developed an algorithm in Python to efficiently find a numeric approximation to the optimal static schedule. The algorithm is included in the appendix. We refer to the numeric approximation found by the algorithm as the `optimal schedule'. This is both for simplicity and because we (like Pegden and Rosenshine, and Stein and C\^{o}t\'{e}) believe that the numeric approximation is the optimal solution.
+We developed an algorithm in Python to efficiently find a numerical approximation to the optimal static schedule. This algorithm is included in the appendix. In this thesis, we refer to the numerical approximation found by the algorithm as the `optimal schedule'. This is both for simplicity and because we (like Pegden and Rosenshine, and Stein and C\^{o}t\'{e}) believe that the numerical approximation is the optimal solution.
 
 We find that the algorithm can determine the schedule in a reasonable period of time (i.e., less than a day) for up to $15$ customers. Our algorithm uses the `L-BFGS-B' method in $\texttt{scipy.optimize.minimize}$. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a detailed explanation of the `L-BFGS-B' method, see \citet{Byrd}.
 
 \subsection{Model for 15 Customers}
-We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
+We consider here the case of $n = 15$. Without loss of generality, we can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
 Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf{x}_{15}^{*} = (x_{1}^{*}, \ldots, x_{14}^{*})$ found by our algorithm for scheduling $15$ customers with a mean service time $\mu = 1$ for various values of $\gamma$.
 \begin{figure}[htb]
@@ -155,11 +155,16 @@ Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf
 	\label{fig:Static_Time_Gamma}
 \end{figure}
 
-The optimal interarrival times increase for the initial few customers, remain constant for the majority of customers, and then decrease for the last few customers. This is the dome-shape that is observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that is first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability), the optimal interarrival times decrease while obeying the same general shape.
+The optimal interarrival times increase for the initial few customers, remain constant for the majority of customers, and then decrease for the last few customers. This is the dome-shape that is observed by \citet{Stein} and \citet{Mendel}. The observation that the first customers arrive close together obeys Bailey's Low that is first recommended by \citet{Bailey}. As $\gamma$ increases (i.e., the relative cost of server availability time increases), the optimal interarrival times decrease while obeying the same general shape. In addition, the overall curves become flatter as $\gamma$ decreases.
 
-The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justify this simplification by claiming that for any single server queue with exponential service times, the average waiting time of a customer will be at a minimum for constant interarrival times. If this justification holds true, then this guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$). However, it does not imply that it is optimal for $\gamma > 0$.
+The common approach to efficiently finding the optimal static schedule involves simplifying the model by assuming a constant interarrival time (i.e., $x_{1} = \ldots = x_{n - 1}$). \citet{Stein} justify this simplification by claiming that
+\begin{quote}
+for any single server queue with exponential service times, the average waiting time of a customer will be at a minimum for constant interarrival times.
+\end{quote}
 
-The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedule model presented in the following chapter. Thus, this simplification is not pursued here.
+If this justification holds true, then this guarantees that constant interarrival times is optimal for $\gamma = 0$ (i.e., $c_{S} = 0$). However, it does not imply that it is optimal for $\gamma > 0$.
+
+The constant interarrival simplification significantly reduces computation cost, but Figure~\ref{fig:Static_Time_Gamma} suggests that it is clearly not optimal for the first few and last few customers. In addition, it is not possible to include this simplification in the dynamic schedules presented in the following chapter. Thus, this simplification is not pursued here.
 
 Finally, Figure~\ref{fig:Static_Time_Num} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{n - 1}^{*})$ found by our algorithm for scheduling up to $15$ customers with a mean service time $\mu = 1$ and $\gamma = 0.5$.
 \begin{figure}[htb]
