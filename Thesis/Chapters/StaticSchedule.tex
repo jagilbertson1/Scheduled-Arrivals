@@ -7,24 +7,24 @@ For simplicity, these results assume the customer service times are independent 
 \section{Objective Function}
 The optimal schedule minimises the expected cost, which is a linear combination of the expected total customers' waiting time and the expected server availability time.
 
-Denote the expected waiting time of customer $i$ as $w_{i}$. The expected total customers' waiting time is the sum of the individual customer's expected waiting times.
+Denote the expected waiting time of customer $i$ as $w_{i}$. The expected total customers' waiting time is the sum of the individual customer's expected waiting times,
 \begin{equation}
-	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
+	\mathbb{E} \Big[\text{total customer's waiting time} \Big] = \sum_{i = 1}^{n} w_{i}.
 \end{equation}
 
-Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x}_{n} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$. The expected server availability time is the expected time from the start of service until the end of service. This time is the summation of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time.
+Instead of solving for the customer arrival times, it is easier to solve for the arrival time of the first customer $t_{1}$ and the customer interarrival times $\mathbf{x}_{n} = (x_{1}, \ldots, x_{n - 1})$ where $x_{i} = t_{i + 1} - t_{i}$. The expected server availability time is the expected time from the start of service until the end of service. This time is the summation of the last customer's scheduled arrival time, the last customer's expected waiting time and the last customer's expected service time,
 \begin{equation}
-	\mathbb{E} \Big[\text{server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu
+	\mathbb{E} \Big[\text{server availability time} \Big] = \left( t_{1} + \sum_{i = 1}^{n - 1} x_{i} \right) + w_{n} + \mu.
 \end{equation}
 
 Denote $c_{W}$ and $c_{S}$ as the per unit time cost of the expected total customer's waiting time and the per unit time cost of the expected server availability time respectively. The objective function to be minimised is thus,
 \begin{equation}
-	\phi (t_{1}, \mathbf{x}_{n}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (t_{1}, \mathbf{x}_{n}) = c_{W} \sum_{i = 1}^{n} w_{i} + c_{S} \left[ t_{1} + \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right].
 \end{equation}
 
-The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$.
+The first customer should obviously be scheduled for the start of service so $t_{1} = 0$. Moreover, can scale the objective function by dividing by $(c_{W} + c_{S})$ and defining $\gamma = \frac{c_{S}}{c_{W} + c_{S}}$,
 \begin{equation}
-	\phi (\mathbf{x}_{n}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right]
+	\phi (\mathbf{x}_{n}) \coloneqq (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left[ \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right].
 	\label{eqn:StaticObjective}
 \end{equation}
 
@@ -35,16 +35,16 @@ We want to express $w_{i}$ (i.e., the expected waiting time of customer $i$) as 
 
 Denote the number of customers in the system immediately prior to the arrival of customer $i$ by $N_{i}$. Thus, the expected waiting time of customer $i$ is given by
 \begin{equation}
-	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \mathbb{P} (N_{i} = j)
+	w_{i} = \sum_{j = 0}^{i - 1} (j \mu) \mathbb{P} (N_{i} = j).
 \end{equation}
 
 It is more common in queuing theory to consider the queue length as a right-continuous process. This would involve considering the number of customers in the system on the arrival of the customer $i$. However, in this chapter, we choose to remain consistent with the notation of \citet{Pegden} and consider the system size as a left-continuous process.
 
-\citet{Pegden} derive the following complicated recursive equation for calculating the probability of a given number of customers in the system.
+\citet{Pegden} derive the following complicated recursive equation for calculating the probability of a given number of customers in the system,
 \begin{equation}
 	\mathbb{P} (N_{i} = j) = \begin{cases} 1 & \text{for $i = 1$, $j = 0$} \\
 	\sum_{k = 1}^{i - 1} \mathbb{P} (N_{i - 1} = k - 1) \left[ 1 - \sum_{l = 0}^{k - 1} \frac{x_{i - 1}^{l}}{\mu^{l} l!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}}\right] & \text{for $i \geq 2$, $j = 0$} \\
-	\sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \left[ \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}} \right] & \text{for $i \geq 2$, $j \geq 1$} \end{cases}
+	\sum_{k = 0}^{i - j - 1} \mathbb{P} (N_{i - 1} = j + k - 1) \left[ \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}} \right] & \text{for $i \geq 2$, $j \geq 1$}. \end{cases}
 	\label{eqn:StaticProbSystem}
 \end{equation}
 
@@ -58,16 +58,19 @@ Pegden and Rosenshine's formulation can be solved more efficiently by identifyin
 	\vdots & \vdots & \vdots & \vdots & \vdots & \ldots & \vdots & \vdots \\
 	n - 1 & r_{n - 1} & a_{n - 1} & a_{n - 2} & a_{n - 3} & \ldots & a_{1} & a_{0} \\
 	n & 0 & 0 & 0 & 0 & \ldots & 0 & 1
-	}
+	},
 \end{equation*}
 
 where
-\begin{align}
-	\begin{split}
-		a_{k} & = \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}} \\
-		r_{k} & = 1 - \sum_{l = 0}^{k} a_{l}
-	\end{split}
-\end{align}
+\begin{equation}
+	a_{k} = \frac{x_{i - 1}^{k}}{\mu^{k} k!} \mathrm{e}^{\frac{- x_{i - 1}}{\mu}},
+\end{equation}
+
+
+and
+\begin{equation}
+	r_{k} = 1 - \sum_{l = 0}^{k} a_{l}.
+\end{equation}
 
 The last row of $T (x_{i - 1})$ is arbitrary as it is not possible to have $n$ customers in the system immediately before a customer's arrival.
 
@@ -76,13 +79,13 @@ Instead of Equation~\ref{eqn:StaticProbSystem}, for $i \geq 2$, the distribution
 	\begin{split}
 		& \ \left( \begin{array}{ccc} \mathbb{P} (N_{i} = 0) & \ldots & \mathbb{P} (N_{i} = n) \end{array} \right) \\
 		= & \ \left( \begin{array}{ccc} \mathbb{P} (N_{i - 1} = 0) & \ldots & \mathbb{P} (N_{i - 1} = n) \end{array} \right) T (x_{i - 1}) \\
-		= & \ \left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) T (x_{1}) T (x_{2}) \cdots T (x_{i - 1})
+		= & \ \left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) T (x_{1}) T (x_{2}) \cdots T (x_{i - 1}).
 	\end{split}
 \end{align}
 
 The distribution of $N_{1}$ (i.e., the initial distribution) is given by
 \begin{equation}
-	\left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) = \left( \begin{array}{cccc} 1 & 0 & \ldots & 0 \end{array} \right)
+	\left( \begin{array}{ccc} \mathbb{P} (N_{1} = 0) & \ldots & \mathbb{P} (N_{1} = n) \end{array} \right) = \left( \begin{array}{cccc} 1 & 0 & \ldots & 0 \end{array} \right).
 \end{equation}
 
 Therefore, the expected waiting time of customer $i$ can be compactly expressed using the transition matrices as
@@ -90,7 +93,7 @@ Therefore, the expected waiting time of customer $i$ can be compactly expressed 
 	w_{i}
 	= \left( \begin{array}{cccc} 1 & 0 & \ldots & 0 \end{array} \right)
 	T (x_{1}) T (x_{2}) \cdots T (x_{i - 1})
-	\left( \begin{array}{c} 0 \\ 1 \\ 2 \\ \vdots \\ n \end{array} \right)
+	\left( \begin{array}{c} 0 \\ 1 \\ 2 \\ \vdots \\ n \end{array} \right).
 	\label{eqn:StaticWaiting}
 \end{equation}
 
@@ -101,42 +104,44 @@ We consider the simplest case of this model where there are two customers to be 
 
 By Equation~\ref{eqn:StaticWaiting}, the expected waiting times of the two customers are
 \begin{equation}
-	\begin{split}
-		w_{1} & = 0 \\
-		w_{2} & = \mu \mathrm{e}^{\frac{- x_{1}}{\mu}}
-	\end{split}
+	w_{1} = 0,
+\end{equation}
+
+and
+\begin{equation}
+	w_{2} = \mu \mathrm{e}^{\frac{- x_{1}}{\mu}}.
 \end{equation}
 
 By Equation~\ref{eqn:StaticObjective}, the objective function to be minimised is given by
 \begin{equation}
-	\phi (x_{1}) = \mu \left[ \gamma + \exp \left( \frac{- x_{1}}{\mu} \right) \right] + \gamma x_{1}
+	\phi (x_{1}) = \mu \left[ \gamma + \exp \left( \frac{- x_{1}}{\mu} \right) \right] + \gamma x_{1}.
 \end{equation}
 
 This objective function is convex as
 \begin{equation}
-	\forall x_{1} \ \ \phi'' (x_{1}) = \frac{1}{\mu} \exp \left( \frac{- x_{1}}{\mu} \right) > 0
+	\forall x_{1} \ \ \phi'' (x_{1}) = \frac{1}{\mu} \exp \left( \frac{- x_{1}}{\mu} \right) > 0.
 \end{equation}
 
 Due to the convexity of the objective function, the optimal policy that minmises $\phi (x_{1})$ can be found by solving:
 \begin{equation}
-	\phi' (x_{1}) = 0 \implies - \exp \left( \frac{- x_{1}}{\mu} \right) + \gamma = 0
+	\phi' (x_{1}) = 0 \implies - \exp \left( \frac{- x_{1}}{\mu} \right) + \gamma = 0.
 \end{equation}
 
-Therefore, the optimal policy is:
+Therefore, the optimal policy is
 \begin{equation}
-	x_{1}^{*} = \argmin_{x_{1} \geq 0} \phi (x_{1}) = - \mu \ln \gamma
+	x_{1}^{*} = \argmin_{x_{1} \geq 0} \phi (x_{1}) = - \mu \ln \gamma.
 \end{equation}
 
 As the server availability cost increases relative to the customer waiting cost (i.e., $\gamma$ increases), the second customer is scheduled to arrive earlier (i.e., $x_{1}^{*}$ decreases).
 
 Unfortunately, as \citet{Pegden} found, no general algebraic solution exists for more than two customers (i.e., $n \geq 3$). All other cases need to be solve numerically. Pegden and Rosenshine prove that the objective function $\phi (\mathbf{x}_{n})$ is convex for $n = 1, 2, 3, 4$. Moreover, they conjecture that it appears to be convex for general $n$, but are unable to prove it.
 
+We developed an algorithm in Python to efficiently find a numeric approximation to the optimal static schedule. The algorithm is included in the appendix. We found that the algorithm can find the schedule when scheduling up to $15$ customers. Our algorithm uses the `L-BFGS-B' method in $\texttt{scipy.optimize.minimize}$. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a detailed explanation of the `L-BFGS-B' method, see \citet{Byrd}.
+
 \subsection{Model for 15 Customers}
-The more interesting cases concern scheduling a larger number of customers. We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
+We consider here the case of $n = 15$. Without loss of generality, can let $\mu = 1$. For $\mu \neq 1$, the solutions found are the optimal values of $\mu \mathbf{x}_{n} = (\mu x_{1}, \ldots, \mu x_{n - 1})$.
 
-Minimising the objective function is a constrained optimization problem. A numeric solution to this problem can be found using the `L-BFGS-B' method of \newline $\texttt{scipy.optimize.minimize}$ in Python. The Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm is an iterative method for solving an unconstrained optimization problem. The `L-BFGS-B' is an extension of the BFGS algorithm to handle simple bound constraints on the variables. For a more detailed explanation of the method, see \citet{Byrd}.
-
-Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{14}^{*})$ for scheduling $15$ customers with a mean service time $\mu = 1$ for various values of $\gamma$.
+Figure~\ref{fig:Static_Time_Gamma} plots the optimal interarrival times $\mathbf{x}_{n}^{*} = (x_{1}^{*}, \ldots, x_{14}^{*})$ found by our algorithm for scheduling $15$ customers with a mean service time $\mu = 1$ for various values of $\gamma$.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width = 0.85\textwidth]{Static_Line_Interarrival_Gamma.eps}
