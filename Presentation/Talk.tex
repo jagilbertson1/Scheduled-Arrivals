@@ -33,74 +33,179 @@
 	\tableofcontents
 \end{frame}
 
-\section{Section 1}
+\section{Background}
 
 \begin{frame}
-	\frametitle{Title}
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+	\frametitle{Queues with Scheduled Arrivals}
 
-	\begin{equation}
-		10 + x = y
-	\end{equation}
-\end{frame}
-
-\begin{frame}
-	\frametitle{List}
 	\begin{itemize}
-		\item Point A
-		\item Point B
-		\begin{itemize}
-			\item Part 1
-			\item Part 2
-		\end{itemize}
-		\item Point C
-		\item Point D
+		\item 
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Using Columns}
-	\begin{columns}
-		\column{0.5\textwidth}
-		Point 1
-		\column{0.5\textwidth}
-		Point 2
-	\end{columns}
+	\frametitle{Literature Review}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Picture}
+	\frametitle{Assumptions}
+
+	\begin{itemize}
+		\item Single server
+		\item Service times are independent exponential RVs with mean $\mu$
+		\item All customers arrive punctually
+		\item Total number of customers is fixed
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Static vs. Dynamic}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\section{Static Schedules}
+
+\begin{frame}
+	\frametitle{Objective Function}
+
+	\begin{itemize}
+		\item Denote the expected waiting time of customer $i$ by $w_{i}$
+		\begin{equation*}
+			\mathbb{E} \Big[ \text{total customers' waiting time} \Big] = \sum_{i = 1}^{n} w_{i}
+		\end{equation*}
+		\item Denote the interarrival time between customer $i$ and customer $i + 1$ by $x_{i}$
+		\begin{equation*}
+			\mathbb{E} \Big[ \text{server availability time} \Big] = \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu
+		\end{equation*}
+		\item Objective is to minimise a linear combination of these times
+		\begin{equation*}
+			\phi (\mathbf{x}) = (1 - \gamma) \sum_{i = 1}^{n} w_{i} + \gamma \left( \sum_{i = 1}^{n - 1} x_{i} + w_{n} + \mu \right)
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Model for 15 Customers}
+
+	\begin{figure}
+			\centering
+			\includegraphics[width=0.85\textwidth]{Static_Line_Interarrival_Gamma.eps}
+	\end{figure}
+
+	\begin{itemize}
+		\item \alert{Dome-shape}: increase for first customers, remain constant, then decrease for last few customers
+		\item As relative cost of server availability time ($\gamma$) increases, customers arrive earlier
+	\end{itemize}
+\end{frame}
+
+\section{Dynamic Schedules}
+
+\begin{frame}
+	\frametitle{Markov Decision Process}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Erlang Distribution}
+
+	\begin{itemize}
+		\item Waiting time of customer in position $r + 1$
+		\begin{equation*}
+		 	X \sim \text{Erlang} (r, \mu)
+		\end{equation*}
+		\item Distribution function:
+		\begin{equation*}
+			F (a; r) = \mathbb{P} (X \leq x) = \begin{cases} 0 & \text{for $x = 0$} \\ 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{x}{\mu} \right)^{i} \mathrm{e}^{\frac{-x}{\mu}} & \text{for $x > 0$} \end{cases}
+		\end{equation*}
+		\item Conditional expectation:
+		\begin{equation*}
+			\mathbb{E} \Big[ X \ \big| \ X \leq a \Big] = \mu r \times \frac{F (a; r + 1)}{F (a; r)}
+		\end{equation*}
+		\item Suppose $Y \sim \text{Exp} (\mu)$ independent of $X$ 
+		\begin{equation*}
+			\mathbb{E} \Big[ X \ \big| \ X \leq a, X + Y > a \Big] = \frac{a r}{r + 1}
+		\end{equation*}
+	\end{itemize}
+\end{frame}
+
+\section{Schedule Comparison}
+
+\begin{frame}
+	\frametitle{Expected Cost Comparison}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\section{Simulation Studies}
+
+\begin{frame}
+	\frametitle{Simulation}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Schedule Cost}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{Cost_Hist_Diff.eps}
+	\end{figure}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Customer Arrival Times}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.85\textwidth]{AT_Line.eps}
+	\end{figure}
+
+	\begin{itemize}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Customer Waiting Times}
+
 	\begin{columns}
 		\column{0.5\textwidth}
+		
 		\begin{itemize}
-			\item<2-> Description
+			\item
 		\end{itemize}
+		
 		\column{0.5\textwidth}
+		
 		\begin{figure}
 			\centering
-			\includegraphics[width=\textwidth]{AT_Line.eps}
+			\includegraphics[width=\textwidth]{WT_Line_Avg.eps}
+		\end{figure}
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{WT_Line_Prop.eps}
 		\end{figure}
 	\end{columns}
-\end{frame}
-
-\begin{frame}
-	\begin{block}{Block Title}
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-	\end{block}
-\end{frame}
-
-\section{Section 2}
-
-\begin{frame}
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-\end{frame}
-
-\appendix
-
-\section{Section 3}
-
-\begin{frame}
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 \end{frame}
 
 \end{document}
