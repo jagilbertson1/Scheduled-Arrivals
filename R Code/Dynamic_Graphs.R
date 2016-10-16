@@ -53,21 +53,21 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Dynamic_Line_Co
 arrivalTimes = data[data$n > 0,]
 
 # line plot of interarrival time for each n varying k
-ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Dynamic_Line_Interarrival_k.eps",
+ggsave(filename = "~/Documents/Scheduled-Arrivals/Presentation/Figures/Dynamic_Line_Interarrival_k.eps",
        width = 20, height = 10,
        plot =
          ggplot(data = arrivalTimes, aes(x = factor(n), y = a,
                                  group = k, colour = k)) +
-           stat_summary(fun.y = "mean", geom = "point", size = 3) +
-           stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
-           labs(x = "Number to be Scheduled (n)", y = "Interarrival Time for Next Customer") +
+           stat_summary(fun.y = "mean", geom = "point", size = 6) +
+           stat_summary(fun.y = "mean", geom = 'line', size = 3) +
+           labs(x = "Number to be Scheduled (n)", y = "Time until Next Customer") +
            guides(color = guide_colorbar(title = "Number in System (k)    ", nbin = 1000, ticks = FALSE, barwidth = 35)) +
            scale_colour_gradient(limits = c(0, 15), breaks = 0:15) +
            ylim(c(0,15)) +
            theme_bw() +
-           theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
-                 axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
-                 axis.title.y = element_text(face = "bold", size = 28, margin = margin(0, 20, 0, 20)),
-                 legend.title = element_text(face = "bold", size = 28), legend.text = element_text(size = 24),
+           theme(axis.text.x = element_text(size = 48), axis.text.y = element_text(size = 48),
+                 axis.title.x = element_text(face = "bold", size = 56, margin = margin(20, 0, 20, 0)),
+                 axis.title.y = element_text(face = "bold", size = 56, margin = margin(0, 20, 0, 20)),
+                 legend.title = element_text(face = "bold", size = 56), legend.text = element_text(size = 30),
                  legend.position = "top")
          )

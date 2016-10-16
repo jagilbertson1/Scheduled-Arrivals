@@ -49,20 +49,20 @@ costDiff$saving = 100 * (costDiff$static - costDiff$dynamic) / costDiff$static
 costDiff$saving[is.na(costDiff$saving)] = 0
 
 # line plot of cost for each schedule varying number of customers
-ggsave(filename = "~/Documents/Scheduled-Arrivals/Thesis/Figures/Cost_Saving_Line_Num.eps",
+ggsave(filename = "~/Documents/Scheduled-Arrivals/Presentation/Figures/Cost_Saving_Line_Num.eps",
        width = 20, height = 10,
        plot =
          ggplot(data = costDiff, aes(x = factor(gamma), y = saving, group = n, colour = n)) +
-         stat_summary(fun.y = "mean", geom = "point", size = 3) +
-         stat_summary(fun.y = "mean", geom = 'line', size = 1.5) +
-         labs(x = expression(bold("Gamma"~(gamma))), y = expression(bold("Expected Percentage Cost Saving"~(Delta~C)))) +
+         stat_summary(fun.y = "mean", geom = "point", size = 6) +
+         stat_summary(fun.y = "mean", geom = 'line', size = 3) +
+         labs(x = expression(bold("Gamma"~(gamma))), y = expression(bold("Cost Saving"~(Delta~C)))) +
          guides(color = guide_colorbar(title = "Number of Customers (N)    ", nbin = 1000, ticks = FALSE, barwidth = 40)) +
          scale_colour_gradient(limits = c(0,15), breaks = 0:15) +
          coord_cartesian(ylim = c(0, 15)) +
          theme_bw() +
-         theme(axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24),
-               axis.title.x = element_text(face = "bold", size = 28, margin = margin(20, 0, 20, 0)),
-               axis.title.y = element_text(face = "bold", size = 28, margin = margin(0, 20, 0, 20)),
-               legend.title = element_text(face = "bold", size = 28), legend.text = element_text(size = 24),
+         theme(axis.text.x = element_text(size = 48), axis.text.y = element_text(size = 48),
+               axis.title.x = element_text(face = "bold", size = 56, margin = margin(20, 0, 20, 0)),
+               axis.title.y = element_text(face = "bold", size = 56, margin = margin(0, 20, 0, 20)),
+               legend.title = element_text(face = "bold", size = 56), legend.text = element_text(size = 30),
                legend.position = "top")
 )
