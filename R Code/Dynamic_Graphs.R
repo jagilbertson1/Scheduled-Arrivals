@@ -62,7 +62,9 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Presentation/Figures/Dynamic_L
            stat_summary(fun.y = "mean", geom = 'line', size = 3) +
            labs(x = "Number to be Scheduled (n)", y = "Time until Next Customer") +
            guides(color = guide_colorbar(title = "Number in System (k)    ", nbin = 1000, ticks = FALSE, barwidth = 35)) +
-           scale_colour_gradient(limits = c(0, 15), breaks = 0:15) +
+           scale_colour_gradientn(limits = c(0, 14), breaks = 0:14, colours = c("#08306b", "#08519c", "#2171b5", "#4292c6",
+                                                                                "#6baed6", "#9ecae1")) +
+           #scale_colour_gradient(limits = c(0, 14), breaks = 0:14, space = "Lab") +
            ylim(c(0,15)) +
            theme_bw() +
            theme(axis.text.x = element_text(size = 48), axis.text.y = element_text(size = 48),

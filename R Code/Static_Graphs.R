@@ -26,7 +26,9 @@ ggsave(filename = "~/Documents/Scheduled-Arrivals/Presentation/Figures/Static_Li
          stat_summary(fun.y = "mean", geom = 'line', size = 3) +
          labs(x = "Customer Position", y = "Interarrival Time") +
          guides(color = guide_colorbar(title = expression(bold("Gamma"~(gamma)~"   ")), nbin = 1000, ticks = FALSE, barwidth = 35)) +
-         scale_colour_gradient(limits = c(0.1, 0.9), breaks = (1:9)/10) +
+         #scale_colour_gradient(limits = c(0.1, 0.9), breaks = (1:9)/10, space = "Lab") +
+         scale_colour_gradientn(limits = c(0.1, 0.9), breaks = (1:9)/10, colours = c("#08306b", "#08519c", "#2171b5", "#4292c6",
+                                                                                      "#6baed6", "#9ecae1")) +
          ylim(c(0,3)) + theme_bw() +
          theme(axis.text.x = element_text(size = 48), axis.text.y = element_text(size = 48),
                axis.title.x = element_text(face = "bold", size = 56, margin = margin(20, 0, 20, 0)),

@@ -4,6 +4,12 @@
 \usetheme{metropolis}
 
 \setbeamercolor{background canvas}{bg = white}
+\setbeamercolor{math text}{fg = blue}
+
+% fix up white spacing issue caused by colouring equations
+\usepackage{etoolbox}
+% \AtEndEnvironment{equation*}{\vspace{-\baselineskip}\setlength\belowdisplayshortskip{0pt}}
+\AtEndEnvironment{equation*}{\vspace{-10pt}\setlength\belowdisplayshortskip{0pt}}
 
 \usepackage{appendixnumberbeamer}
 \renewcommand\appendixname{Appendix}
@@ -36,28 +42,24 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}
-	\frametitle{Outline}
+\begin{frame}{Outline}
 	\tableofcontents
 \end{frame}
 
 \section{Background}
 
-\begin{frame}
-	\frametitle{Queues with Scheduled Arrivals}
-
+\begin{frame}{Queues with Scheduled Arrivals}
 	\begin{itemize}
 		\item System where customers queue for service
 		\item Instead of arriving randomly, customer arrival times are scheduled in advance
 		\item Common example is appointments for doctor
 		\item Scheduler determines arrival times to minimize expected cost
 		\item Expected cost is a linear combination of expected total customers' waiting time and expected server availability time
+		\item Indirectly include server idle time in expected cost
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Assumptions}
-
+\begin{frame}{Assumptions}
 	\begin{itemize}
 		\item Single server
 		\item Service times are independent exponential RVs with mean $\mu$
@@ -67,9 +69,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Static vs. Dynamic}
-
+\begin{frame}{Static vs. Dynamic}
 	\begin{itemize}
 		\item Static schedules:
 		\begin{itemize}
@@ -85,9 +85,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Literature Review}
-
+\begin{frame}{Literature Review}
 	\begin{itemize}
 		\item \citet{Bailey} was the first to study scheduled arrivals
 		\item \citet{Pegden} propose a method for finding the optimal static schedule
@@ -99,9 +97,7 @@
 
 \section{Static Schedules}
 
-\begin{frame}
-	\frametitle{Objective Function}
-
+\begin{frame}{Objective Function}
 	\begin{itemize}
 		\item Denote the expected waiting time of customer $i$ by $w_{i}$
 		\begin{equation*}
@@ -122,9 +118,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Model for 15 Customers}
-
+\begin{frame}{Model for 15 Customers}
 	\begin{figure}
 			\centering
 			\includegraphics[width=0.85\textwidth]{Static_Line_Interarrival_Gamma.eps}
@@ -138,33 +132,27 @@
 
 \section{Dynamic Schedules}
 
-\begin{frame}
-	\frametitle{Dynamic Schedules}
-
+\begin{frame}{Dynamic Schedules}
 	\begin{itemize}
 		\item Static schedules are fixed for the duration of service
 		\item Could be advantageous to allow schedule to vary during service
-		\item Dynamic schedule is chosen progressively during service
+		\item \alert{Dynamic schedule} is chosen progressively during service
 		\item Arrival of customer $i$ is scheduled on arrival of customer $i - 1$
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Markov Decision Process}
-
+\begin{frame}{Markov Decision Process}
 	\begin{itemize}
 		\item Consider the problem of scheduling $N$ customers
 		\item Denote the number of customers in the system on arrival of customer $i$ by $k_{i}$
 		\item $\{ k_{1}, \ldots, k_{N} \}$ is a discrete-time Markov chain
-		\item On each customer's arrival, scheduler needs to schedule the arrival time of the next customer denoted by $a$
-		\item Set of possible times is $\mathcal{A} = [0, \infty)$
+		\item On each customer's arrival, scheduler needs to schedule the arrival time of the next customer (relative to the current time) denoted by $a$
+		\item Set of possible times is $[0, \infty)$
 		\item Naturally modeled as \alert{Markov decision process}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{State Transitions}
-
+\begin{frame}{State Transitions}
 	\begin{itemize}
 		\item Denote the current state of $n$ customers remaining to be scheduled and $k$ customers currently in the system by $(n, k)$
 		\item Initial state: $(N, 0)$
@@ -178,9 +166,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Expected Cost of Schedule}
-
+\begin{frame}{Expected Cost of Schedule}
 	\begin{itemize}
 		\item Denote the expected cost of state $(n, k)$ assuming the next customer is scheduled to arrive in $a$ time units by $C_{n} (a, k)$
 		\item Optimal policy $a^{*}$ minimises the expected cost
@@ -193,12 +179,11 @@
 		\begin{equation*}
 			C_{n}^{*} (k) \coloneqq \min_{a \geq 0} C_{n} (a, k) = \min_{a \geq 0} \left[ \sum_{j = 1}^{k + 1} p_{a} (k, j) \Big( R_{a} (k, j) + C_{n - 1}^{*} (j) \Big) \right]
 		\end{equation*}
+		\item Recursive equation involving $C^{*}$ solved iteratively
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Erlang Distribution}
-
+\begin{frame}{Erlang Distribution}
 	\begin{itemize}
 		\item Waiting time of customer in position $r + 1$ is sum of $r$ independent Exponential RVs with mean $\mu$
 		\begin{equation*}
@@ -206,7 +191,7 @@
 		\end{equation*}
 		\item Distribution function:
 		\begin{equation*}
-			F (x; r) \coloneqq \mathbb{P} (X \leq x) = \begin{cases} 0 & \text{where $x = 0$} \\ 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{x}{\mu} \right)^{i} \mathrm{e}^{\frac{-x}{\mu}} & \text{where $x > 0$} \end{cases}
+			F (x; r) \coloneqq \mathbb{P} (X \leq x) = \begin{cases} 0 & \text{where $x = 0$} \\ \displaystyle 1 - \sum_{i = 0}^{r - 1} \frac{1}{i!} \left( \frac{x}{\mu} \right)^{i} \mathrm{e}^{\frac{-x}{\mu}} & \text{where $x > 0$} \end{cases}
 		\end{equation*}
 		\item Conditional expectation:
 		\begin{equation*}
@@ -219,9 +204,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Model for 15 Customers}
-
+\begin{frame}{Model for 15 Customers}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{Dynamic_Line_Interarrival_k.eps}
@@ -230,15 +213,13 @@
 	\begin{itemize}
 		\item Plot of optimal interarrival times $a^{*}$ for each possible state
 		\item $a^{*} = 0$ for initial state $(15, 0)$, and $a^{*} = 10.17$ for state $(3, 10)$
-		\item $a^{*}$ is independent of $n$ for $n \geq 2$
+		\item $a^{*}$ is (approx.) independent of $n$ for $n \geq 2$
 	\end{itemize}
 \end{frame}
 
 \section{Schedule Comparison}
 
-\begin{frame}
-	\frametitle{Expected Cost Comparison}
-
+\begin{frame}{Expected Cost Comparison}
 	\begin{itemize}
 		\item Consider the problem of scheduling $N$ customers
 		\item Expected cost of optimal static schedule is $\phi (\mathbf{x}_{N}^{*})$
@@ -255,9 +236,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Expected Percentage Cost Saving}
-
+\begin{frame}{Expected Percentage Cost Saving}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{Cost_Saving_Line_Num.eps}
@@ -271,9 +250,7 @@
 
 \section{Simulation Studies}
 
-\begin{frame}
-	\frametitle{Simulation}
-
+\begin{frame}{Simulation}
 	\begin{itemize}
 		\item Consider the problem of scheduling $15$ customers
 		\item Assume $\mu = 1$ and $\gamma = 0.5$
@@ -284,9 +261,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Schedule Cost}
-
+\begin{frame}{Schedule Cost}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{Cost_Hist_Diff.eps}
@@ -298,9 +273,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Customer Arrival Times}
-
+\begin{frame}{Customer Arrival Times}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{AT_Line.eps}
@@ -312,9 +285,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Waiting Time Per Customer}
-
+\begin{frame}{Waiting Time Per Customer}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{WT_Hist_Diff.eps}
@@ -326,9 +297,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Customer Waiting Times}
-
+\begin{frame}{Customer Waiting Times}
 	\begin{figure}
 			\centering
 			\includegraphics[width=0.85\textwidth]{WT_Line_Avg.eps}
@@ -340,9 +309,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Server Availability Time}
-
+\begin{frame}{Server Availability Time}
 	\begin{figure}
 		\centering
 		\includegraphics[width=0.85\textwidth]{TST_Hist_Diff.eps}
@@ -356,9 +323,7 @@
 
 \section{Conclusion}
 
-\begin{frame}
-	\frametitle{Conclusion}
-
+\begin{frame}{Conclusion}
 	\begin{itemize}
 		\item Dynamic schedules often significantly outperform static schedules
 		\item Dynamic schedules are able to adapt during service, thus less prone to runs with extremely high cost
@@ -375,8 +340,7 @@
 
 \section{References}
 
-\begin{frame}[allowframebreaks]
-	\frametitle{References}
+\begin{frame}[allowframebreaks]{References}
 	\printbibliography[heading=none]
 \end{frame}
 
